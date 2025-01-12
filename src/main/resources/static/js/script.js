@@ -2,6 +2,7 @@ let items = document.querySelectorAll('.carousel .carousel-item');
 
 items.forEach((el) => {
     const minPerSlide = 6;
+	const incrementPerSlide = 2;  // Kaydırıldıkça eklenecek öğe sayısı
     let next = el.nextElementSibling;
     for (let i = 1; i < minPerSlide; i++) {
         if (!next) {
@@ -15,9 +16,12 @@ items.forEach((el) => {
 
 
 
+
+
+
 let currentIndex = 0;  // Başlangıç index'i
 const totalSlides = 7; // Slider'da toplam 7 slayt var
-const transitionTime = 5000; // Otomatik geçiş süresi (3 saniye)
+const transitionTime = 5000; // Otomatik geçiş süresi (5 saniye)
 
 // Yönlendirme işlevi
 function moveSlide(direction) {

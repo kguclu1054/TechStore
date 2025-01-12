@@ -16,10 +16,9 @@ public class ForgetPasswordController {
     @Autowired
     private EmailService emailService;
 
-    // Şifre sıfırlama formunu göster
     @GetMapping("/forget_password")
     public String showForgetPasswordForm() {
-        return "forgetPasswordForm"; // form sayfası
+        return "forgetPassword"; // form sayfası
     }
 
     // Şifre sıfırlama isteği

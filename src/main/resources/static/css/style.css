@@ -21,7 +21,7 @@ body {
 @media (min-width: 768px) {
     .carousel-inner .carousel-item-end.active,
     .carousel-inner .carousel-item-next {
-        transform: translateX(25%);
+        transform: translateX(15%);
 		display: flex;
     }
 
@@ -37,7 +37,7 @@ body {
 
     .carousel-inner .carousel-item-start.active,
     .carousel-inner .carousel-item-prev {
-        transform: translateX(-25%);
+        transform: translateX(-15%);
     }
 }
 
@@ -67,7 +67,7 @@ body {
     position: relative;
     display: inline-block;
     width: 225px;
-	height:410px;
+	height:400px;
 }
 
 .card-img img {
@@ -168,3 +168,49 @@ button:hover {
 .next {
     right: 10px;
 }
+
+
+.card-description {
+    display: -webkit-box;           /* Flexbox benzeri bir yapı */
+    -webkit-line-clamp: 2;          /* 2 satırda sınırlama */
+    -webkit-box-orient: vertical;   /* Yalnızca dikeyde kesme */
+    overflow: hidden;               /* Taşan kısmı gizle */
+    text-overflow: ellipsis;        /* Taşan kısmı "..." ile göster */
+    line-height: 1.5;               /* Satır yüksekliğini ayarla (isteğe bağlı) */
+    max-height: 4em;                /* 2 satır için uygun maksimum yükseklik */
+}
+
+
+@media (max-width: 1250px) {
+    .card {
+        width: 100%;        /* Kart genişliğini %90 yap */
+        height: 300px;      /* Yükseklik otomatik olarak ayarlandı */
+}
+
+@media (max-width: 1000px) {
+    .carousel-inner .carousel-item > div {
+        width: 50%; /* 3 öğe için her bir öğenin genişliği */
+        margin: 1%;  /* Aralarındaki boşluk */
+    }
+	
+	.card {
+	        height: 810px;  /* Yüksekliği arttırıyoruz */
+	    }
+	.card-description{
+		font-size: 30px;
+	}
+	
+	.tooltip-box{
+		font-size: 30px;
+	}]
+}
+
+
+
+
+
+
+
+
+
+

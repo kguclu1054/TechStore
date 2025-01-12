@@ -15,10 +15,5 @@ public class ContentController {
     public String signup() {
         return "signup";
     }
-    
-    @GetMapping("/forgot-password")
-    public String forgot_password(){
-    	return "forgot-password";
-    }
 }
 
