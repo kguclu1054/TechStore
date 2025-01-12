@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-image: url(https://user-images.githubusercontent.com/13468728/233847739-219cb494-c265-4554-820a-bd3424c59065.jpg);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+        }
+
+        section {
+            position: relative;
+            max-width: 500px;
+            background-color: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            backdrop-filter: blur(55px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 3rem;
+            transition: all 0.5s ease-in-out;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #fff;
+            text-align: center;
+        }
+
+        .inputbox {
+            position: relative;
+            margin: 20px 0;
+            max-width: 550px;
+            border-bottom: 2px solid #fff;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .inputbox input {
+            width: 100%;
+            height: 40px;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            padding: 0 35px 0 5px;
+            color: #fff;
+        }
+
+        .inputbox ion-icon {
+            position: absolute;
+            right: 8px;
+            color: #fff;
+            font-size: 1.2rem;
+            top: 12px;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .inputbox label {
+            position: absolute;
+            top: 50%;
+            left: 5px;
+            transform: translateY(-50%);
+            color: #fff;
+            font-size: 1rem;
+            pointer-events: none;
+            transition: all 0.5s ease-in-out;
+        }
+
+        input:focus~label,
+        input:valid~label {
+            top: -5px;
+            font-size: 0.9rem;
+            color: #a8a8a8;
+        }
+
+        button {
+            width: 100%;
+            height: 40px;
+            border-radius: 40px;
+            background-color: rgba(255, 255, 255, 1);
+            border: none;
+            outline: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.4s ease;
+        }
+
+        button:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .register {
+            font-size: 0.9rem;
+            color: #fff;
+            text-align: center;
+            margin: 25px 0 10px;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .register p a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 600;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .register p a:hover {
+            text-decoration: underline;
+            color: #a8a8a8;
+        }
+
+        /* Shake animation for invalid form submission */
+        @keyframes shake {
+            0% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-10px);
+            }
+
+            50% {
+                transform: translateX(10px);
+            }
+
+            75% {
+                transform: translateX(-10px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <form id="loginForm" action="/perform_login" method="post">
+            <h1>Login</h1>
+            <div class="inputbox">
+                <ion-icon name="person-outline"></ion-icon>
+                <input name="username" id="username" type="text" required>
+                <label for="username">Username</label>
+            </div>
+            <div class="inputbox">
+                <ion-icon name="lock-closed-outline"></ion-icon>
+                <input name="password" type="password" id="password" required>
+                <label for="password">Password</label>
+            </div>
+            <div class="register">
+                <p><a href="#">Forget Password?</a></p>
+            </div>
+            <button type="submit">Log in</button>
+            <div class="register">
+                <p>Don't have an account? <a href="/req/signup">Register!!</a></p>
+            </div>
+        </form>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initial animation to fade in the form
+            const loginForm = document.querySelector('section');
+            loginForm.style.opacity = 0;
+
+            setTimeout(() => {
+                loginForm.style.transition = 'opacity 1s ease-in-out';
+                loginForm.style.opacity = 1;
+            }, 500);
+
+            // Handle form submission
+            const loginButton = document.querySelector('button');
+            loginButton.addEventListener('click', function (event) {
+                event.preventDefault(); // Prevent default form submission
+
+                const usernameInput = document.getElementById('username');
+                const passwordInput = document.getElementById('password');
+
+                // Check if form inputs are valid
+                if (!usernameInput.checkValidity() || !passwordInput.checkValidity()) {
+                    loginForm.classList.add('shake'); // Add shake animation if invalid
+
+                    setTimeout(() => {
+                        loginForm.classList.remove('shake'); // Remove the shake animation after 1 second
+                    }, 1000);
+                    return;
+                }
+
+                // Submit form if everything is valid
+                document.querySelector('#loginForm').submit();
+            });
+        });
+    </script>
+</body>
+
+</html>

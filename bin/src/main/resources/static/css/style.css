@@ -1,0 +1,170 @@
+body {
+    background-color: #D3D3D3;
+}
+
+@media (max-width: 767px) {
+    .carousel-inner .carousel-item > div {
+        display: none;
+    }
+    .carousel-inner .carousel-item > div:first-child {
+        display: block;
+    }
+}
+
+.carousel-inner .carousel-item.active,
+.carousel-inner .carousel-item-next,
+.carousel-inner .carousel-item-prev {
+    display: flex;
+}
+
+
+@media (min-width: 768px) {
+    .carousel-inner .carousel-item-end.active,
+    .carousel-inner .carousel-item-next {
+        transform: translateX(25%);
+		display: flex;
+    }
+
+.carousel-inner .carousel-item {
+	    display: none; /* Her karosel itemini başlangıçta gizle */
+	}
+
+	
+.carousel-inner .carousel-item.active {
+	 display: flex; /* Sadece aktif karosel itemini göster */
+	}
+
+
+    .carousel-inner .carousel-item-start.active,
+    .carousel-inner .carousel-item-prev {
+        transform: translateX(-25%);
+    }
+}
+
+@media (max-width: 767px) {
+    .carousel-inner .carousel-item {
+        display: block;
+        width: 100%;
+    }
+	
+	.carousel-container {
+        width: 100%;  /* Daha küçük ekranlar için container genişliğini 100% yapıyoruz */
+	}
+
+    .card {
+        width: 100%;
+    }
+}
+
+.carousel-inner .carousel-item-end,
+.carousel-inner .carousel-item-start {
+    transform: translateX(0);
+}
+
+.card {
+    border-radius: 25px;
+    overflow: hidden;
+    position: relative;
+    display: inline-block;
+    width: 225px;
+	height:410px;
+}
+
+.card-img img {
+    width: 100%;
+    display: block;
+}
+
+.tooltip-box {
+    display: none;
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    z-index: 10;
+    white-space: nowrap;
+	bottom:2px;
+	width:100%;
+}
+
+.card:hover .tooltip-box {
+    display: block;
+}
+
+.card-description {
+    padding: 10px;
+    background-color: #fff;
+    color: #000;
+    font-size: 14px;
+    text-align: center;
+    margin-top: -10px;
+}
+
+@media screen and (max-width: 1281px) {
+  .card-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card {
+    margin: 10px 0;
+    width: 100%;
+  }
+}
+
+
+
+
+/* /1.carousel */
+.carousel-container {
+    position: relative;
+    width: 800px;
+	height: 500px;
+    margin: auto;
+	margin-top:50px;
+    overflow: hidden;
+}
+
+.carousel {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+    box-sizing: border-box;
+}
+
+.slide img {
+    width: 100%;
+    height: auto;
+}
+
+button {
+    position: absolute;
+    top: 35%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+button:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}
