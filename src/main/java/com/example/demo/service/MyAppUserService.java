@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.example.demo.service;
 
 import java.util.Optional;
 
@@ -8,6 +8,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import com.example.demo.entity.MyAppUser;
+import com.example.demo.model.MyAppUserRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,14 +30,14 @@ public class MyAppUserService implements UserDetailsService {
         Optional<MyAppUser> user = repository.findByUsername(username);
         if (user.isPresent()) {
             var userObj = user.get();
-            log.info("Kullanıcı bulundu: " + userObj.getUsername());
+           
             return User.builder()
                     .username(userObj.getUsername())
                     .password(userObj.getPassword())
                     .roles("USER")
                     .build();
         } else {
-            log.warn("Kullanıcı bulunamadı: " + username);
+            
             throw new UsernameNotFoundException(username);
         }
     }

@@ -12,7 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.example.demo.model.MyAppUserService;
+import com.example.demo.service.MyAppUserService;
 
 @Configuration
 @EnableWebSecurity
@@ -60,12 +60,10 @@ public class SecurityConfig {
                 })
                 .authorizeHttpRequests(registry -> {
                     registry
-                        .requestMatchers("/req/signup", "/css/**", "/js/**").permitAll();  
+                        .requestMatchers("/req/signup", "/forget_password", "/css/**", "/js/**").permitAll();  
                     registry
                         .anyRequest().authenticated();  
                 })
                 .build();  
     }
 }
-
-
