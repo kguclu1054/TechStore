@@ -157,6 +157,12 @@
         .shake {
             animation: shake 0.5s ease-in-out;
         }
+
+        .error {
+            color: red;
+            text-align: center;
+            margin-top: 15px;
+        }
     </style>
 </head>
 
@@ -181,6 +187,7 @@
             <div class="register">
                 <p>Don't have an account? <a href="/req/signup">Register!!</a></p>
             </div>
+            <div class="error" th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
         </form>
     </section>
 
@@ -221,3 +228,10 @@
 </body>
 
 </html>
+
+
+
+
+
+
+

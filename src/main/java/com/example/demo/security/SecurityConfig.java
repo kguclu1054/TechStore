@@ -51,6 +51,7 @@ public class SecurityConfig {
                         .loginPage("/loginPage")
                         .loginProcessingUrl("/perform_login")  // Login işlemi için URL
                         .defaultSuccessUrl("/index", true)  // Login başarılı olduğunda yönlendirilecek sayfa
+                        .failureUrl("/loginPage?error=true") // Başarısız giriş URL'i .permitAll();
                         .permitAll();         
                 })
                 .logout(logoutForm -> {

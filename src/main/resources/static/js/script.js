@@ -1,18 +1,58 @@
-let items = document.querySelectorAll('.carousel .carousel-item');
+// EnCokSatılanlarcarousel'i için JavaScript üst
+let topItems = document.querySelectorAll('#EnCokSatılanlarcarousel .carousel-item');
 
-items.forEach((el) => {
+topItems.forEach((el) => {
     const minPerSlide = 6;
-	const incrementPerSlide = 2;  // Kaydırıldıkça eklenecek öğe sayısı
     let next = el.nextElementSibling;
     for (let i = 1; i < minPerSlide; i++) {
         if (!next) {
-            next = items[0];
+            next = topItems[0];
         }
         let cloneChild = next.cloneNode(true);
         el.appendChild(cloneChild.children[0]);
         next = next.nextElementSibling;
     }
 });
+
+// smartphonecarousel için JavaScript kodları
+let bottomItems = document.querySelectorAll('#smartphonecarousel .carousel-item');
+
+bottomItems.forEach((el) => {
+    const minPerSlide = 6;
+    let next = el.nextElementSibling;
+    for (let i = 1; i < minPerSlide; i++) {
+        if (!next) {
+            next = bottomItems[0];
+        }
+        let cloneChild = next.cloneNode(true);
+        el.appendChild(cloneChild.children[0]);
+        next = next.nextElementSibling;
+    }
+});
+
+
+let laptopItems = document.querySelectorAll('#laptopCarousel .carousel-item');
+
+laptopItems.forEach((el) => {
+    const minPerSlide = 6;
+    let next = el.nextElementSibling;
+    for (let i = 1; i < minPerSlide; i++) {
+        if (!next) {
+            next = laptopItems[0];
+        }
+        let cloneChild = next.cloneNode(true);
+        el.appendChild(cloneChild.children[0]);
+        next = next.nextElementSibling;
+    }
+});
+
+
+
+
+
+
+
+
 
 
 
@@ -91,42 +131,3 @@ setInterval(() => {
 
 
 
-// Sepete ekleme butonları için event listener
-document.querySelectorAll('.add-to-cart').forEach(button => {
-  button.addEventListener('click', function() {
-    const productId = this.getAttribute('data-product-id'); // 'this' burada tıklanan div'i ifade eder
-    addToCart(productId); // Sepete ekleme fonksiyonunu çağırıyoruz
-  });
-});
-
-function addToCart(productId) {
-  // Sepete ürün ekleme isteği gönderme
-  fetch('/api/cart/add', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ productId: productId })
-  })
-  .then(response => response.json())
-  .then(data => {
-    alert('Ürün sepete eklendi!');
-    updateCart(); // Sepeti güncelle
-  })
-  .catch(error => console.error('Hata:', error));
-}
-
-// Sepetteki ürünleri güncelle
-function updateCart() {
-  fetch('/api/cart')
-    .then(response => response.json())
-    .then(cart => {
-      const cartContainer = document.getElementById('cart-items');
-      cartContainer.innerHTML = ''; // Önceki içeriği temizle
-      cart.items.forEach(item => {
-        const productDiv = document.createElement('div');
-        productDiv.textContent = `Ürün: ${item.name}, Adet: ${item.quantity}`;
-        cartContainer.appendChild(productDiv);
-      });
-    });
-}
