@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.MyAppUser;
-import com.example.demo.model.MyAppUserRepository;
+import com.example.demo.repository.MyAppUserRepository;
 
 import lombok.extern.slf4j.Slf4j;
 

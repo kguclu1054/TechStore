@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.MyAppUser;
-import com.example.demo.model.MyAppUserRepository;
+import com.example.demo.repository.MyAppUserRepository;
 
 @RestController
 public class RegistrationController {
