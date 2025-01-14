@@ -131,3 +131,67 @@ setInterval(() => {
 
 
 
+
+
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    console.log('DOM tamamen yüklendi');
+    const products = [];
+    const carouselItems = document.querySelectorAll('.carousel-item');
+    const productNames = new Set();
+
+    carouselItems.forEach((carouselItem, index) => {
+        console.log(`İşleniyor: Carousel Item ${index + 1}`);
+        const cardDescription = carouselItem.querySelector('.card-description');
+        const priceElement = carouselItem.querySelector('.price');
+        const imageElement = carouselItem.querySelector('img');
+
+        if (cardDescription && priceElement && imageElement) {
+            const name = cardDescription.innerText.trim();
+            if (productNames.has(name)) {
+                console.log(`${name} zaten eklendi, atlanıyor`);
+                return; // Aynı isimden olan ürünler atlanır
+            }
+
+            console.log(`Ürün adı: ${name}`);
+            let price = parseFloat(priceElement.innerText.replace(',', '').replace('₺', '').trim());
+            console.log(`Ürün fiyatı: ${price}`);
+            const imageUrl = imageElement.src.trim();
+            console.log(`Ürün resim URL: ${imageUrl}`);
+
+            if (!isNaN(price)) {
+                products.push({
+                    name: name,
+                    price: price,
+                    description: "Product Description",
+                    imageUrl: imageUrl,
+                });
+                productNames.add(name);
+                console.log(`Eklendi: ${name} - ${price} - ${imageUrl}`);
+            }
+        } else {
+            console.log('Gerekli öğeler bulunamadı');
+        }
+    });
+
+    console.log('Ürünler:', products);
+
+    if (products.length > 0) {
+        fetch('/products/batch', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(products)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Başarılı:', data);
+        })
+        .catch((error) => {
+            console.error('Hata:', error);
+        });
+    } else {
+        console.log('Eklenecek ürün bulunamadı');
+    }
+});

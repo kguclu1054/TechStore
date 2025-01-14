@@ -67,7 +67,7 @@ body {
     position: relative;
     display: inline-block;
     width: 225px;
-	height:400px;
+	height:430px;
 }
 
 .card-img img {
@@ -185,6 +185,7 @@ button:hover {
     .card {
         width: 100%;        /* Kart genişliğini %90 yap */
         height: 300px;      /* Yükseklik otomatik olarak ayarlandı */
+ }
 }
 
 @media (max-width: 1000px) {
@@ -204,6 +205,19 @@ button:hover {
 		font-size: 30px;
 	}
 }
+
+.price{
+  color: black;
+  font-weight: bold;
+   display: inline;
+   margin-right: 135px;
+}
+
+.price::before {
+  content: "₺";
+}
+
+
 
 
 
