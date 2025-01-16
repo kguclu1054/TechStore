@@ -134,50 +134,34 @@ setInterval(() => {
 
 
 
-document.addEventListener('DOMContentLoaded', (event) => {
-    console.log('DOM tamamen yüklendi');
-    const products = [];
+window.addEventListener('load', () => {
     const carouselItems = document.querySelectorAll('.carousel-item');
-    const productNames = new Set();
+    const products = [];
 
-    carouselItems.forEach((carouselItem, index) => {
-        console.log(`İşleniyor: Carousel Item ${index + 1}`);
-        const cardDescription = carouselItem.querySelector('.card-description');
-        const priceElement = carouselItem.querySelector('.price');
-        const imageElement = carouselItem.querySelector('img');
+    carouselItems.forEach(item => {
+        const nameElement = item.querySelector('.card-description');
+        const priceElement = item.querySelector('.price');
+        const imageElement = item.querySelector('img');
 
-        if (cardDescription && priceElement && imageElement) {
-            const name = cardDescription.innerText.trim();
-            if (productNames.has(name)) {
-                console.log(`${name} zaten eklendi, atlanıyor`);
-                return; // Aynı isimden olan ürünler atlanır
-            }
+        if (nameElement && priceElement && imageElement) {
+            const name = nameElement.innerText;
+            const price = priceElement.innerText;
+            const imageUrl = imageElement.src;
 
-            console.log(`Ürün adı: ${name}`);
-            let price = parseFloat(priceElement.innerText.replace(',', '').replace('₺', '').trim());
-            console.log(`Ürün fiyatı: ${price}`);
-            const imageUrl = imageElement.src.trim();
-            console.log(`Ürün resim URL: ${imageUrl}`);
+            const product = {
+                name: name,
+                description: "Açıklama burada yer alacak",
+                price: parseFloat(price.replace('₺', '').replace('.', '').replace(',', '.')),
+                imageUrl: imageUrl
+            };
 
-            if (!isNaN(price)) {
-                products.push({
-                    name: name,
-                    price: price,
-                    description: "Product Description",
-                    imageUrl: imageUrl,
-                });
-                productNames.add(name);
-                console.log(`Eklendi: ${name} - ${price} - ${imageUrl}`);
-            }
-        } else {
-            console.log('Gerekli öğeler bulunamadı');
+            products.push(product);
         }
     });
 
-    console.log('Ürünler:', products);
-
-    if (products.length > 0) {
-        fetch('/products/batch', {
+    // Verilerin gönderilip gönderilmediğini kontrol et
+    if (!localStorage.getItem('productsSent')) {
+        fetch('/api/encoksatilanlar', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -186,12 +170,34 @@ document.addEventListener('DOMContentLoaded', (event) => {
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Başarılı:', data);
+            console.log('Veriler başarıyla gönderildi:', data);
+            localStorage.setItem('productsSent', 'true'); // Gönderildiği işaretle
+
+            // Başarılı bir şekilde veri gönderildikten sonra DOM'u güncelle
+            products.forEach(product => {
+                const newCard = document.createElement('div');
+                newCard.classList.add('carousel-item');
+                newCard.innerHTML = `
+                    <div class="col-md-2">
+                        <div class="card">
+                            <div class="card-img">
+                                <img src="${product.imageUrl}" class="img-fluid" alt="${product.name}">
+                                <div class="card-description">${product.name}</div>
+                                <p class="price">₺${product.price.toFixed(2)}</p>
+                                <div class="tooltip-box">Sepete ekle</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                console.log('Yeni kart eklendi:', newCard); // Eklemeden önce kartı logla
+                document.querySelector('.carousel-inner').appendChild(newCard);
+            });
         })
-        .catch((error) => {
+        .catch(error => {
             console.error('Hata:', error);
+            alert('Veri gönderimi sırasında bir hata oluştu. Lütfen tekrar deneyin.');
         });
     } else {
-        console.log('Eklenecek ürün bulunamadı');
+        console.log('Veriler zaten gönderildi.');
     }
 });

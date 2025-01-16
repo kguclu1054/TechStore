@@ -27,5 +27,3 @@ public class RegistrationController {
         return myAppUserRepository.save(user);
     }
 }
-
-
