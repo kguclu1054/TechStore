@@ -15,6 +15,7 @@ body {
 .carousel-inner .carousel-item-next,
 .carousel-inner .carousel-item-prev {
     display: flex;
+	gap: 0px;
 }
 
 
@@ -105,17 +106,6 @@ body {
     margin-top: -10px;
 }
 
-@media screen and (max-width: 1281px) {
-  .card-container {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .card {
-    margin: 10px 0;
-    width: 100%;
-  }
-}
 
 
 
@@ -182,20 +172,35 @@ button:hover {
 
 
 @media (max-width: 1250px) {
-    .card {
-        width: 100%;        /* Kart genişliğini %90 yap */
-        height: 300px;      /* Yükseklik otomatik olarak ayarlandı */
- }
+  .card {
+    width: 80%; /* Kart genişliğini %85 yap */
+  }
+  
+  #EnCokSatılanlarcarousel .carousel-item .col-md-2{
+	padding: 0;
+  }
+  
+  #EnCokSatılanlarcarousel .carousel-item .card {
+	margin: 5px;
+  }
+  
+  .price{
+	font-size:38px;
+  }
+  
 }
+
 
 @media (max-width: 1000px) {
     .carousel-inner .carousel-item > div {
         width: 50%; /* 3 öğe için her bir öğenin genişliği */
-        margin: 1%;  /* Aralarındaki boşluk */
+        margin: -75px;  /* Aralarındaki boşluk */
+		margin-left: 15px;
+		margin-top:40px;
     }
 	
 	.card {
-	        height: 810px;  /* Yüksekliği arttırıyoruz */
+	    height: 820px;  /* Yüksekliği arttırıyoruz */
 	    }
 	.card-description{
 		font-size: 30px;
@@ -203,7 +208,17 @@ button:hover {
 	
 	.tooltip-box{
 		font-size: 30px;
+		position: absolute;
+		bottom: 60px; 
 	}
+	
+	.carousel-control-next-icon,
+	.carousel-control-prev-icon{
+		width: 50px;
+		height:100px;
+	}
+	
+	
 }
 
 .price{
@@ -216,6 +231,24 @@ button:hover {
 .price::before {
   content: "₺";
 }
+
+
+.carousel-control-next:hover .carousel-control-next-icon,
+.carousel-control-prev:hover .carousel-control-prev-icon {
+  background-color: black;
+}
+
+.carousel-control-prev {
+  margin-left: 12px; /* Adjust this value as needed */
+}
+
+.carousel-control-next{
+	margin-right: 12px;
+}
+
+
+
+
 
 
 
