@@ -201,3 +201,9 @@ window.addEventListener('load', () => {
         console.log('Veriler zaten gönderildi.');
     }
 });
+
+
+
+ function redirectToProductPage() { 
+	window.location.href = '/apple16_siyah_128';
+} 

@@ -9,6 +9,18 @@
 </head>
 <body>
 	
+	<style>
+			.search-icon-container:hover {
+			  background-color: #000000;
+			  cursor: pointer; 
+			}
+			.search-icon-container:hover .search_icon {
+			  color: black; 
+			  transform: scale(1.2); 
+			  transition: transform 0.3s ease; 
+			}
+		 </style>
+	
 	<nav class="navbar navbar-expand-lg navbar-light bg-light" style="font-size: 1.2rem; padding: 15px 0;">
 	  <div class="container-fluid">
 	    <a class="navbar-brand" href="#">TechStore</a>
@@ -45,21 +57,6 @@
 	    </div>
 	  </div>
 	</nav>
-
-	<style>
-		.search-icon-container:hover {
-		  background-color: #000000;
-		  cursor: pointer; 
-		}
-		.search-icon-container:hover .search_icon {
-		  color: black; 
-		  transform: scale(1.2); 
-		  transition: transform 0.3s ease; 
-		}
-	 </style>
-
-
-
 
 	
 	<div class="carousel-container">
@@ -101,7 +98,7 @@
 	         <div class="carousel-inner" role="listbox">
 	           <div class="carousel-item active">
 	             <div class="col-md-2">
-	               <div class="card">
+	               <div class="card" onclick="redirectToProductPage()">
 	                 <div class="card-img">
 	                   <img
 	                     src="https://productimages.hepsiburada.net/s/777/424-600/110000767460737.jpg/format:webp"
