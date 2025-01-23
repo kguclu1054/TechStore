@@ -42,14 +42,15 @@
 	          <a class="nav-link" href="checkout.html">Sepetim</a>
 	        </li>
 	      </ul>
-	      <form class="d-flex me-auto" id="search_container">
-	        <div class="input-group">
-	          <input class="form-control form-control-lg" type="search" placeholder="Ürün, kategori ve marka ara" aria-label="Search">
-	          <span class="input-group-text bg-light search-icon-container" >
-	            <i class="bi bi-search search_icon"></i>
-	          </span>
-	        </div>
-	      </form>
+		  <form class="d-flex me-auto" id="search_container" onsubmit="searchProducts(event)">
+		    <div class="input-group">
+		      <input class="form-control form-control-lg" type="search" placeholder="Ürün, kategori ve marka ara" aria-label="Search" id="search" oninput="autocompleteSearch(this.value)">
+		      <button class="btn btn-outline-secondary" type="submit">
+		        <i class="bi bi-search search_icon"></i>
+		      </button>
+		      <div id="autocomplete-results" class="autocomplete-results"></div>
+		    </div>
+		  </form>
 		  <a class="btn btn-outline-danger ms-auto" href="#" onclick="document.getElementById('logoutForm').submit();">Çıkış Yap</a>
 		  <form id="logoutForm" action="/perform_logout" method="post" style="display: none;">
 		      <input type="hidden" name="_csrf" value="${_csrf.token}"/>
@@ -130,7 +131,7 @@
 	           </div>
 	           <div class="carousel-item">
 	             <div class="col-md-2">
-	               <div class="card">
+	               <div class="card" data-id="3" onclick="redirectToProductPage(3)">
 	                 <div class="card-img">
 	                   <img
 	                     src="https://productimages.hepsiburada.net/s/777/424-600/110000806810480.jpg/format:webp"
@@ -147,7 +148,7 @@
 	           </div>
 	           <div class="carousel-item">
 	             <div class="col-md-2">
-	               <div class="card">
+	               <div class="card" data-id="4" onclick="redirectToProductPage(4)">z
 	                 <div class="card-img">
 	                   <img
 	                     src="https://productimages.hepsiburada.net/s/462/424-600/110000499323454.jpg/format:webp"
@@ -631,5 +632,68 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
  <script src="/js/script.js"></script>
+ 
+ <script>
+	function autocompleteSearch(query) {
+	    var resultsContainer = document.getElementById('autocomplete-results');
+	    if (query.length < 3) { // En az 3 karakter yazıldığında arama başlat
+	      resultsContainer.innerHTML = '';
+	      resultsContainer.classList.remove('show'); // Sonuçları gizle
+	      return;
+	    }
+	    fetch(`/search?query=${query}`)
+	      .then(response => response.json())
+	      .then(data => displayAutocompleteResults(data))
+	      .catch(error => console.error('Hata:', error));
+	  }
+
+	  function displayAutocompleteResults(data) {
+	    var resultsContainer = document.getElementById('autocomplete-results');
+	    resultsContainer.innerHTML = ''; // Önceki sonuçları temizler
+	    if (data.length > 0) {
+	      resultsContainer.classList.add('show'); // Sonuçlar varsa göster
+	    } else {
+	      resultsContainer.classList.remove('show'); // Sonuç yoksa gizle
+	    }
+	    data.forEach(product => {
+	      var resultDiv = document.createElement('div');
+	      resultDiv.classList.add('autocomplete-result');
+	      resultDiv.onclick = function() {
+	        window.location.href = `/products/${product.id}`;
+	      };
+
+	      var productImg = document.createElement('img');
+	      productImg.src = product.imageUrl;
+	      productImg.alt = product.name;
+	      resultDiv.appendChild(productImg);
+
+	      var productName = document.createElement('span');
+	      productName.textContent = product.name;
+	      resultDiv.appendChild(productName);
+
+	      resultsContainer.appendChild(resultDiv);
+	    });
+	  }
+
+	  function searchProducts(event) {
+	    event.preventDefault(); // Formun normal gönderimini engeller
+	    var query = document.getElementById('search').value;
+	    fetch(`/search?query=${query}`)
+	      .then(response => {
+	        if (response.redirected) {
+	          window.location.href = response.url; // Yönlendirilmişse, yeni URL'ye gidin
+	        } else {
+	          return response.text().then(html => {
+	            document.open();
+	            document.write(html);
+	            document.close();
+	          });
+	        }
+	      })
+	      .catch(error => console.error('Hata:', error));
+	  }
+ </script>
+
+
 </body>
 </html>

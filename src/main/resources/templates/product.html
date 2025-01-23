@@ -27,9 +27,10 @@
 	    }
 
 	    .carousel-container {
-	        width: 425px;  /* Genişliği arttırdık */
-	        height: 560px; /* Yüksekliği biraz daha arttırdım */
-	        overflow: hidden; /* Taşmayı engelliyoruz */
+	        width: 425px;
+	        height: 560px;
+	        overflow: hidden;
+			margin-right: 40px;
 	    }
 
 	    .carousel-inner {
@@ -38,14 +39,14 @@
 	    }
 
 	    .carousel-item {
-	        width: 100%;  /* Her bir öğenin genişliği %100 olacak */
-	        height: 100%; /* Her bir öğenin yüksekliği %100 olacak */
+	        width: 100%;
+	        height: 100%;
 	    }
 
 	    .carousel img {
-	        width: 100%;     /* Görselin genişliği %100 olacak */
-	        height: 100%;    /* Yüksekliği %100 olacak */
-	        object-fit: contain; /* Görselin tamamının görünmesini sağlıyoruz */
+	        width: 100%;
+	        height: 100%;
+	        object-fit: contain;
 	    }
 
 	    .product-details {
@@ -53,39 +54,74 @@
 	        padding: 20px;
 	        border-radius: 8px;
 	        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	        max-width: 300px;
+	        max-width: 500px; /* Genişliği büyütüldü */
 	        height: fit-content;
 	        display: flex;
 	        flex-direction: column;
 	        align-items: center;
 	    }
 
-	    .product-details h1, 
+	    .product-details h1 {
+	        margin-bottom: 15px;
+	        font-size: 24px;
+	        line-height: 1.2;
+	        display: -webkit-box;
+	        -webkit-line-clamp: 2; /* Maksimum 2 satır */
+	        -webkit-box-orient: vertical;
+	        overflow: hidden;
+	        text-overflow: ellipsis;
+	        max-height: calc(1.2em * 2); /* 2 satırın toplam yüksekliği */
+	    }
+
 	    .product-details p {
 	        margin-bottom: 15px;
 	    }
 
 	    .btn-group {
 	        display: flex;
-	        gap: 4%; /* Butonlar arasına boşluk ekliyoruz */
+	        gap: 4%; /* Butonlar arasına boşluk ekleniyor */
 	    }
 
 	    .btn-custom {
-	        background-color: #007bff;
-	        color: #fff;
 	        border-radius: 20px;
-	        transition: background-color 0.3s;
-	        width: 48%; /* Butonları %48 genişlikte yapıyoruz, böylece yan yana sığar */
+	        transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+	        width: 48%; /* Butonları %48 genişlikte yapılıyor */
 	        height: 50px;
 	        font-size: 16px;
 	        margin-bottom: 10px;
 	        padding: 10px;
+	        text-align: center;
 	    }
 
-	    .btn-custom:hover {
-	        background-color: #0056b3;
-	        color: #fff;
-	    }
+	    
+		.btn-custom:first-child {
+		    background-color: #fff; /* Arka plan rengi beyaz */
+		    color: fff; /* Yazı rengi mavi */
+		    border: 2px solid #FF9900; /* Border beyaz */
+		    border-radius: 20px;
+			width:230px;
+		    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+		}
+
+		.btn-custom:first-child:hover {
+		    background-color: #FF9900; /* Hover durumunda arka plan rengi sarı */
+		    color: #fff; /* Hover durumunda yazı rengi beyaz */
+		    border-color: #ffc107; /* Hover durumunda border rengi sarı */
+		}
+
+		
+		.btn-custom:last-child {
+		    background-color: #FF9900; /* Varsayılan arka plan rengi turuncu */
+		    color: #fff; /* Varsayılan yazı rengi beyaz */
+		    border: none; /* Hemen Satın Al butonunun border'ı yok */
+		    border-radius: 20px;
+			width:230px;
+		    transition: background-color 0.3s;
+		}
+
+		.btn-custom:last-child:hover {
+		    background-color: #FF9966; /* Hover durumunda daha koyu turuncu */
+		}
 
 	    .navbar {
 	        position: fixed;
@@ -96,32 +132,32 @@
 	    }
 
 	    #search_container {
-	      transform: translateX(-180px); /* X ekseninde sola kaydırma */
+	        transform: translateX(-180px); /* X ekseninde sola kaydırma */
 	    }
 
 	    .carousel-thumbnails {
 	        display: flex;
-	        justify-content: center;  /* Thumbnails'ı ortaya hizaladık */
+	        justify-content: center;
 	        gap: 10px;
 	        margin-top: 20px;
+			
 	    }
 
 	    .carousel-thumbnails img {
-	        width: 60px;  /* Thumbnail'ları daha da küçülttük */
-	        height: 60px; /* Thumbnail'ları daha da küçülttük */
+	        width: 50px;
+	        height: 50px;
 	        object-fit: cover;
 	        cursor: pointer;
 	        border: 2px solid transparent;
 	    }
 
 	    .carousel-thumbnails img.active {
-	        border: 2px solid #007bff;
+	        border: 2px solid #FF9900;
 	    }
 
-	    /* Slider ve detayları ortalayacak düzen */
 	    .carousel-container,
 	    .product-details {
-	        align-self: center; /* Ortalanacak şekilde ayarladık */
+	        align-self: center;
 	    }
 
 	    .thumbnails-container {
@@ -133,8 +169,8 @@
 
 	    .carousel-thumbnails {
 	        width: 100%;
-	        justify-content: center; /* Thumbnails'ı ortaya hizaladık */
-			margin-left: -350px;  /* Thumbnail'ları biraz daha sola kaydırdık */
+	        justify-content: center;
+	        margin-left: -580px;
 	    }
 
 	    .container {
@@ -143,6 +179,7 @@
 	        justify-content: center;
 	    }
 	</style>
+
 
 
 </head>
