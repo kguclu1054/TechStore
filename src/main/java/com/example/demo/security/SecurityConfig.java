@@ -49,22 +49,34 @@ public class SecurityConfig {
                 .formLogin(httpForm -> {
                     httpForm
                         .loginPage("/loginPage")
-                        .loginProcessingUrl("/perform_login")  // Login işlemi için URL
-                        .defaultSuccessUrl("/index", true)  // Login başarılı olduğunda yönlendirilecek sayfa
-                        .failureUrl("/loginPage?error") // Başarısız giriş URL'i .permitAll();
-                        .permitAll();         
+                        .loginProcessingUrl("/perform_login")
+                        .defaultSuccessUrl("/index", true)
+                        .failureUrl("/loginPage?error")
+                        .permitAll();
                 })
                 .logout(logoutForm -> {
                     logoutForm
                         .logoutUrl("/perform_logout")
-                        .deleteCookies("JSESSIONID"); // Logout işlemi için URL
+                        .logoutSuccessUrl("/loginPage?logout")
+                        .deleteCookies("JSESSIONID")
+                        .permitAll();
                 })
                 .authorizeHttpRequests(registry -> {
                     registry
-                        .requestMatchers("/req/signup", "/forget_password", "/css/**", "/js/**").permitAll();  
-                    registry
-                        .anyRequest().authenticated();  
+                        .requestMatchers("/req/signup", "/forget_password", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/api/**").permitAll()  // API endpoint'lerine izin ver
+                        .anyRequest().authenticated();
                 })
-                .build();  
+                .sessionManagement(sessionManagement -> {
+                    sessionManagement
+                        .maximumSessions(1)
+                        .maxSessionsPreventsLogin(true);
+                })
+                .rememberMe(rememberMe -> rememberMe
+                    .key("uniqueAndSecret")
+                    .tokenValiditySeconds(86400)
+                    .userDetailsService(userDetailsService()))  // userDetailsService burada ekleniyor
+                .build();
     }
 }
+

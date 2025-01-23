@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Ürün Detayları</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"/>
+	<style>
+	    body {
+	        background-color: #f0f0f0;
+	        display: flex;
+	        justify-content: center;
+	        align-items: center;
+	        height: 100vh;
+	        margin: 0;
+	        overflow: hidden;
+	        flex-direction: column;
+	    }
+
+	    .container {
+	        display: flex;
+	        justify-content: center;
+	        align-items: flex-start;
+	        gap: 40px;
+	        max-width: 100%;
+	        flex-direction: row;
+	        flex-wrap: wrap;
+	    }
+
+	    .carousel-container {
+	        width: 425px;  /* Genişliği arttırdık */
+	        height: 560px; /* Yüksekliği biraz daha arttırdım */
+	        overflow: hidden; /* Taşmayı engelliyoruz */
+	    }
+
+	    .carousel-inner {
+	        width: 100%;
+	        height: 100%;
+	    }
+
+	    .carousel-item {
+	        width: 100%;  /* Her bir öğenin genişliği %100 olacak */
+	        height: 100%; /* Her bir öğenin yüksekliği %100 olacak */
+	    }
+
+	    .carousel img {
+	        width: 100%;     /* Görselin genişliği %100 olacak */
+	        height: 100%;    /* Yüksekliği %100 olacak */
+	        object-fit: contain; /* Görselin tamamının görünmesini sağlıyoruz */
+	    }
+
+	    .product-details {
+	        background: #fff;
+	        padding: 20px;
+	        border-radius: 8px;
+	        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	        max-width: 300px;
+	        height: fit-content;
+	        display: flex;
+	        flex-direction: column;
+	        align-items: center;
+	    }
+
+	    .product-details h1, 
+	    .product-details p {
+	        margin-bottom: 15px;
+	    }
+
+	    .btn-group {
+	        display: flex;
+	        gap: 4%; /* Butonlar arasına boşluk ekliyoruz */
+	    }
+
+	    .btn-custom {
+	        background-color: #007bff;
+	        color: #fff;
+	        border-radius: 20px;
+	        transition: background-color 0.3s;
+	        width: 48%; /* Butonları %48 genişlikte yapıyoruz, böylece yan yana sığar */
+	        height: 50px;
+	        font-size: 16px;
+	        margin-bottom: 10px;
+	        padding: 10px;
+	    }
+
+	    .btn-custom:hover {
+	        background-color: #0056b3;
+	        color: #fff;
+	    }
+
+	    .navbar {
+	        position: fixed;
+	        top: 0;
+	        width: 100%;
+	        z-index: 1000;
+	        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	    }
+
+	    #search_container {
+	      transform: translateX(-180px); /* X ekseninde sola kaydırma */
+	    }
+
+	    .carousel-thumbnails {
+	        display: flex;
+	        justify-content: center;  /* Thumbnails'ı ortaya hizaladık */
+	        gap: 10px;
+	        margin-top: 20px;
+	    }
+
+	    .carousel-thumbnails img {
+	        width: 60px;  /* Thumbnail'ları daha da küçülttük */
+	        height: 60px; /* Thumbnail'ları daha da küçülttük */
+	        object-fit: cover;
+	        cursor: pointer;
+	        border: 2px solid transparent;
+	    }
+
+	    .carousel-thumbnails img.active {
+	        border: 2px solid #007bff;
+	    }
+
+	    /* Slider ve detayları ortalayacak düzen */
+	    .carousel-container,
+	    .product-details {
+	        align-self: center; /* Ortalanacak şekilde ayarladık */
+	    }
+
+	    .thumbnails-container {
+	        width: 100%;
+	        display: flex;
+	        flex-direction: column;
+	        align-items: center;
+	    }
+
+	    .carousel-thumbnails {
+	        width: 100%;
+	        justify-content: center; /* Thumbnails'ı ortaya hizaladık */
+			margin-left: -350px;  /* Thumbnail'ları biraz daha sola kaydırdık */
+	    }
+
+	    .container {
+	        align-items: center;
+	        gap: 40px;
+	        justify-content: center;
+	    }
+	</style>
+
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="font-size: 1.2rem; padding: 15px 0;">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">TechStore</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="index.html">Ana Sayfa</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Hakkında</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">İletişim</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="checkout.html">Sepetim</a>
+            </li>
+          </ul>
+          <form class="d-flex mx-auto" id="search_container">
+            <div class="input-group">
+              <input class="form-control form-control-lg" type="search" placeholder="Ürün, kategori ve marka ara" aria-label="Search">
+              <span class="input-group-text bg-light search-icon-container">
+                <i class="bi bi-search search_icon"></i>
+              </span>
+            </div>
+          </form>
+          <a class="btn btn-outline-danger ms-auto" href="#" onclick="document.getElementById('logoutForm').submit();">Çıkış Yap</a>
+          <form id="logoutForm" action="/perform_logout" method="post" style="display: none;">
+            <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+        <div class="carousel-container">
+            <div id="carouselExampleControls" class="carousel slide">
+                <div class="carousel-inner">
+                    <div th:each="image, iterStat : ${product.productImages}" th:classappend="${iterStat.index == 0} ? 'active' : ''" class="carousel-item">
+                        <img th:src="@{${image.imageUrl}}" class="d-block w-100" alt="Ürün Görseli">
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Önceki</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Sonraki</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="product-details">
+            <h1><span th:text="${product.name}"></span></h1>
+            <p><strong>Fiyat:</strong> <span th:text="${product.price}"></span></p>
+          <!--  <p><strong>Açıklama:</strong> <span th:text="${product.description}"></span></p> -->
+            
+            <div class="btn-group">
+                <button class="btn btn-custom">Sepete Ekle</button>
+                <button class="btn btn-custom">Hemen Satın Al</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="thumbnails-container">
+        <div class="carousel-thumbnails">
+            <div th:each="image, iterStat : ${product.productImages}">
+                <img th:src="@{${image.imageUrl}}" th:classappend="${iterStat.index == 0} ? 'active' : ''" 
+                    class="thumbnail" onclick="selectThumbnail(${iterStat.index})" alt="Thumbnail">
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Tam jQuery sürümü -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script> <!-- Bootstrap'ın doğru JavaScript dosyası -->
+	<script>
+		$(document).ready(function() {
+		    // Thumbnail'a tıklanıldığında
+		    $(".carousel-thumbnails img").click(function() {
+		        var index = $(".carousel-thumbnails img").index(this); // Tıklanan thumbnail'ın index'ini al
+
+		        // Carousel içeriğini güncelle
+		        $(".carousel-inner .carousel-item").removeClass("active");
+		        $(".carousel-inner .carousel-item").eq(index).addClass("active");
+
+		        // Thumbnail'ları güncelle
+		        $(".carousel-thumbnails img").removeClass("active"); // Tüm thumbnail'ların aktifliğini kaldır
+		        $(this).addClass("active"); // Tıklanan thumbnail'ı aktif yap
+		    });
+			
+			$('#carouselExampleControls').carousel({
+			  interval: false
+			});
+
+
+		    // Prev ve Next butonlarına tıklanıldığında
+		    $('#carouselExampleControls').on('slid.bs.carousel', function() {
+		        var activeIndex = $(".carousel-inner .carousel-item.active").index(); // Aktif carousel öğesinin index'ini al
+
+		        // Thumbnail'ları güncelle
+		        $(".carousel-thumbnails img").removeClass("active"); // Tüm thumbnail'ların aktifliğini kaldır
+		        $(".carousel-thumbnails img").eq(activeIndex).addClass("active"); // Yeni aktif thumbnail'ı ekle
+		    });
+		});
+
+	</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -134,76 +134,112 @@ setInterval(() => {
 
 
 
-window.addEventListener('load', () => {
-    const carouselItems = document.querySelectorAll('.carousel-item');
+function saveToLocalStorage(products) {
+    products.forEach((product) => {
+        // Ürünlerin adını kontrol ederek benzersiz olup olmadığını kontrol edin
+        if (!localStorage.getItem(product.name)) {
+            localStorage.setItem(product.name, JSON.stringify(product));
+        }
+    });
+}
+
+function extractProducts() {
     const products = [];
+    const productElements = document.querySelectorAll('.carousel-item');
+    
+    productElements.forEach((element) => {
+        const name = element.querySelector('.card-description').textContent.trim();
+        const price = parseFloat(element.querySelector('.price').textContent.trim().replace('₺', '').replace('.', '').replace(',', '.'));
+        const description = element.querySelector('.card-description').textContent.trim();
+        const imageUrl = element.querySelector('img').src;
+        const category = "Laptop";  // Kategoriyi dinamik olarak değiştirebilirsiniz
 
-    carouselItems.forEach(item => {
-        const nameElement = item.querySelector('.card-description');
-        const priceElement = item.querySelector('.price');
-        const imageElement = item.querySelector('img');
+        const product = {
+            name,
+            price,
+            description,
+            imageUrl,
+            category
+        };
 
-        if (nameElement && priceElement && imageElement) {
-            const name = nameElement.innerText;
-            const price = priceElement.innerText;
-            const imageUrl = imageElement.src;
-
-            const product = {
-                name: name,
-                description: "Açıklama burada yer alacak",
-                price: parseFloat(price.replace('₺', '').replace('.', '').replace(',', '.')),
-                imageUrl: imageUrl
-            };
-
+        // Aynı isimde ürün olup olmadığını kontrol et
+        if (!localStorage.getItem(name)) {
             products.push(product);
         }
     });
 
-    // Verilerin gönderilip gönderilmediğini kontrol et
-    if (!localStorage.getItem('productsSent')) {
-        fetch('/api/encoksatilanlar', {
+    saveToLocalStorage(products); // Ürünleri yerel depoya kaydet
+
+    return products;
+}
+
+function sendProducts() {
+    const products = extractProducts();
+
+    if (products.length > 0) {
+        fetch('/api/products', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(products)
+            body: JSON.stringify(products),
         })
         .then(response => response.json())
         .then(data => {
-            console.log('Veriler başarıyla gönderildi:', data);
-            localStorage.setItem('productsSent', 'true'); // Gönderildiği işaretle
-
-            // Başarılı bir şekilde veri gönderildikten sonra DOM'u güncelle
-            products.forEach(product => {
-                const newCard = document.createElement('div');
-                newCard.classList.add('carousel-item');
-                newCard.innerHTML = `
-                    <div class="col-md-2">
-                        <div class="card">
-                            <div class="card-img">
-                                <img src="${product.imageUrl}" class="img-fluid" alt="${product.name}">
-                                <div class="card-description">${product.name}</div>
-                                <p class="price">₺${product.price.toFixed(2)}</p>
-                                <div class="tooltip-box">Sepete ekle</div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                console.log('Yeni kart eklendi:', newCard); // Eklemeden önce kartı logla
-                document.querySelector('.carousel-inner').appendChild(newCard);
-            });
+            console.log('Başarıyla gönderildi:', data);
         })
-        .catch(error => {
+        .catch((error) => {
             console.error('Hata:', error);
-            alert('Veri gönderimi sırasında bir hata oluştu. Lütfen tekrar deneyin.');
         });
     } else {
-        console.log('Veriler zaten gönderildi.');
+        console.log('Gönderilecek yeni ürün yok.');
     }
-});
+}
+
+// Sayfa yüklendiğinde `sendProducts` fonksiyonunu çağır
+window.onload = sendProducts;
 
 
 
- function redirectToProductPage() { 
-	window.location.href = '/apple16_siyah_128';
-} 
+
+
+
+function redirectToProductPage(productId) {
+    window.location.href = `/products/${productId}`;
+}
+
+// Sayfa yüklendiğinde fonksiyonu çağır
+window.onload = function() {
+    const productId = new URLSearchParams(window.location.search).get('id');
+    if (productId) {
+        fetchProductDetails(productId);
+    }
+};
+
+function fetchProductDetails(productId) {
+    fetch(`/api/products/${productId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data) {
+                document.getElementById('productName').innerText = data.name;
+                document.getElementById('productImage').src = data.imageUrl;
+                document.getElementById('productDescription').innerText = data.description;
+                document.getElementById('productPrice').innerText = 'Fiyat: ₺' + data.price;
+            } else {
+                console.error('Ürün bulunamadı');
+            }
+        })
+        .catch(error => console.error('Hata:', error));
+}
+
+
+function redirectToProductPage(productId) {
+    window.location.href = `/products/${productId}`;
+}
+
+
+
+
+
+
+
