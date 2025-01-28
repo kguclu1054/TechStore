@@ -2,6 +2,8 @@ package com.example.demo.entity;
 
 import java.util.List;
 
+import org.springframework.format.annotation.NumberFormat;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,7 +20,10 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    
+    @NumberFormat(pattern = "#,###.00")
     private Double price;
+    
     private String description;
     private String imageUrl;
     private String category;

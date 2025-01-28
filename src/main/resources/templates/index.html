@@ -696,23 +696,44 @@
 	    });
 	}
 
+	
+	
+
+
 	function searchProducts(event) {
 	    event.preventDefault(); // Formun normal gönderimini engeller
 	    var query = document.getElementById('search').value;
-	    fetch(`/search?query=${query}`)
+	    var currentUrl = window.location.href;
+
+	    fetch(`/search?query=${encodeURIComponent(query)}`)
 	        .then(response => {
-	            if (response.redirected) {
-	                window.location.href = response.url; // Yönlendirilmişse, yeni URL'ye gidin
-	            } else {
+	            if (response.ok) {
+	                history.pushState({prevUrl: currentUrl}, null, `/search?query=${encodeURIComponent(query)}`); // Yönlendirme URL'sini tarayıcı tarihçesine ekleyin
 	                return response.text().then(html => {
 	                    document.open();
 	                    document.write(html);
 	                    document.close();
 	                });
+	            } else {
+	                console.error('Arama sonucu alınamadı:', response.statusText);
 	            }
 	        })
 	        .catch(error => console.error('Hata:', error));
 	}
+
+	// Geri tuşuna basıldığında çalışacak fonksiyon
+	window.onpopstate = function(event) {
+	    window.location.href = "/index"; // Geri tuşuna basıldığında ana sayfaya yönlendir
+	};
+
+	// Sayfa yenilendiğinde çalışacak fonksiyon
+	window.onload = function() {
+	    if (window.location.pathname.startsWith('/search-result')) {
+	        window.location.href = "/index"; // Sayfa yenilendiğinde ana sayfaya yönlendir
+	    }
+	};
+
+
 
  </script>
 

@@ -295,6 +295,13 @@ button:hover {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
+  
+  .index-image-container img {
+      width: 100%;
+      height: auto;
+      object-fit: contain; /* Gerektiğinde bu ayarı kullanabilirsiniz */
+  }
+
 
 
 

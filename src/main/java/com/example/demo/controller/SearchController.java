@@ -20,11 +20,7 @@ public class SearchController {
     public String search(@RequestParam(name = "query") String query, Model model) {
         List<Product> products = productService.searchProducts(query);
         model.addAttribute("products", products);
-
-        // Toplam fiyatı hesaplayın ve loglayın
-        double totalPrice = products.stream().mapToDouble(Product::getPrice).sum();
-        System.out.println("Toplam Fiyat: " + totalPrice); // Loglama
-        model.addAttribute("totalPrice", totalPrice);
+        
 
         return "search-results"; // Bu, `search-results.html` şablonuna yönlendirecek
     }
