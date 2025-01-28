@@ -132,77 +132,128 @@ setInterval(() => {
 
 
 
-
-
+// LocalStorage'a ürünleri kaydet
 function saveToLocalStorage(products) {
     products.forEach((product) => {
-        // Ürünlerin adını kontrol ederek benzersiz olup olmadığını kontrol edin
+        // Eğer ürün zaten localStorage'da varsa, ekleme
         if (!localStorage.getItem(product.name)) {
             localStorage.setItem(product.name, JSON.stringify(product));
         }
     });
 }
 
+// Carousel'den ürünleri çıkar ve ürün listesi oluştur
 function extractProducts() {
     const products = [];
     const productElements = document.querySelectorAll('.carousel-item');
-    
+
+    console.log('Ürün Elemanları:', productElements); // Kontrol etmek için log
+
     productElements.forEach((element) => {
         const name = element.querySelector('.card-description').textContent.trim();
-        const price = parseFloat(element.querySelector('.price').textContent.trim().replace('₺', '').replace('.', '').replace(',', '.'));
-        const description = element.querySelector('.card-description').textContent.trim();
-        const imageUrl = element.querySelector('img').src;
-        const category = "Laptop";  // Kategoriyi dinamik olarak değiştirebilirsiniz
-
-        const product = {
-            name,
-            price,
-            description,
-            imageUrl,
-            category
-        };
-
-        // Aynı isimde ürün olup olmadığını kontrol et
-        if (!localStorage.getItem(name)) {
-            products.push(product);
+        
+        // Aynı isme sahip ürünü kontrol et
+        if (localStorage.getItem(name)) {
+            return; // Eğer bu ürün daha önce eklenmişse, bu ürünü geç
         }
+
+        const price = parseFloat(
+            element.querySelector('.price').textContent.trim().replace('₺', '').replace('.', '').replace(',', '.')
+        );
+        const description = name;
+        const imageUrl = element.querySelector('img').src;
+        const category = "Laptop"; // Statik kategori, gerektiğinde değiştirin
+
+        const product = { name, price, description, imageUrl, category };
+        products.push(product); // Ürünü listeye ekle
     });
 
-    saveToLocalStorage(products); // Ürünleri yerel depoya kaydet
+    console.log('Extracted Products:', products); // Ürünlerin doğru çıkarıldığını kontrol et
 
+    saveToLocalStorage(products); // Ürünleri LocalStorage'a kaydet
     return products;
 }
 
+// Ürünleri backend'e gönder
 function sendProducts() {
-    const products = extractProducts();
+    const products = extractProducts(); // Ürünleri çıkar
 
     if (products.length > 0) {
-        fetch('/api/products', {
+        console.log('Gönderilecek Ürünler:', products); // Gönderilecek ürünleri kontrol et
+
+        fetch('/products/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(products),
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Başarıyla gönderildi:', data);
-        })
-        .catch((error) => {
-            console.error('Hata:', error);
-        });
+            .then((response) => {
+                console.log('Sunucu Cevabı:', response); // Sunucudan gelen cevabı kontrol et
+                if (response.ok) {
+                    return response.text(); // Başarı mesajını döndür
+                } else {
+                    throw new Error("Ürün eklenirken bir hata oluştu.");
+                }
+            })
+            .then((message) => {
+                console.log('Başarı:', message); // Başarı mesajını logla
+                alert('Ürünler başarıyla eklendi!'); // Kullanıcıya başarı mesajı göster
+            })
+            .catch((error) => {
+                console.error('Hata:', error.message); // Hata mesajını logla
+                alert('Ürünler eklenirken bir hata oluştu!'); // Kullanıcıya hata mesajı göster
+            });
     } else {
-        console.log('Gönderilecek yeni ürün yok.');
+        console.log('Yeni ürün bulunamadı!'); // Yeni ürün bulunmazsa konsola yaz
+        
     }
 }
 
-// Sayfa yüklendiğinde `sendProducts` fonksiyonunu çağır
-window.onload = sendProducts;
+// Sayfa yüklendikten sonra ürünleri gönder
+document.addEventListener('DOMContentLoaded', function() {
+    sendProducts(); // Sayfa yüklendikten sonra sendProducts çalıştırılır
+});
 
 
 
 
 
+
+
+
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('click', (e) => {
+      if (!e.target.closest('.tooltip-box')) {
+        const productId = card.getAttribute('data-id');
+        window.location.href = `http://localhost:8080/products/${productId}`;
+      }
+    });
+  });
+
+  document.querySelectorAll('.tooltip-box').forEach(tooltip => {
+    tooltip.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const productId = tooltip.closest('.card').getAttribute('data-id');
+      const productDescription = tooltip.closest('.card').querySelector('.card-description').innerText;
+      const productPrice = tooltip.closest('.card').querySelector('.price').innerText;
+      const productImageUrl = tooltip.closest('.card').querySelector('.card-img img').src; // Ürün resim URL'sini alıyoruz
+      addToCart(productId, productDescription, productPrice, productImageUrl);
+    });
+  });
+});
+
+function addToCart(productId, productDescription, productPrice, productImageUrl) {
+    console.log("Adding to cart product id: " + productId);
+
+    // Ürünü local storage'a ekleyin
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push({ id: productId, description: productDescription, price: productPrice, imageUrl: productImageUrl });
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    alert('Ürün sepete eklendi!');
+}
 
 function redirectToProductPage(productId) {
     window.location.href = `/products/${productId}`;
@@ -231,15 +282,4 @@ function fetchProductDetails(productId) {
         })
         .catch(error => console.error('Hata:', error));
 }
-
-
-function redirectToProductPage(productId) {
-    window.location.href = `/products/${productId}`;
-}
-
-
-
-
-
-
 

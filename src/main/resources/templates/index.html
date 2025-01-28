@@ -39,18 +39,18 @@
 	          <a class="nav-link" href="#">İletişim</a>
 	        </li>
 	        <li class="nav-item">
-	          <a class="nav-link" href="checkout.html">Sepetim</a>
+	          <a class="nav-link" href="/checkout">Sepetim</a>
 	        </li>
 	      </ul>
 		  <form class="d-flex me-auto" id="search_container" onsubmit="searchProducts(event)">
-		    <div class="input-group">
-		      <input class="form-control form-control-lg" type="search" placeholder="Ürün, kategori ve marka ara" aria-label="Search" id="search" oninput="autocompleteSearch(this.value)">
-		      <button class="btn btn-outline-secondary" type="submit">
-		        <i class="bi bi-search search_icon"></i>
-		      </button>
-		      <div id="autocomplete-results" class="autocomplete-results"></div>
-		    </div>
-		  </form>
+		  	    <div class="input-group">
+		  	      <input class="form-control form-control-lg" type="search" placeholder="Ürün, kategori ve marka ara" aria-label="Search" id="search" oninput="autocompleteSearch(this.value)">
+		  	      <button class="btn btn-outline-secondary" type="submit">
+		  	        <i class="bi bi-search search_icon"></i>
+		  	      </button>
+		  	      <div id="autocomplete-results" class="autocomplete-results"></div>
+		  	    </div>
+		  	  </form>
 		  <a class="btn btn-outline-danger ms-auto" href="#" onclick="document.getElementById('logoutForm').submit();">Çıkış Yap</a>
 		  <form id="logoutForm" action="/perform_logout" method="post" style="display: none;">
 		      <input type="hidden" name="_csrf" value="${_csrf.token}"/>
@@ -105,7 +105,7 @@
 	                     src="https://productimages.hepsiburada.net/s/777/424-600/110000767460737.jpg/format:webp"
 	                     class="img-fluid"
 	                   />
-	                   <div class="card-description">iPhone 16 128GB Siyah</div>
+	                   <div class="card-description">Apple iPhone 16 128GB Siyah</div>
 					   <p class="price">59.999</p>
 	                   <div class="tooltip-box">Sepete ekle</div>
 	                 </div>
@@ -148,7 +148,7 @@
 	           </div>
 	           <div class="carousel-item">
 	             <div class="col-md-2">
-	               <div class="card" data-id="4" onclick="redirectToProductPage(4)">z
+	               <div class="card" data-id="4" onclick="redirectToProductPage(4)">
 	                 <div class="card-img">
 	                   <img
 	                     src="https://productimages.hepsiburada.net/s/462/424-600/110000499323454.jpg/format:webp"
@@ -308,7 +308,7 @@
                   src="https://productimages.hepsiburada.net/s/777/424-600/110000767394997.jpg/format:webp"
                   class="img-fluid"
                 />
-                <div class="card-description">iPhone 16 128GB Siyah</div>
+                <div class="card-description">Apple iPhone 16 128GB Deniz Mavisi</div>
 				<p class="price">59.999</p>
                 <div class="tooltip-box">Sepete ekle</div>
               </div>
@@ -636,63 +636,87 @@
  <script>
 	function autocompleteSearch(query) {
 	    var resultsContainer = document.getElementById('autocomplete-results');
-	    if (query.length < 3) { // En az 3 karakter yazıldığında arama başlat
-	      resultsContainer.innerHTML = '';
-	      resultsContainer.classList.remove('show'); // Sonuçları gizle
-	      return;
+	    if (query.length < 3) {
+	        resultsContainer.innerHTML = '';
+	        resultsContainer.classList.remove('show');
+	        return;
 	    }
 	    fetch(`/search?query=${query}`)
-	      .then(response => response.json())
-	      .then(data => displayAutocompleteResults(data))
-	      .catch(error => console.error('Hata:', error));
-	  }
+	        .then(response => response.json())
+	        .then(data => displayAutocompleteResults(data))
+	        .catch(error => console.error('Hata:', error));
+	}
 
-	  function displayAutocompleteResults(data) {
+	function displayAutocompleteResults(data) {
 	    var resultsContainer = document.getElementById('autocomplete-results');
 	    resultsContainer.innerHTML = ''; // Önceki sonuçları temizler
 	    if (data.length > 0) {
-	      resultsContainer.classList.add('show'); // Sonuçlar varsa göster
+	        resultsContainer.classList.add('show'); // Sonuçlar varsa göster
 	    } else {
-	      resultsContainer.classList.remove('show'); // Sonuç yoksa gizle
+	        resultsContainer.classList.remove('show'); // Sonuç yoksa gizle
 	    }
+
 	    data.forEach(product => {
-	      var resultDiv = document.createElement('div');
-	      resultDiv.classList.add('autocomplete-result');
-	      resultDiv.onclick = function() {
-	        window.location.href = `/products/${product.id}`;
-	      };
+	        var resultDiv = document.createElement('div');
+	        resultDiv.classList.add('card');
+	        resultDiv.style.width = '18rem';
+	        
+	        var productImg = document.createElement('img');
+	        productImg.src = product.imageUrl;
+	        productImg.classList.add('card-img-top');
+	        productImg.alt = product.name;
+	        resultDiv.appendChild(productImg);
+	        
+	        var cardBody = document.createElement('div');
+	        cardBody.classList.add('card-body');
+	        
+	        var productName = document.createElement('h5');
+	        productName.classList.add('card-title');
+	        productName.textContent = product.name;
+	        cardBody.appendChild(productName);
 
-	      var productImg = document.createElement('img');
-	      productImg.src = product.imageUrl;
-	      productImg.alt = product.name;
-	      resultDiv.appendChild(productImg);
-
-	      var productName = document.createElement('span');
-	      productName.textContent = product.name;
-	      resultDiv.appendChild(productName);
-
-	      resultsContainer.appendChild(resultDiv);
+	        var productDescription = document.createElement('p');
+	        productDescription.classList.add('card-text');
+	        productDescription.textContent = product.description;
+	        cardBody.appendChild(productDescription);
+	        
+	        var productPrice = document.createElement('p');
+	        productPrice.classList.add('card-text');
+	        productPrice.textContent = '₺' + product.price;
+	        cardBody.appendChild(productPrice);
+	        
+	        var viewProductBtn = document.createElement('a');
+	        viewProductBtn.href = `/products/${product.id}`;
+	        viewProductBtn.classList.add('btn', 'btn-primary');
+	        viewProductBtn.textContent = 'Ürünü Gör';
+	        cardBody.appendChild(viewProductBtn);
+	        
+	        resultDiv.appendChild(cardBody);
+	        resultsContainer.appendChild(resultDiv);
 	    });
-	  }
+	}
 
-	  function searchProducts(event) {
+	function searchProducts(event) {
 	    event.preventDefault(); // Formun normal gönderimini engeller
 	    var query = document.getElementById('search').value;
 	    fetch(`/search?query=${query}`)
-	      .then(response => {
-	        if (response.redirected) {
-	          window.location.href = response.url; // Yönlendirilmişse, yeni URL'ye gidin
-	        } else {
-	          return response.text().then(html => {
-	            document.open();
-	            document.write(html);
-	            document.close();
-	          });
-	        }
-	      })
-	      .catch(error => console.error('Hata:', error));
-	  }
+	        .then(response => {
+	            if (response.redirected) {
+	                window.location.href = response.url; // Yönlendirilmişse, yeni URL'ye gidin
+	            } else {
+	                return response.text().then(html => {
+	                    document.open();
+	                    document.write(html);
+	                    document.close();
+	                });
+	            }
+	        })
+	        .catch(error => console.error('Hata:', error));
+	}
+
  </script>
+
+
 
 
 </body>

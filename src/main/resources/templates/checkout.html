@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sepetiniz</title>
+    <style>
+        .card { border: 1px solid #ddd; padding: 10px; margin: 10px; width: 700px; }
+        .card-img-top { width: 200px; height: 200px; }
+        .btn { padding: 10px; background-color: #f00; color: #fff; cursor: pointer; border: none; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>Sepetiniz</h1>
+    <div id="cart-container"></div>
+    <h3>Toplam Fiyat: <span id="total-price"></span> TL</h3>
+    <button class="btn" onclick="clearCart()">Tümünü Sil</button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const cartContainer = document.getElementById('cart-container');
+            const totalPriceElement = document.getElementById('total-price');
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let totalPrice = 0;
+
+            cart.forEach(item => {
+                const productCard = document.createElement('div');
+                productCard.className = 'card';
+                productCard.innerHTML = `
+                    <img src="${item.imageUrl}" class="card-img-top" alt="${item.description}">
+                    <div class="card-description">${item.description}</div>
+                    <p class="price">${item.price} TL</p>
+                `;
+                cartContainer.appendChild(productCard);
+
+                // Fiyatı doğru şekilde parse etmek için virgülü noktaya çevir ve ardından topla
+                const price = parseFloat(item.price.replace('.', '').replace(',', '.'));
+                totalPrice += price;
+            });
+
+            totalPriceElement.textContent = totalPrice.toFixed(2).replace('.', ','); // Nokta yerine virgül kullanarak göster
+        });
+
+        function clearCart() {
+            localStorage.removeItem('cart');  // Local storage'dan ürünleri sil
+            const cartContainer = document.getElementById('cart-container');
+            const totalPriceElement = document.getElementById('total-price');
+            cartContainer.innerHTML = '';     // Sayfadan ürünleri sil
+            totalPriceElement.textContent = '0,00'; // Toplam fiyatı sıfırla
+            alert('Sepetiniz boşaltıldı!');
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
