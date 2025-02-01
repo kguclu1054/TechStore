@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İletişim Sayfası</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            max-width: 90%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333333;
+            margin-bottom: 20px;
+        }
+
+        form label {
+            display: block;
+            margin-top: 15px;
+            color: #333333;
+        }
+
+        form input, form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 16px;
+        }
+
+        form textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        form button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #ffffff;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        form button:hover {
+            background-color: #0056b3;
+        }
+
+        .input-icon {
+            position: relative;
+        }
+
+        .input-icon input {
+            padding-left: 40px;
+        }
+
+        .input-icon i {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            color: #888888;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bizimle İletişime Geçin</h1>
+        <form id="contactForm" action="/api/contact/send" method="post">
+            <div class="input-icon">
+                <label for="name">Adınız:</label>
+                <i class="fas fa-user"></i>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="input-icon">
+                <label for="surname">Soyadınız:</label>
+                <i class="fas fa-user-tag"></i>
+                <input type="text" id="surname" name="surname" required>
+            </div>
+
+            <div class="input-icon">
+                <label for="email">E-posta Adresiniz:</label>
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <label for="message">Mesajınız:</label>
+            <textarea id="message" name="message" required></textarea>
+
+            <button type="submit">Gönder</button>
+        </form>
+    </div>
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>
+
+
