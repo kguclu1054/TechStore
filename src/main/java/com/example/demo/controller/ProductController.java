@@ -39,6 +39,14 @@ public class ProductController {
         }
         
     } 
+    
+    @GetMapping("/filter")
+    public String filterProducts(@RequestParam String category, Model model) {
+        List<Product> products = productService.findProductsByCategory(category);
+        model.addAttribute("products", products);
+        return "search-results"; // search-results.html şablonuna yönlendir
+    }
+
 }
 
 

@@ -10,6 +10,7 @@ import com.example.demo.entity.Product;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 	
 	Optional<Product> findById(Long id);
-	List<Product> findByNameContainingIgnoreCase(String query); 
+	List<Product> findByNameContainingIgnoreCase(String query);
+	List<Product> findByCategoryIgnoreCase(String category); 
 }
 

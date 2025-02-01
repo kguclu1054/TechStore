@@ -38,6 +38,10 @@ public class ProductService {
     public List<Product> searchProducts(String query) {
         return productRepository.findByNameContainingIgnoreCase(query);
     }
+
+	public List<Product> findProductsByCategory(String category) {
+	       return productRepository.findByCategoryIgnoreCase(category);
+	}
 }
 
 

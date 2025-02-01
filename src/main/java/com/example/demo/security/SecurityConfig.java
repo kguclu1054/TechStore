@@ -64,7 +64,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(registry -> {
                     registry
                         .requestMatchers("/req/signup", "/forget_password", "/css/**", "/js/**").permitAll()
-                        .requestMatchers("/search", "/search-result").permitAll() // Bu endpoint'lere erişime izin ver
+                        .requestMatchers("/search", "/search-results").permitAll() // Bu endpoint'lere erişime izin ver
                         .requestMatchers("/api/**").permitAll()  // API endpoint'lerine izin ver
                         .anyRequest().authenticated();
                 })
@@ -80,5 +80,3 @@ public class SecurityConfig {
                 .build();
     }
 }
-
-
