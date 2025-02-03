@@ -14,11 +14,11 @@ public class ContactController {
 
     @PostMapping("/send")
     public String sendContactMail(@RequestParam String name, @RequestParam String surname, @RequestParam String email, @RequestParam String message) {
-        String subject = "Yeni İletişim Mesajı";
+        String subject = "Tech Store İletişim Mesajı";
         String text = "Ad: " + name + "\nSoyad: " + surname + "\nE-posta: " + email + "\nMesaj: " + message;
 
         emailService.sendEmail("kguclu1054@gmail.com", subject, text);
-        return "Mesaj gönderildi!";
+        return "Mesaj gönderildi Teşekkürler!";
     }
 }
 

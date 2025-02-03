@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Ürün Ekle</title>
+</head>
+<body>
+    <h2>Ürün Ekle</h2>
+
+    <!-- Başarı ve Hata mesajlarını göstermek için -->
+    <div th:if="${successMessage}">
+        <p style="color: green;">${successMessage}</p>
+    </div>
+    <div th:if="${errorMessage}">
+        <p style="color: red;">${errorMessage}</p>
+    </div>
+
+    <form action="/products/admin/add" method="post">
+        <label for="name">Ürün Adı:</label>
+        <input type="text" name="name" id="name" required /><br>
+
+        <label for="price">Fiyat:</label>
+        <input type="number" name="price" id="price" step="0.01" required /><br>
+
+        <label for="description">Açıklama:</label>
+        <textarea name="description" id="description" required></textarea><br>
+
+        <label for="category">Kategori:</label>
+        <input type="text" name="category" id="category" required /><br>
+
+        <label for="imageUrl">Ürün Görseli URL:</label>
+        <input type="text" name="imageUrl" id="imageUrl" required /><br>
+
+        <label for="isSlider">Slider'da Göster</label>
+        <input type="checkbox" name="isSlider" id="isSlider" /><br>
+
+        <button type="submit">Ürünü Ekle</button>
+    </form>
+
+</body>
+</html>

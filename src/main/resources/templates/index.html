@@ -76,7 +76,7 @@
 		       <form class="d-flex me-auto" id="search_container" onsubmit="searchProducts(event)">
 		         <div class="input-group">
 		           <input class="form-control form-control-lg" type="search" placeholder="Ürün, kategori ve marka ara" aria-label="Search" id="search" oninput="autocompleteSearch(this.value)">
-		           <button class="btn btn-outline-secondary" type="submit">
+		           <button class="btn btn-outline-secondary" type="submit" style= "margin-top:8px; height:45px; ">
 		             <i class="bi bi-search search_icon"></i>
 		           </button>
 		           <div id="autocomplete-results" class="autocomplete-results"></div>
@@ -815,7 +815,7 @@
 	    // Alert mesajını 3 saniye sonra gizlemek (isteğe bağlı)
 	    setTimeout(function() {
 	        alertBox.style.display = 'none';
-	    }, 3000);
+	    }, 1000);
 	}
 
 

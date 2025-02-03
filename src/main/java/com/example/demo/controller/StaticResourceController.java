@@ -8,7 +8,7 @@ public class StaticResourceController {
 
     @GetMapping("/contact")
     public String getContactPage() {
-        return "contact"; // contact.html dosyasına yönlendirir
+        return "contact"; 
     }
 }
 

@@ -302,6 +302,11 @@ button:hover {
       object-fit: contain; /* Gerektiğinde bu ayarı kullanabilirsiniz */
   }
   
+  .search_icon{
+	font-size:18px;
+	
+  }
+  
   
   
   
