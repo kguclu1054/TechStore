@@ -40,45 +40,54 @@
     <div id="alert" class="custom-alert">Sepetiniz boşaltıldı!</div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const cartContainer = document.getElementById('cart-container');
-            const totalPriceElement = document.getElementById('total-price');
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let totalPrice = 0;
 
-            cart.forEach(item => {
-                const productCard = document.createElement('div');
-                productCard.className = 'card';
-                productCard.innerHTML = `
-                    <img src="${item.imageUrl}" class="card-img-top" alt="${item.description}">
-                    <div class="card-description">${item.description}</div>
-                    <p class="price">${item.price} TL</p>
-                `;
-                cartContainer.appendChild(productCard);
+		document.addEventListener('DOMContentLoaded', (event) => {
+		    const cartContainer = document.getElementById('cart-container');
+		    const totalPriceElement = document.getElementById('total-price');
+		    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+		    let totalPrice = 0;
 
-                const price = parseFloat(item.price.replace('.', '').replace(',', '.'));
-                totalPrice += price;
-            });
+		    cart.forEach(item => {
+		        const productCard = document.createElement('div');
+		        productCard.className = 'card';
+		        productCard.innerHTML = `
+		            <img src="${item.imageUrl}" class="card-img-top" alt="${item.description}">
+		            <div class="card-description">${item.description}</div>
+		            <p class="price">${item.price} TL</p>
+		        `;
+		        cartContainer.appendChild(productCard);
 
-            totalPriceElement.textContent = totalPrice.toFixed(2).replace('.', ',');
-        });
+		        // Fiyatı düzgün bir şekilde işlemek
+		        const price = parseFloat(item.price.replace(',', ''));
+		        totalPrice += price;
+		    });
 
-        function clearCart() {
-            localStorage.removeItem('cart');
-            const cartContainer = document.getElementById('cart-container');
-            const totalPriceElement = document.getElementById('total-price');
-            cartContainer.innerHTML = '';
-            totalPriceElement.textContent = '0,00';
+		    // Toplam fiyatı formatlamak
+		    let formattedTotalPrice = totalPrice.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+		    formattedTotalPrice = formattedTotalPrice.replace('.', ','); 
+		    totalPriceElement.textContent = `${formattedTotalPrice} TL`;
+		});
 
-            // Özel alerti göster
-            const alertBox = document.getElementById('alert');
-            alertBox.style.display = 'block';
+		function clearCart() {
+		    localStorage.removeItem('cart');
+		    const cartContainer = document.getElementById('cart-container');
+		    const totalPriceElement = document.getElementById('total-price');
+		    cartContainer.innerHTML = '';
+		    totalPriceElement.textContent = '0,00 TL';
 
-            // 3 saniye sonra alerti gizle
-            setTimeout(() => {
-                alertBox.style.display = 'none';
-            }, 3000);
-        }
+		    // Özel alerti göster
+		    const alertBox = document.getElementById('alert');
+		    alertBox.style.display = 'block';
+
+		    // 3 saniye sonra alerti gizle
+		    setTimeout(() => {
+		        alertBox.style.display = 'none';
+		    }, 3000);
+		}
+
+
+
+		
     </script>
 </body>
 </html>

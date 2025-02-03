@@ -5,228 +5,305 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"/>
 	<style>
-	    body {
-	        background-color: #f0f0f0;
-	        display: flex;
-	        justify-content: center;
-	        align-items: center;
-	        height: 100vh;
-	        margin: 0;
-	        overflow: hidden;
-	        flex-direction: column;
-	    }
+		body {
+		    background-color: #f0f0f0;
+		    display: flex;
+		    justify-content: center;
+		    align-items: center;
+		    height: 100vh;
+		    margin: 0;
+		    overflow: hidden;
+		    flex-direction: column;
+		}
 
-	    .container {
-	        display: flex;
-	        justify-content: center;
-	        align-items: flex-start;
-	        gap: 40px;
-	        max-width: 100%;
-	        flex-direction: row;
-	        flex-wrap: wrap;
-	    }
+		.container {
+		    display: flex;
+		    justify-content: center;
+		    align-items: flex-start;
+		    gap: 40px;
+		    max-width: 100%;
+		    flex-direction: row;
+		    flex-wrap: wrap;
+		}
 
-	    .carousel-container {
-	        width: 425px;
-	        height: 560px;
-	        overflow: hidden;
-			margin-right: 40px;
-	    }
+		.carousel-container {
+		    width: 425px;
+		    height: 560px;
+		    overflow: hidden;
+		    margin-right: 40px;
+		}
 
-	    .carousel-inner {
-	        width: 100%;
-	        height: 100%;
-	    }
+		.carousel-inner {
+		    width: 100%;
+		    height: 100%;
+		}
 
-	    .carousel-item {
-	        width: 100%;
-	        height: 100%;
-	    }
+		.carousel-item {
+		    width: 100%;
+		    height: 100%;
+		}
 
-	    .carousel img {
-	        width: 100%;
-	        height: 100%;
-	        object-fit: contain;
-	    }
+		.carousel img {
+		    width: 100%;
+		    height: 100%;
+		    object-fit: contain;
+		}
 
-	    .product-details {
-	        background: #fff;
-	        padding: 20px;
-	        border-radius: 8px;
-	        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	        max-width: 500px; /* Genişliği büyütüldü */
-	        height: fit-content;
-	        display: flex;
-	        flex-direction: column;
-	        align-items: center;
-	    }
-		
+		.product-details {
+		    background: #fff;
+		    padding: 20px;
+		    border-radius: 8px;
+		    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		    max-width: 500px;
+		    height: fit-content;
+		    display: flex;
+		    flex-direction: column;
+		    align-items: center;
+		}
+
 		.product-image-container img {
 		    width: 100%;
 		    height: auto;
-		    object-fit: contain; /* Gerektiğinde bu ayarı kullanabilirsiniz */
+		    object-fit: contain;
 		}
 
+		.product-details h1 {
+		    margin-bottom: 15px;
+		    font-size: 24px;
+		    line-height: 1.2;
+		    display: -webkit-box;
+		    -webkit-line-clamp: 2;
+		    -webkit-box-orient: vertical;
+		    overflow: hidden;
+		    text-overflow: ellipsis;
+		    max-height: calc(1.2em * 2);
+		}
 
-	    .product-details h1 {
-	        margin-bottom: 15px;
-	        font-size: 24px;
-	        line-height: 1.2;
-	        display: -webkit-box;
-	        -webkit-line-clamp: 2; /* Maksimum 2 satır */
-	        -webkit-box-orient: vertical;
-	        overflow: hidden;
-	        text-overflow: ellipsis;
-	        max-height: calc(1.2em * 2); /* 2 satırın toplam yüksekliği */
-	    }
+		.product-details p {
+		    margin-bottom: 15px;
+		}
 
-	    .product-details p {
-	        margin-bottom: 15px;
-	    }
+		.btn-group {
+		    display: flex;
+		    gap: 4%;
+		}
 
-	    .btn-group {
-	        display: flex;
-	        gap: 4%; /* Butonlar arasına boşluk ekleniyor */
-	    }
-
-	    .btn-custom {
-	        border-radius: 20px;
-	        transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-	        width: 48%; /* Butonları %48 genişlikte yapılıyor */
-	        height: 50px;
-	        font-size: 16px;
-	        margin-bottom: 10px;
-	        padding: 10px;
-	        text-align: center;
-	    }
-
-	    
-		.btn-custom:first-child {
-		    background-color: #fff; /* Arka plan rengi beyaz */
-		    color: fff; /* Yazı rengi mavi */
-		    border: 2px solid #FF9900; /* Border beyaz */
+		.btn-custom {
 		    border-radius: 20px;
-			width:230px;
+		    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+		    width: 48%;
+		    height: 50px;
+		    font-size: 16px;
+		    margin-bottom: 10px;
+		    padding: 10px;
+		    text-align: center;
+		}
+
+		.btn-custom:first-child {
+		    background-color: #fff;
+		    color: fff;
+		    border: 2px solid #FF9900;
+		    border-radius: 20px;
+		    width: 230px;
 		    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 		}
 
 		.btn-custom:first-child:hover {
-		    background-color: #FF9900; /* Hover durumunda arka plan rengi sarı */
-		    color: #fff; /* Hover durumunda yazı rengi beyaz */
-		    border-color: #ffc107; /* Hover durumunda border rengi sarı */
+		    background-color: #FF9900;
+		    color: #fff;
+		    border-color: #ffc107;
 		}
 
-		
 		.btn-custom:last-child {
-		    background-color: #FF9900; /* Varsayılan arka plan rengi turuncu */
-		    color: #fff; /* Varsayılan yazı rengi beyaz */
-		    border: none; /* Hemen Satın Al butonunun border'ı yok */
+		    background-color: #FF9900;
+		    color: #fff;
+		    border: none;
 		    border-radius: 20px;
-			width:230px;
+		    width: 230px;
 		    transition: background-color 0.3s;
 		}
 
 		.btn-custom:last-child:hover {
-		    background-color: #FF9966; /* Hover durumunda daha koyu turuncu */
+		    background-color: #FF9966;
 		}
 
-	    .navbar {
-	        position: fixed;
-	        top: 0;
-	        width: 100%;
-	        z-index: 1000;
-	        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-	    }
+		.navbar {
+		    position: fixed;
+		    top: 0;
+		    width: 100%;
+		    z-index: 1000;
+		    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+		    height: 85px;
+		}
 
-	    #search_container {
-	        transform: translateX(-180px); /* X ekseninde sola kaydırma */
-	    }
+		.carousel-thumbnails {
+		    display: flex;
+		    justify-content: center;
+		    gap: 10px;
+		    margin-top: 20px;
+		}
 
-	    .carousel-thumbnails {
-	        display: flex;
-	        justify-content: center;
-	        gap: 10px;
-	        margin-top: 20px;
-			
-	    }
+		.carousel-thumbnails img {
+		    width: 50px;
+		    height: 50px;
+		    object-fit: cover;
+		    cursor: pointer;
+		    border: 2px solid transparent;
+		}
 
-	    .carousel-thumbnails img {
-	        width: 50px;
-	        height: 50px;
-	        object-fit: cover;
-	        cursor: pointer;
-	        border: 2px solid transparent;
-	    }
+		.carousel-thumbnails img.active {
+		    border: 2px solid #FF9900;
+		}
 
-	    .carousel-thumbnails img.active {
-	        border: 2px solid #FF9900;
-	    }
+		.carousel-container,
+		.product-details {
+		    align-self: center;
+		}
 
-	    .carousel-container,
-	    .product-details {
-	        align-self: center;
-	    }
+		.thumbnails-container {
+		    width: 100%;
+		    display: flex;
+		    flex-direction: column;
+		    align-items: center;
+		}
 
-	    .thumbnails-container {
-	        width: 100%;
-	        display: flex;
-	        flex-direction: column;
-	        align-items: center;
-	    }
+		.carousel-thumbnails {
+		    width: 100%;
+		    justify-content: center;
+		    margin-left: -580px;
+		}
 
-	    .carousel-thumbnails {
-	        width: 100%;
-	        justify-content: center;
-	        margin-left: -580px;
-	    }
+		form label {
+		    display: block;
+		    margin-top: 15px;
+		    color: #333333;
+		}
 
-	    .container {
-	        align-items: center;
-	        gap: 40px;
-	        justify-content: center;
-	    }
+		form input, form textarea {
+		    width: 100%;
+		    padding: 12px;
+		    margin-top: 8px;
+		    border: 1px solid #dddddd;
+		    border-radius: 5px;
+		    box-sizing: border-box;
+		    font-family: inherit;
+		    font-size: 16px;
+		}
+
+		form textarea {
+		    resize: vertical;
+		    height: 100px;
+		}
+
+		form button {
+		    width: 100%;
+		    padding: 12px;
+		    border: none;
+		    border-radius: 5px;
+		    background-color: #007bff;
+		    color: #ffffff;
+		    font-size: 16px;
+		    cursor: pointer;
+		    margin-top: 20px;
+		}
+
+		form button:hover {
+		    background-color: #0056b3;
+		}
+
+		.input-icon {
+		    position: relative;
+		}
+
+		.input-icon input {
+		    padding-left: 40px;
+		}
+
+		.input-icon i {
+		    position: absolute;
+		    top: 50%;
+		    left: 10px;
+		    transform: translateY(-50%);
+		    color: #888888;
+		    font-size: 5px;
+		}
+
+		.navbar-nav .nav-item .nav-link {
+		    font-size: 1.2rem;
+		}
+
+		.input-group-append .btn {
+		    margin-top: 7px;
+		}
+
+		.navbar-brand,
+		.navbar-nav {
+		    margin-left: 0;
+		    padding-left: 0px;
+		}
+
+		#search_container {
+		    margin-right: auto;
+		    padding-right: 0;
+		    transform: translateX(+176px);
+		}
+
+		.search_icon {
+		    font-size: 1rem;
+		}
+
 	</style>
 
 
 
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="font-size: 1.2rem; padding: 15px 0;">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">TechStore</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="index.html">Ana Sayfa</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Hakkında</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">İletişim</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/checkout">Sepetim</a>
-                    </li>
-                </ul>
-                <form class="d-flex mx-auto" id="search_container">
-                    <div class="input-group">
-                        <input class="form-control form-control-lg" type="search" placeholder="Ürün, kategori ve marka ara" aria-label="Search">
-                        <span class="input-group-text bg-light search-icon-container">
-                            <i class="bi bi-search search_icon"></i>
-                        </span>
-                    </div>
-                </form>
-                <a class="btn btn-outline-danger ms-auto" href="#" onclick="document.getElementById('logoutForm').submit();">Çıkış Yap</a>
-                <form id="logoutForm" action="/perform_logout" method="post" style="display: none;">
-                    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-                </form>
-            </div>
-        </div>
-    </nav>
+    
+	<nav class="navbar navbar-expand-lg navbar-light bg-light" style="font-size: 1.2rem; padding: 15px 0;">
+		        <div class="container-fluid">
+		            <a class="navbar-brand" href="#">TechStore</a>
+		            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+		                <span class="navbar-toggler-icon"></span>
+		            </button>
+		            <div class="collapse navbar-collapse" id="navbarNav">
+		                <ul class="navbar-nav me-auto">
+		                    <li class="nav-item">
+		                        <a class="nav-link" href="/index">Ana Sayfa</a>
+		                    </li>
+							<li class="nav-item dropdown">
+								           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+								             Kategoriler
+								           </a>
+								           <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="background-color: white; border: none;">
+											<li><a class="dropdown-item" onclick="filterProducts('smartphone')">Akıllı Telefonlar</a></li>
+											<li><a class="dropdown-item"  onclick="filterProducts('laptop')">Laptop</a></li>
+								           </ul>
+								         </li>
+		                    <li class="nav-item">
+		                        <a class="nav-link" href="/contact">İletişim</a>
+		                    </li>
+		                    <li class="nav-item">
+		                        <a class="nav-link" href="/checkout">Sepetim</a>
+		                    </li>
+		                </ul>
+						<form class="d-flex me-auto" id="search_container" onsubmit="searchProducts(event)">
+						    <div class="input-group" style="margin-left: 150px;">
+						        <input class="form-control form-control-lg" type="search" placeholder="Ürün, kategori ve marka ara" aria-label="Search" id="search" oninput="autocompleteSearch(this.value)">
+						        <div class="input-group-append">
+						            <button class="btn btn-outline-secondary" type="submit" style="margin-top: 9px;  padding: 10px 14px;">
+						                <i class="bi bi-search search_icon"></i>
+						            </button>
+						        </div>
+						        <div id="autocomplete-results" class="autocomplete-results"></div>
+						    </div>
+						</form>
+		                <a class="btn btn-outline-danger ms-auto" href="#" onclick="document.getElementById('logoutForm').submit();">Çıkış Yap</a>
+		                <form id="logoutForm" action="/perform_logout" method="post" style="display: none;">
+		                    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+		                </form>
+		            </div>
+		        </div>
+		    </nav>
 
     <div class="container">
         <div class="carousel-container">
@@ -361,42 +438,13 @@
 		    // Fiyatı 3'er 3'er gruplara ayırarak formatla ve sonundaki gereksiz sıfırları kaldır
 		    return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".").replace(/(\.00|,00)$/, "");
 		}
-
-
-
-
+		
+		
 
     </script>
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

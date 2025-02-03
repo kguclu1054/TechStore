@@ -39,7 +39,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(12);  
     }
 
     @Bean
@@ -70,7 +70,7 @@ public class SecurityConfig {
                 })
                 .sessionManagement(sessionManagement -> {
                     sessionManagement
-                        .maximumSessions(1)
+                        .maximumSessions(3)
                         .maxSessionsPreventsLogin(true);
                 })
                 .rememberMe(rememberMe -> rememberMe

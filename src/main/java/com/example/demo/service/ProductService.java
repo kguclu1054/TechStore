@@ -40,7 +40,7 @@ public class ProductService {
     }
 
 	public List<Product> findProductsByCategory(String category) {
-	       return productRepository.findByCategoryIgnoreCase(category);
+		return productRepository.findByCategoryIgnoreCase(category);
 	}
 }
 

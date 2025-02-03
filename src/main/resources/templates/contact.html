@@ -4,89 +4,176 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>İletişim Sayfası</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
+        
+		body {
+		    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		    background-color: #D3D3D3;
+		    margin: 0;
+		    padding-top: 70px;
+		    justify-content: center;
+		    align-items: center;
+		    display: flex;
+		    height: 100vh; 
+		}
 
-        .container {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 400px;
-            max-width: 90%;
-        }
+		.container {
+		    background-color: #ffffff;
+		    padding: 30px;
+		    border-radius: 10px;
+		    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		    width: 400px;
+		    max-width: 90%;
+		    margin: auto; /* Ortalamak için */
+			
+		}
 
-        h1 {
-            text-align: center;
-            color: #333333;
-            margin-bottom: 20px;
-        }
+		h1 {
+		    text-align: center;
+		    color: #333333;
+		    margin-bottom: 20px;
+		}
 
-        form label {
-            display: block;
-            margin-top: 15px;
-            color: #333333;
-        }
+		form label {
+		    display: block;
+		    margin-top: 15px;
+		    color: #333333;
+		}
 
-        form input, form textarea {
-            width: 100%;
-            padding: 12px;
-            margin-top: 8px;
-            border: 1px solid #dddddd;
-            border-radius: 5px;
-            box-sizing: border-box;
-            font-family: inherit;
-            font-size: 16px;
-        }
+		form input, form textarea {
+		    width: 100%;
+		    padding: 12px;
+		    margin-top: 8px;
+		    border: 1px solid #dddddd;
+		    border-radius: 5px;
+		    box-sizing: border-box;
+		    font-family: inherit;
+		    font-size: 16px;
+		}
 
-        form textarea {
-            resize: vertical;
-            height: 100px;
-        }
+		form textarea {
+		    resize: vertical;
+		    height: 100px;
+		}
 
-        form button {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: #ffffff;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
+		form button {
+		    width: 100%;
+		    padding: 12px;
+		    border: none;
+		    border-radius: 5px;
+		    background-color: #007bff;
+		    color: #ffffff;
+		    font-size: 16px;
+		    cursor: pointer;
+		    margin-top: 20px;
+		}
 
-        form button:hover {
-            background-color: #0056b3;
-        }
+		form button:hover {
+		    background-color: #0056b3;
+		}
 
-        .input-icon {
-            position: relative;
-        }
+		.input-icon {
+		    position: relative;
+		}
 
-        .input-icon input {
-            padding-left: 40px;
-        }
+		.input-icon input {
+		    padding-left: 40px;
+		}
 
-        .input-icon i {
-            position: absolute;
-            top: 50%;
-            left: 10px;
-            transform: translateY(-50%);
-            color: #888888;
-            font-size: 18px;
-        }
+		.input-icon i {
+		    position: absolute;
+		    top: 50%;
+		    left: 10px;
+		    transform: translateY(-50%);
+		    color: #888888;
+		    font-size: 5px;
+		}
+
+		.navbar {
+		    position: fixed;
+		    top: 0;
+		    width: 100%;
+		    z-index: 1000;
+		    height: 85px;
+		}
+
+		.navbar-nav .nav-item .nav-link {
+		    font-size: 1.2rem; /* Font boyutunu buradan ayarlayın */
+		}
+
+		.input-group-append .btn {
+		    margin-top: 7px; /* İkonun yukarı taşınması için margin-top ayarlandı */
+		}
+
+		.navbar-brand,
+		.navbar-nav {
+		    margin-left: 0; /* Sola yaslamak için */
+		    padding-left: 0px; /* Daha da sola yaslamak için padding ekleyin */
+		}
+		
+		#search_container {
+		    margin-right: auto; /* Sola yaslamak için */
+		    padding-right: 350px; /* Daha da sola yaslamak için padding ekleyin */
+		}
+		
+		.search_icon {
+		    font-size: 1rem; /* İkonun boyutunu küçültmek için */
+		}
+
+		
+
     </style>
 </head>
 <body>
+	
+	<nav class="navbar navbar-expand-lg navbar-light bg-light" style="font-size: 1.2rem; padding: 15px 0;">
+	        <div class="container-fluid">
+	            <a class="navbar-brand" href="#">TechStore</a>
+	            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+	                <span class="navbar-toggler-icon"></span>
+	            </button>
+	            <div class="collapse navbar-collapse" id="navbarNav">
+	                <ul class="navbar-nav me-auto">
+	                    <li class="nav-item">
+	                        <a class="nav-link" href="/index">Ana Sayfa</a>
+	                    </li>
+						<li class="nav-item dropdown">
+							           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							             Kategoriler
+							           </a>
+							           <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="background-color: white; border: none;">
+										<li><a class="dropdown-item" onclick="filterProducts('smartphone')">Akıllı Telefonlar</a></li>
+										<li><a class="dropdown-item"  onclick="filterProducts('laptop')">Laptop</a></li>
+							           </ul>
+							         </li>
+	                    <li class="nav-item">
+	                        <a class="nav-link" href="/contact">İletişim</a>
+	                    </li>
+	                    <li class="nav-item">
+	                        <a class="nav-link" href="/checkout">Sepetim</a>
+	                    </li>
+	                </ul>
+					<form class="d-flex me-auto" id="search_container" onsubmit="searchProducts(event)">
+					    <div class="input-group" style="margin-left: 150px;">
+					        <input class="form-control form-control-lg" type="search" placeholder="Ürün, kategori ve marka ara" aria-label="Search" id="search" oninput="autocompleteSearch(this.value)">
+					        <div class="input-group-append">
+					            <button class="btn btn-outline-secondary" type="submit" style="margin-top: 9px;  padding: 10px 14px;">
+					                <i class="bi bi-search search_icon"></i>
+					            </button>
+					        </div>
+					        <div id="autocomplete-results" class="autocomplete-results"></div>
+					    </div>
+					</form>
+	                <a class="btn btn-outline-danger ms-auto" href="#" onclick="document.getElementById('logoutForm').submit();">Çıkış Yap</a>
+	                <form id="logoutForm" action="/perform_logout" method="post" style="display: none;">
+	                    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+	                </form>
+	            </div>
+	        </div>
+	    </nav>
+
     <div class="container">
         <h1>Bizimle İletişime Geçin</h1>
         <form id="contactForm" action="/api/contact/send" method="post">
@@ -116,7 +203,166 @@
     </div>
     <!-- Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykVpjedNLMeRYldGrJoG7LxUpe6lFR+9B3gxv5Tw2RpF1OCLTZPke" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgIVgkY6e1ANeRRF3zjfwAc1z1V91Xb/8eYrZm0J5nce1d3AjnP" crossorigin="anonymous"></script>
+	
+	<script>
+	function autocompleteSearch(query) {
+	    var resultsContainer = document.getElementById('autocomplete-results');
+	    if (query.length < 3) {
+	        resultsContainer.innerHTML = '';
+	        resultsContainer.classList.remove('show');
+	        return;
+	    }
+	    fetch(`/search?query=${query}`)
+	        .then(response => response.json())
+	        .then(data => displayAutocompleteResults(data))
+	        .catch(error => console.error('Hata:', error));
+	}
+
+	function displayAutocompleteResults(data) {
+	    var resultsContainer = document.getElementById('autocomplete-results');
+	    resultsContainer.innerHTML = ''; // Önceki sonuçları temizler
+	    if (data.length > 0) {
+	        resultsContainer.classList.add('show'); // Sonuçlar varsa göster
+	    } else {
+	        resultsContainer.classList.remove('show'); // Sonuç yoksa gizle
+	    }
+
+	    data.forEach(product => {
+	        var resultDiv = document.createElement('div');
+	        resultDiv.classList.add('card');
+	        resultDiv.style.width = '18rem';
+	        
+	        var productImg = document.createElement('img');
+	        productImg.src = product.imageUrl;
+	        productImg.classList.add('card-img-top');
+	        productImg.alt = product.name;
+	        resultDiv.appendChild(productImg);
+	        
+	        var cardBody = document.createElement('div');
+	        cardBody.classList.add('card-body');
+	        
+	        var productName = document.createElement('h5');
+	        productName.classList.add('card-title');
+	        productName.textContent = product.name;
+	        cardBody.appendChild(productName);
+
+	        var productDescription = document.createElement('p');
+	        productDescription.classList.add('card-text');
+	        productDescription.textContent = product.description;
+	        cardBody.appendChild(productDescription);
+	        
+	        var productPrice = document.createElement('p');
+	        productPrice.classList.add('card-text');
+	        productPrice.textContent = '₺' + product.price;
+	        cardBody.appendChild(productPrice);
+	        
+	        var viewProductBtn = document.createElement('a');
+	        viewProductBtn.href = `/products/${product.id}`;
+	        viewProductBtn.classList.add('btn', 'btn-primary');
+	        viewProductBtn.textContent = 'Ürünü Gör';
+	        cardBody.appendChild(viewProductBtn);
+	        
+	        resultDiv.appendChild(cardBody);
+	        resultsContainer.appendChild(resultDiv);
+	    });
+	}
+
+
+
+
+
+	function searchProducts(event) {
+	    event.preventDefault(); // Formun normal gönderimini engeller
+	    var query = document.getElementById('search').value;
+	    var currentUrl = window.location.href;
+
+	    fetch(`/search?query=${encodeURIComponent(query)}`)
+	        .then(response => {
+	            if (response.ok) {
+	                history.pushState({prevUrl: currentUrl}, null, `/search?query=${encodeURIComponent(query)}`); // Yönlendirme URL'sini tarayıcı tarihçesine ekleyin
+	                return response.text().then(html => {
+	                    document.open();
+	                    document.write(html);
+	                    document.close();
+	                });
+	            } else {
+	                console.error('Arama sonucu alınamadı:', response.statusText);
+	            }
+	        })
+	        .catch(error => console.error('Hata:', error));
+	}
+
+	// Geri tuşuna basıldığında çalışacak fonksiyon
+	window.onpopstate = function(event) {
+	    window.location.href = "/index"; // Geri tuşuna basıldığında ana sayfaya yönlendir
+	};
+
+	// Sayfa yenilendiğinde çalışacak fonksiyon
+	window.onload = function() {
+	    if (window.location.pathname.startsWith('/search-result')) {
+	        window.location.href = "/index"; // Sayfa yenilendiğinde ana sayfaya yönlendir
+	    }
+	};
+
+
+
+
+	function filterProducts(category) {
+	    // Dinamik olarak URL'yi değiştiririz
+	    history.pushState({ page: "filter" }, '', `/filter?category=${encodeURIComponent(category)}`);
+	    
+	    // URL değiştikten sonra sayfa içeriğini fetch ile güncelleriz
+	    fetch(`/products/filter?category=${encodeURIComponent(category)}`)
+	        .then(response => response.text())
+	        .then(html => {
+	            document.open();
+	            document.write(html);
+	            document.close();
+	        })
+	        .catch(error => console.error('Hata:', error));
+	}
+
+	// Geri tuşuna basıldığında index sayfasına yönlendirme
+	window.addEventListener("popstate", function(event) {
+	    if (event.state && event.state.page === "filter") {
+	        window.location.href = "/index"; // Geri tuşuna basıldığında index sayfasına yönlendir
+	    }
+	});
+
+
+	function addToCart(productId, productDescription, productPrice, productImageUrl) {
+	    console.log("Adding to cart product id: " + productId);
+
+	    // Ürünü bir nesne olarak oluşturun
+	    const product = {
+	        id: productId,
+	        description: productDescription,
+	        price: productPrice,
+	        imageUrl: productImageUrl
+	    };
+
+	    // Ürünü localStorage'a ekleyin
+	    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+	    cart.push(product);
+	    localStorage.setItem('cart', JSON.stringify(cart));
+
+	    // Alert mesajını görünür hale getirin
+	    var alertBox = document.getElementById('alert');
+	    alertBox.style.display = 'block';
+
+	    // Alert mesajını 3 saniye sonra gizlemek (isteğe bağlı)
+	    setTimeout(function() {
+	        alertBox.style.display = 'none';
+	    }, 3000);
+	}
+
+
+	</script>
 </body>
 </html>
+
 
 
