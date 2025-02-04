@@ -196,38 +196,60 @@
     </section>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Initial animation to fade in the form
-            const loginForm = document.querySelector('section');
-            loginForm.style.opacity = 0;
+		document.addEventListener('DOMContentLoaded', function () {
+		    // Initial animation to fade in the form
+		    const loginForm = document.querySelector('section');
+		    loginForm.style.opacity = 0;
 
-            setTimeout(() => {
-                loginForm.style.transition = 'opacity 1s ease-in-out';
-                loginForm.style.opacity = 1;
-            }, 500);
+		    setTimeout(() => {
+		        loginForm.style.transition = 'opacity 1s ease-in-out';
+		        loginForm.style.opacity = 1;
+		    }, 500);
 
-            // Handle form submission
-            const loginButton = document.querySelector('button');
-            loginButton.addEventListener('click', function (event) {
-                event.preventDefault(); // Prevent default form submission
+		    // Handle form submission
+		    const loginButton = document.querySelector('button');
+		    loginButton.addEventListener('click', function (event) {
+		        event.preventDefault(); // Prevent default form submission
 
-                const usernameInput = document.getElementById('username');
-                const passwordInput = document.getElementById('password');
+		        const usernameInput = document.getElementById('username');
+		        const passwordInput = document.getElementById('password');
 
-                // Check if form inputs are valid
-                if (!usernameInput.checkValidity() || !passwordInput.checkValidity()) {
-                    loginForm.classList.add('shake'); // Add shake animation if invalid
+		        // Check if form inputs are valid
+		        if (!usernameInput.checkValidity() || !passwordInput.checkValidity()) {
+		            loginForm.classList.add('shake'); // Add shake animation if invalid
 
-                    setTimeout(() => {
-                        loginForm.classList.remove('shake'); // Remove the shake animation after 1 second
-                    }, 1000);
-                    return;
-                }
+		            setTimeout(() => {
+		                loginForm.classList.remove('shake'); // Remove the shake animation after 1 second
+		            }, 1000);
+		            return;
+		        }
 
-                // Submit form if everything is valid
-                document.querySelector('#loginForm').submit();
-            });
-        });
+		        // Send a request to the backend to get the current user ID
+		        fetch("/api/user", {
+		            method: "GET",
+		            headers: {
+		                "Content-Type": "application/json"
+		            }
+		        })
+		        .then(response => response.json())
+		        .then(data => {
+		            if (data && data.id) {
+		                // Save user ID to LocalStorage
+		                localStorage.setItem('user_id', data.id);
+		                
+		                // Now submit the form after setting the user ID
+		                document.querySelector('#loginForm').submit();
+		            } else {
+		                alert("Giriş sırasında bir hata oluştu.");
+		            }
+		        })
+		        .catch(error => {
+		            console.error("Error:", error);
+		            alert("Giriş sırasında bir hata oluştu.");
+		        });
+		    });
+		});
+
     </script>
 </body>
 

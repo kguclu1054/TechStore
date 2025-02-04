@@ -22,32 +22,46 @@
             border: 2px solid green;
             border-radius: 5px;
             width: 30%;
-			height:20px;
+            height: 20px;
             text-align: center;
             font-size: 16px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             z-index: 9999;  /* Üstte görünmesi için yüksek z-index */
         }
-		
-		.btn{ 
-			background-color: orange; color: #fff; 
-		}
-		
-		.btn-sil {
-		    background-color: #fff; /* Normalde beyaz */
-		    color: #000; /* Yazı rengi siyah */
-		    border: 2px solid #ffa500; /* Turuncu sınır */
-		    cursor: pointer;
-		    padding: 10px;
-		    margin: 10px 0;
-		    border-radius: 5px; /* Köşeleri yuvarlatmak isterseniz */
-		}
 
-		.btn-sil:hover {
-		    background-color: #ffa500; /* Hover sırasında turuncu */
-		    color: #fff; /* Yazı rengi beyaz */
-		}
+        .btn{ 
+            background-color: orange; color: #fff; 
+        }
 
+        .btn-sil {
+            background-color: #fff; /* Normalde beyaz */
+            color: #000; /* Yazı rengi siyah */
+            border: 2px solid #ffa500; /* Turuncu sınır */
+            cursor: pointer;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px; /* Köşeleri yuvarlatmak isterseniz */
+        }
+
+        .btn-sil:hover {
+            background-color: #ffa500; /* Hover sırasında turuncu */
+            color: #fff; /* Yazı rengi beyaz */
+        }
+
+        /* Yeni ödeme butonu stili */
+        .btn-odeme {
+            background-color: #ffa500; /* Yeşil renk */
+            color: #fff;
+            padding: 10px;
+            margin: 10px 0;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .btn-odeme:hover {
+            background-color: #218838; /* Hover sırasında daha koyu yeşil */
+        }
 
     </style>
 </head>
@@ -56,71 +70,71 @@
     <div id="cart-container"></div>
     <h3>Toplam Fiyat: <span id="total-price"></span> TL</h3>
     <button class="btn" onclick="clearCart()">Tümünü Sil</button>
+    <button class="btn-odeme" onclick="window.location.href='/purchasePage'">Ödeme Yap</button>
 
     <!-- Özel alert kutusu -->
     <div id="alert" class="custom-alert">Sepetiniz boşaltıldı!</div>
 
     <script>
-		
-		document.addEventListener('DOMContentLoaded', (event) => {
-		    const cartContainer = document.getElementById('cart-container');
-		    const totalPriceElement = document.getElementById('total-price');
-		    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-		    let totalPrice = 0;
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const cartContainer = document.getElementById('cart-container');
+            const totalPriceElement = document.getElementById('total-price');
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let totalPrice = 0;
 
-		    cart.forEach((item, index) => {
-		        const productCard = document.createElement('div');
-		        productCard.className = 'card';
-		        productCard.innerHTML = `
-		            <img src="${item.imageUrl}" class="card-img-top" alt="${item.description}">
-		            <div class="card-description">${item.description}</div>
-		            <p class="price">${item.price} TL</p>
-		            <button class="btn-sil" onclick="removeFromCart(${index})">Sil</button>
-		        `;
-		        cartContainer.appendChild(productCard);
+            cart.forEach((item, index) => {
+                const productCard = document.createElement('div');
+                productCard.className = 'card';
+                productCard.innerHTML = `
+                    <img src="${item.imageUrl}" class="card-img-top" alt="${item.description}">
+                    <div class="card-description">${item.description}</div>
+                    <p class="price">${item.price} TL</p>
+                    <button class="btn-sil" onclick="removeFromCart(${index})">Sil</button>
+                `;
+                cartContainer.appendChild(productCard);
 
-		        // Fiyatı düzgün bir şekilde işlemek
-		        const price = parseFloat(item.price.replace(',', ''));
-		        totalPrice += price + 0.001; // Her ürün için 0.001 TL ekleme
-		    });
+                // Fiyatı düzgün bir şekilde işlemek
+                const price = parseFloat(item.price.replace(',', ''));
+                totalPrice += price + 0.001; // Her ürün için 0.001 TL ekleme
+            });
 
-		    // Toplam fiyatı en yakın ondalık basamağa yuvarlamak ve 100 ile çarpmak
-		    totalPrice = Math.round(totalPrice * 100);
+            // Toplam fiyatı en yakın ondalık basamağa yuvarlamak ve 100 ile çarpmak
+            totalPrice = Math.round(totalPrice * 100);
 
-		    // Toplam fiyatı formatlamak
-		    let formattedTotalPrice = (totalPrice / 100).toLocaleString('tr-TR', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
-		    formattedTotalPrice = formattedTotalPrice.replace('.', ',');
-		    totalPriceElement.textContent = `${formattedTotalPrice.replace(/,$/, '')}`;
-		});
+            // Toplam fiyatı formatlamak
+            let formattedTotalPrice = (totalPrice / 100).toLocaleString('tr-TR', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+            formattedTotalPrice = formattedTotalPrice.replace('.', ',');
+            totalPriceElement.textContent = `${formattedTotalPrice.replace(/,$/, '')}`;
+        });
 
-		function removeFromCart(index) {
-		    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-		    cart.splice(index, 1); // Belirli indeksteki ürünü kaldır
-		    localStorage.setItem('cart', JSON.stringify(cart));
-		    location.reload(); // Sayfayı yeniden yükleyerek güncel durumu göster
-		}
+        function removeFromCart(index) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.splice(index, 1); // Belirli indeksteki ürünü kaldır
+            localStorage.setItem('cart', JSON.stringify(cart));
+            location.reload(); // Sayfayı yeniden yükleyerek güncel durumu göster
+        }
 
-		function clearCart() {
-		    localStorage.removeItem('cart');
-		    const cartContainer = document.getElementById('cart-container');
-		    const totalPriceElement = document.getElementById('total-price');
-		    cartContainer.innerHTML = '';
-		    totalPriceElement.textContent = '0,00 TL';
+        function clearCart() {
+            localStorage.removeItem('cart');
+            const cartContainer = document.getElementById('cart-container');
+            const totalPriceElement = document.getElementById('total-price');
+            cartContainer.innerHTML = '';
+            totalPriceElement.textContent = '0,00 TL';
 
-		    // Özel alerti göster
-		    const alertBox = document.getElementById('alert');
-		    alertBox.style.display = 'block';
+            // Özel alerti göster
+            const alertBox = document.getElementById('alert');
+            alertBox.style.display = 'block';
 
-		    // 3 saniye sonra alerti gizle
-		    setTimeout(() => {
-		        alertBox.style.display = 'none';
-		    }, 3000);
-		}
-
-
+            // 3 saniye sonra alerti gizle
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 3000);
+        }
     </script>
 </body>
 </html>
+
+
 
 
 

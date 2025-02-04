@@ -11,7 +11,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import com.example.demo.entity.MyAppUser;
 import com.example.demo.service.MyAppUserService;
 
 @Configuration
@@ -39,7 +41,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(12);  
+        return new BCryptPasswordEncoder(12);
     }
 
     @Bean
@@ -50,6 +52,7 @@ public class SecurityConfig {
                     httpForm
                         .loginPage("/loginPage")
                         .loginProcessingUrl("/perform_login")
+                        .successHandler(authenticationSuccessHandler())  // Burada handler ekliyoruz
                         .defaultSuccessUrl("/index", true)
                         .failureUrl("/loginPage?error")
                         .permitAll();
@@ -64,8 +67,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(registry -> {
                     registry
                         .requestMatchers("/req/signup", "/forget_password", "/css/**", "/js/**").permitAll()
-                        .requestMatchers("/search", "/search-results").permitAll() // Bu endpoint'lere erişime izin ver
-                        .requestMatchers("/api/**").permitAll()  // API endpoint'lerine izin ver
+                        .requestMatchers("/search", "/search-results").permitAll()
+                        .requestMatchers("/api/**").permitAll()
                         .anyRequest().authenticated();
                 })
                 .sessionManagement(sessionManagement -> {
@@ -76,7 +79,20 @@ public class SecurityConfig {
                 .rememberMe(rememberMe -> rememberMe
                     .key("uniqueAndSecret")
                     .tokenValiditySeconds(86400)
-                    .userDetailsService(userDetailsService()))  // userDetailsService burada ekleniyor
+                    .userDetailsService(userDetailsService()))  
                 .build();
     }
+
+    // AuthenticationSuccessHandler
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return (request, response, authentication) -> {
+            // Kullanıcı ID'sini session'a kaydediyoruz
+            Long userId = ((MyAppUser) authentication.getPrincipal()).getId();
+            request.getSession().setAttribute("userId", userId);
+
+            // Varsayılan işlem: başarılı giriş sonrası kullanıcıyı yönlendiriyoruz
+            response.sendRedirect("/index");
+        };
+    }
 }
+

@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class MyAppUserService implements UserDetailsService { 
+public class MyAppUserService implements UserDetailsService {
 
     private final MyAppUserRepository repository;
 
@@ -30,14 +30,12 @@ public class MyAppUserService implements UserDetailsService {
         Optional<MyAppUser> user = repository.findByUsername(username);
         if (user.isPresent()) {
             var userObj = user.get();
-           
             return User.builder()
                     .username(userObj.getUsername())
                     .password(userObj.getPassword())
                     .roles("USER")
                     .build();
         } else {
-            
             throw new UsernameNotFoundException(username);
         }
     }

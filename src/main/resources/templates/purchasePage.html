@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ödeme Sayfası</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+	<link rel="icon" type="image/png" href="/images/favicon-32x32.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+			background-color: #f0f0f0;
+			margin: 0;
+			padding: 0;
+        }
+
+        .container {
+            max-width: 1200px; /* Genişlik artırıldı */
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* 🌟 Kart ve Form için Yan Yana Flexbox */
+        .layout {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px; /* Aralarındaki boşluk */
+        }
+
+        /* 🛒 Kartları İçeren Alan */
+        #cart-container {
+            width: 55%;
+        }
+
+        .card {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .card img {
+            width: 120px;
+            height: 120px;
+            margin-right: 15px;
+        }
+
+        .card-details {
+            flex: 1;
+        }
+
+        .free-shipping {
+            background-color: #4CAF50;
+            color: white;
+            padding: 5px;
+            font-size: 12px;
+            border-radius: 5px;
+            position: relative;
+            top: -50px;
+        }
+
+        /* 📝 Ödeme Formu */
+        #payment-form {
+            width: 40%;
+            padding: 20px;
+            border: 1px solid #ddd;
+            background: #f9f9f9;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #FF9900;
+            color: white;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #45a049;
+        }
+		
+		.navbar {
+		    background-color: white !important; /* Koyu gri arka plan */
+			z-index: 1000;
+			height:85px;
+		}
+		
+
+
+    </style>
+</head>
+<body>
+	
+	<nav class="navbar navbar-expand-lg" style="font-size: 1.2rem; padding: 0; margin: 0; position: relative;">
+	    <div class="container-fluid" style="padding: 0; margin: 0; display: flex; justify-content: space-between; align-items: center;">
+	        <a class="navbar-brand" style="padding: 10px 15px; line-height: 65px;">TechStore</a>
+	        <span style="color: green; font-weight: bold; position: absolute; left: 50%; transform: translateX(-50%);">
+	            <i class="fa-solid fa-check-circle"></i> Güvenli Alışveriş
+	        </span>
+	    </div>
+	</nav>
+
+    <div class="container">
+        <h2>Ödeme Bilgileri</h2>
+        <div class="layout"> <!-- 🔹 Flexbox Uygulandı -->
+            
+            <!-- 🛒 Kartları İçeren Alan -->
+            <div id="cart-container"></div>
+
+            <!-- 📝 Ödeme Formu -->
+            <form id="payment-form">
+                <h3>Ödeme Formu</h3>
+                <div class="form-group">
+                    <label for="full-name">Ad Soyad</label>
+                    <input type="text" id="full-name" name="full-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Adres</label>
+                    <input type="text" id="address" name="address" required>
+                </div>
+                <div class="form-group">
+                    <label for="city">Şehir</label>
+                    <select id="city" name="city" required>
+						<option value="">Şehir Seçin</option>
+						                    <option value="Adana">Adana</option>
+						                    <option value="Adıyaman">Adıyaman</option>
+						                    <option value="Afyonkarahisar">Afyonkarahisar</option>
+						                    <option value="Ağrı">Ağrı</option>
+						                    <option value="Amasya">Amasya</option>
+						                    <option value="Ankara">Ankara</option>
+						                    <option value="Antalya">Antalya</option>
+						                    <option value="Artvin">Artvin</option>
+						                    <option value="Aydın">Aydın</option>
+						                    <option value="Balıkesir">Balıkesir</option>
+						                    <option value="Bilecik">Bilecik</option>
+						                    <option value="Bingöl">Bingöl</option>
+						                    <option value="Bitlis">Bitlis</option>
+						                    <option value="Bolu">Bolu</option>
+						                    <option value="Burdur">Burdur</option>
+						                    <option value="Bursa">Bursa</option>
+						                    <option value="Çanakkale">Çanakkale</option>
+						                    <option value="Çankırı">Çankırı</option>
+						                    <option value="Çorum">Çorum</option>
+						                    <option value="Denizli">Denizli</option>
+						                    <option value="Diyarbakır">Diyarbakır</option>
+						                    <option value="Edirne">Edirne</option>
+						                    <option value="Elazığ">Elazığ</option>
+						                    <option value="Erzincan">Erzincan</option>
+						                    <option value="Erzurum">Erzurum</option>
+						                    <option value="Eskişehir">Eskişehir</option>
+						                    <option value="Gaziantep">Gaziantep</option>
+						                    <option value="Giresun">Giresun</option>
+						                    <option value="Gümüşhane">Gümüşhane</option>
+						                    <option value="Hakkari">Hakkari</option>
+						                    <option value="Hatay">Hatay</option>
+						                    <option value="Isparta">Isparta</option>
+						                    <option value="Mersin">Mersin</option>
+						                    <option value="İstanbul">İstanbul</option>
+						                    <option value="İzmir">İzmir</option>
+						                    <option value="Kars">Kars</option>
+						                    <option value="Kastamonu">Kastamonu</option>
+						                    <option value="Kayseri">Kayseri</option>
+						                    <option value="Kırklareli">Kırklareli</option>
+						                    <option value="Kırşehir">Kırşehir</option>
+						                    <option value="Kocaeli">Kocaeli</option>
+						                    <option value="Konya">Konya</option>
+						                    <option value="Kütahya">Kütahya</option>
+						                    <option value="Malatya">Malatya</option>
+						                    <option value="Manisa">Manisa</option>
+						                    <option value="Kahramanmaraş">Kahramanmaraş</option>
+						                    <option value="Mardin">Mardin</option>
+						                    <option value="Muğla">Muğla</option>
+						                    <option value="Muş">Muş</option>
+						                    <option value="Nevşehir">Nevşehir</option>
+						                    <option value="Niğde">Niğde</option>
+						                    <option value="Ordu">Ordu</option>
+						                    <option value="Rize">Rize</option>
+						                    <option value="Sakarya">Sakarya</option>
+						                    <option value="Samsun">Samsun</option>
+						                    <option value="Siirt">Siirt</option>
+						                    <option value="Sinop">Sinop</option>
+						                    <option value="Sivas">Sivas</option>
+						                    <option value="Tekirdağ">Tekirdağ</option>
+						                    <option value="Tokat">Tokat</option>
+						                    <option value="Trabzon">Trabzon</option>
+						                    <option value="Tunceli">Tunceli</option>
+						                    <option value="Şanlıurfa">Şanlıurfa</option>
+						                    <option value="Uşak">Uşak</option>
+						                    <option value="Van">Van</option>
+						                    <option value="Yozgat">Yozgat</option>
+						                    <option value="Zonguldak">Zonguldak</option>
+						                    <option value="Aksaray">Aksaray</option>
+						                    <option value="Bayburt">Bayburt</option>
+						                    <option value="Karaman">Karaman</option>
+						                    <option value="Kırıkkale">Kırıkkale</option>
+						                    <option value="Batman">Batman</option>
+						                    <option value="Şırnak">Şırnak</option>
+						                    <option value="Bartın">Bartın</option>
+						                    <option value="Ardahan">Ardahan</option>
+						                    <option value="Iğdır">Iğdır</option>
+						                    <option value="Yalova">Yalova</option>
+						                    <option value="Karabük">Karabük</option>
+						                    <option value="Kilis">Kilis</option>
+						                    <option value="Osmaniye">Osmaniye</option>
+						                    <option value="Düzce">Düzce</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="zip">Posta Kodu</label>
+                    <input type="text" id="zip" name="zip" required>
+                </div>
+                <div class="form-group">
+                    <label for="card-number">Kart Numarası</label>
+                    <input type="text" id="card-number" name="card-number" required>
+                </div>
+                <div class="form-group">
+                    <label for="expiry-date">Son Kullanma Tarihi</label>
+                    <input type="text" id="expiry-date" name="expiry-date" placeholder="AA/YY" required>
+                </div>
+                <div class="form-group">
+                    <label for="cvv">CVV</label>
+                    <input type="text" id="cvv" name="cvv" required>
+                </div>
+                <button type="submit" class="btn">Ödeme Yap</button>
+            </form>
+        </div>
+
+        
+    </div>
+
+    <script>
+		document.addEventListener('DOMContentLoaded', (event) => {
+		    const cartContainer = document.getElementById('cart-container');
+		    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+		    let totalPrice = 0;
+
+		    cart.forEach((item, index) => {
+		        const productCard = document.createElement('div');
+		        productCard.className = 'card';
+		        productCard.innerHTML = `
+		            <img src="${item.imageUrl}" class="card-img-top" alt="${item.name}">
+		            <div class="card-details">
+		                <div class="card-description">${item.name}</div>
+		                <p class="price">${item.price} TL</p>
+		            </div>
+		            <div class="free-shipping">Kargo Bedava</div>
+		        `;
+		        cartContainer.appendChild(productCard);
+
+		        const price = parseFloat(item.price.replace(',', ''));
+		        totalPrice += price;
+		    });
+
+		    // Toplam fiyatı en yakın ondalık basamağa yuvarlamak ve 100 ile çarpmak
+		    totalPrice = Math.round(totalPrice * 100);
+
+		    // Toplam fiyatı formatlamak
+		    let formattedTotalPrice = (totalPrice / 100).toLocaleString('tr-TR', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+		    formattedTotalPrice = formattedTotalPrice.replace('.', ',');
+
+		    // Toplam fiyatı kartların altına ekleyelim
+		    const totalPriceElement = document.createElement('h3');
+		    totalPriceElement.innerHTML = `<strong>Toplam Fiyat: ${formattedTotalPrice.replace(/,$/, '')} TL</strong>`;
+		    cartContainer.appendChild(totalPriceElement);
+		});
+
+
+    </script>
+</body>
+</html>
+
+
+
