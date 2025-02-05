@@ -52,7 +52,6 @@ public class SecurityConfig {
                     httpForm
                         .loginPage("/loginPage")
                         .loginProcessingUrl("/perform_login")
-                        .successHandler(authenticationSuccessHandler())  // Burada handler ekliyoruz
                         .defaultSuccessUrl("/index", true)
                         .failureUrl("/loginPage?error")
                         .permitAll();
@@ -73,26 +72,14 @@ public class SecurityConfig {
                 })
                 .sessionManagement(sessionManagement -> {
                     sessionManagement
-                        .maximumSessions(3)
-                        .maxSessionsPreventsLogin(true);
+                        .maximumSessions(10)
+                        .maxSessionsPreventsLogin(false);
                 })
                 .rememberMe(rememberMe -> rememberMe
                     .key("uniqueAndSecret")
                     .tokenValiditySeconds(86400)
                     .userDetailsService(userDetailsService()))  
                 .build();
-    }
-
-    // AuthenticationSuccessHandler
-    public AuthenticationSuccessHandler authenticationSuccessHandler() {
-        return (request, response, authentication) -> {
-            // Kullanıcı ID'sini session'a kaydediyoruz
-            Long userId = ((MyAppUser) authentication.getPrincipal()).getId();
-            request.getSession().setAttribute("userId", userId);
-
-            // Varsayılan işlem: başarılı giriş sonrası kullanıcıyı yönlendiriyoruz
-            response.sendRedirect("/index");
-        };
     }
 }
 

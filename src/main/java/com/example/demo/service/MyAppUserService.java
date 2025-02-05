@@ -39,4 +39,10 @@ public class MyAppUserService implements UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
     }
+
+    // Yeni Metot: Kullanıcıyı username ile bul ve ID döndür
+    public Long getUserIdByUsername(String username) {
+        Optional<MyAppUser> user = repository.findByUsername(username);
+        return user.map(MyAppUser::getId).orElse(null);
+    }
 }

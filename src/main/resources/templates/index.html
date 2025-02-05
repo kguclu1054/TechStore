@@ -795,7 +795,19 @@
 	function addToCart(productId, productDescription, productPrice, productImageUrl) {
 	    console.log("Adding to cart product id: " + productId);
 
-	    // Ürünü bir nesne olarak oluşturun
+	    // LocalStorage'dan kullanıcı ID'sini al
+	    const userId = localStorage.getItem("userId");
+
+	    if (!userId) {
+	        alert("Lütfen giriş yapınız!"); // Eğer kullanıcı giriş yapmamışsa uyar
+	        return;
+	    }
+
+	    // Kullanıcıya özel sepeti al
+	    let cartKey = `cart_${userId}`;
+	    let cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+
+	    // Ürünü oluştur ve sepete ekle
 	    const product = {
 	        id: productId,
 	        description: productDescription,
@@ -803,20 +815,18 @@
 	        imageUrl: productImageUrl
 	    };
 
-	    // Ürünü localStorage'a ekleyin
-	    let cart = JSON.parse(localStorage.getItem('cart')) || [];
 	    cart.push(product);
-	    localStorage.setItem('cart', JSON.stringify(cart));
+	    localStorage.setItem(cartKey, JSON.stringify(cart));
 
-	    // Alert mesajını görünür hale getirin
+	    // Alert mesajını göster
 	    var alertBox = document.getElementById('alert');
 	    alertBox.style.display = 'block';
 
-	    // Alert mesajını 3 saniye sonra gizlemek (isteğe bağlı)
-	    setTimeout(function() {
+	    setTimeout(function () {
 	        alertBox.style.display = 'none';
 	    }, 1000);
 	}
+
 
 
  </script>

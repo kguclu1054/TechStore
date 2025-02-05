@@ -76,64 +76,78 @@
     <div id="alert" class="custom-alert">Sepetiniz boşaltıldı!</div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const cartContainer = document.getElementById('cart-container');
-            const totalPriceElement = document.getElementById('total-price');
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let totalPrice = 0;
+		document.addEventListener('DOMContentLoaded', (event) => {
+		    const cartContainer = document.getElementById('cart-container');
+		    const totalPriceElement = document.getElementById('total-price');
 
-            cart.forEach((item, index) => {
-                const productCard = document.createElement('div');
-                productCard.className = 'card';
-                productCard.innerHTML = `
-                    <img src="${item.imageUrl}" class="card-img-top" alt="${item.description}">
-                    <div class="card-description">${item.description}</div>
-                    <p class="price">${item.price} TL</p>
-                    <button class="btn-sil" onclick="removeFromCart(${index})">Sil</button>
-                `;
-                cartContainer.appendChild(productCard);
+		    // Kullanıcının ID'sini al
+		    const userId = localStorage.getItem("userId");
 
-                // Fiyatı düzgün bir şekilde işlemek
-                const price = parseFloat(item.price.replace(',', ''));
-                totalPrice += price + 0.001; // Her ürün için 0.001 TL ekleme
-            });
+		    if (!userId) {
+		        cartContainer.innerHTML = "<p>Lütfen giriş yapınız!</p>";
+		        totalPriceElement.textContent = "0,00 TL";
+		        return;
+		    }
 
-            // Toplam fiyatı en yakın ondalık basamağa yuvarlamak ve 100 ile çarpmak
-            totalPrice = Math.round(totalPrice * 100);
+		    let cartKey = `cart_${userId}`;
+		    let cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+		    let totalPrice = 0;
 
-            // Toplam fiyatı formatlamak
-            let formattedTotalPrice = (totalPrice / 100).toLocaleString('tr-TR', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
-            formattedTotalPrice = formattedTotalPrice.replace('.', ',');
-            totalPriceElement.textContent = `${formattedTotalPrice.replace(/,$/, '')}`;
-        });
+		    cart.forEach((item, index) => {
+		        const productCard = document.createElement('div');
+		        productCard.className = 'card';
+		        productCard.innerHTML = `
+		            <img src="${item.imageUrl}" class="card-img-top" alt="${item.description}">
+		            <div class="card-description">${item.description}</div>
+		            <p class="price">${item.price} TL</p>
+		            <button class="btn-sil" onclick="removeFromCart(${index})">Sil</button>
+		        `;
+		        cartContainer.appendChild(productCard);
 
-        function removeFromCart(index) {
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            cart.splice(index, 1); // Belirli indeksteki ürünü kaldır
-            localStorage.setItem('cart', JSON.stringify(cart));
-            location.reload(); // Sayfayı yeniden yükleyerek güncel durumu göster
-        }
+		        const price = parseFloat(item.price.replace(',', ''));
+		        totalPrice += price + 0.001;
+		    });
 
-        function clearCart() {
-            localStorage.removeItem('cart');
-            const cartContainer = document.getElementById('cart-container');
-            const totalPriceElement = document.getElementById('total-price');
-            cartContainer.innerHTML = '';
-            totalPriceElement.textContent = '0,00 TL';
+		    totalPrice = Math.round(totalPrice * 100);
+		    let formattedTotalPrice = (totalPrice / 100).toLocaleString('tr-TR', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+		    formattedTotalPrice = formattedTotalPrice.replace('.', ',');
 
-            // Özel alerti göster
-            const alertBox = document.getElementById('alert');
-            alertBox.style.display = 'block';
+		    totalPriceElement.textContent = `${formattedTotalPrice.replace(/,$/, '')}`;
+		});
 
-            // 3 saniye sonra alerti gizle
-            setTimeout(() => {
-                alertBox.style.display = 'none';
-            }, 3000);
-        }
+		function removeFromCart(index) {
+		    const userId = localStorage.getItem("userId");
+		    if (!userId) return;
+
+		    let cartKey = `cart_${userId}`;
+		    let cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+		    
+		    cart.splice(index, 1);
+		    localStorage.setItem(cartKey, JSON.stringify(cart));
+		    location.reload();
+		}
+
+		function clearCart() {
+		    const userId = localStorage.getItem("userId");
+		    if (!userId) return;
+
+		    let cartKey = `cart_${userId}`;
+		    localStorage.removeItem(cartKey);
+
+		    document.getElementById('cart-container').innerHTML = '';
+		    document.getElementById('total-price').textContent = '0,00 TL';
+
+		    const alertBox = document.getElementById('alert');
+		    alertBox.style.display = 'block';
+
+		    setTimeout(() => {
+		        alertBox.style.display = 'none';
+		    }, 3000);
+		}
+
     </script>
 </body>
 </html>
-
 
 
 
