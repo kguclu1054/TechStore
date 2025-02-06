@@ -283,3 +283,26 @@ function fetchProductDetails(productId) {
         .catch(error => console.error('Hata:', error));
 }
 
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+	       fetch('/auth/userInfo')
+	           .then(response => {
+	               if (!response.ok) {
+	                   throw new Error("Kullanıcı bilgisi alınamadı");
+	               }
+	               return response.text();
+	           })
+	           .then(email => {
+	               if (email) {
+	                   document.getElementById('userEmail').textContent = email;
+	               } else {
+	                   document.getElementById('userEmail').textContent = "Giriş yapınız";
+	               }
+	           })
+	           .catch(error => {
+	               console.error("Hata:", error);
+	               document.getElementById('userEmail').textContent = "Giriş yapınız";
+	           });
+	   });

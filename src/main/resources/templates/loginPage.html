@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="icon" type="image/png" href="/images/favicon-32x32.png">
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <style>
@@ -158,19 +159,22 @@
             animation: shake 0.5s ease-in-out;
         }
 
-		.error {
-		    border: 2px solid red; 
-		    padding: 10px;
-		    border-radius: 5px;
-		    background-color: red; 
-		    color: white;
-		    font-weight: bold; 
-		    text-align: center;
-		}
+        .error {
+            border: 2px solid red;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: red;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+        }
     </style>
 </head>
 
 <body>
+	
+	
+	
     <section>
         <form id="loginForm" action="/perform_login" method="post">
             <h1>Login</h1>
@@ -191,16 +195,31 @@
             <div class="register">
                 <p>Don't have an account? <a href="/req/signup">Register!!</a></p>
             </div>
+
+            <!-- Hata mesajı kısmı -->
             <div class="error" th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
         </form>
     </section>
 
-	<script>
+    <script>
+       
+			
 		document.addEventListener('DOMContentLoaded', function () {
 		    const loginForm = document.querySelector('#loginForm');
-
+		    
 		    loginForm.addEventListener('submit', async function (event) {
 		        event.preventDefault(); // Formun varsayılan gönderimini durdur
+
+		        const username = document.querySelector('#username').value;
+		        const password = document.querySelector('#password').value;
+
+		        // Şifre ve kullanıcı adı boş olup olmadığını kontrol et
+		        if (!username || !password) {
+		            console.error("Kullanıcı adı veya şifre boş olamaz.");
+		            document.querySelector('.error').textContent = "Kullanıcı adı ve şifre boş olamaz.";
+		            document.querySelector('.error').style.display = 'block';
+		            return; // Hata varsa işlemi durdur
+		        }
 
 		        const formData = new FormData(loginForm);
 		        const response = await fetch("/perform_login", {
@@ -211,7 +230,10 @@
 
 		        if (response.ok) {
 		            // Eğer giriş başarılıysa, kullanıcı ID'sini al ve LocalStorage'a kaydet
-		            const userIdResponse = await fetch("/auth/loginSuccess", { method: "POST", credentials: "include" });
+		            const userIdResponse = await fetch("/auth/loginSuccess", {
+		                method: "POST",
+		                credentials: "include"
+		            });
 
 		            if (userIdResponse.ok) {
 		                const userId = await userIdResponse.text();
@@ -220,24 +242,27 @@
 		                window.location.href = "/"; // Kullanıcıyı ana sayfaya yönlendir
 		            } else {
 		                console.error("Kullanıcı ID alınamadı.");
+		                document.querySelector('.error').textContent = "Kullanıcı ID alınamadı.";
+		                document.querySelector('.error').style.display = 'block'; // Hata mesajını göster
 		            }
 		        } else {
 		            console.error("Giriş başarısız. Lütfen bilgilerinizi kontrol edin.");
 		            document.querySelector('.error').textContent = "Giriş başarısız! Lütfen bilgilerinizi kontrol edin.";
+		            document.querySelector('.error').style.display = 'block'; // Hata mesajını göster
 		        }
 		    });
 		});
-		
-		
+
+
 		document.getElementById("logoutButton")?.addEventListener("click", function () {
 		    localStorage.removeItem("userId"); // Kullanıcı ID'sini temizle
+		    console.log("Çıkış yapıldı.");
 		    alert("Çıkış yapıldı.");
 		    window.location.href = "/loginPage"; // Giriş sayfasına yönlendir
 		});
 
 
-
-
+		
     </script>
 </body>
 

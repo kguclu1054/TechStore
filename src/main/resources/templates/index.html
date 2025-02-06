@@ -70,18 +70,29 @@
 		           <a class="nav-link"href="/contact">İletişim</a>
 		         </li>
 		         <li class="nav-item">
-		           <a class="nav-link" href="/checkout">Sepetim</a>
-		         </li>
+					<a class="nav-link" href="/checkout">Sepetim</a>
 		       </ul>
-		       <form class="d-flex me-auto" id="search_container" onsubmit="searchProducts(event)">
-		         <div class="input-group">
-		           <input class="form-control form-control-lg" type="search" placeholder="Ürün, kategori ve marka ara" aria-label="Search" id="search" oninput="autocompleteSearch(this.value)">
-		           <button class="btn btn-outline-secondary" type="submit" style= "margin-top:8px; height:45px; ">
-		             <i class="bi bi-search search_icon"></i>
-		           </button>
-		           <div id="autocomplete-results" class="autocomplete-results"></div>
-		         </div>
-		       </form>
+			   <form class="d-flex me-auto" id="search_container" onsubmit="searchProducts(event)" style="margin-left: -220px;">
+			     <div class="input-group">
+			       <input class="form-control form-control-lg" type="search" placeholder="Ürün, kategori ve marka ara" aria-label="Search" id="search" oninput="autocompleteSearch(this.value)">
+			       <button class="btn btn-outline-secondary" type="submit" style="margin-top:8px; height:45px;">
+			         <i class="bi bi-search search_icon"></i>
+			       </button>
+			       <div id="autocomplete-results" class="autocomplete-results"></div>
+			     </div>
+			   </form>
+
+			   
+			   <div class="dropdown" style="margin-right: -420px;">
+			     <button class="btn dropdown-toggle" type="button" id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+			       Hesabım
+			     </button>
+			     <ul class="dropdown-menu" aria-labelledby="accountDropdown">
+			       <li><span class="dropdown-item-text" id="userEmail">Yükleniyor...</span></li>
+			     </ul>
+			   </div>
+
+			   
 		       <a class="btn btn-outline-danger ms-auto" href="/loginPage?logout" onclick="document.getElementById('logoutForm').submit();">Çıkış Yap</a>
 		       <form id="logoutForm" action="/perform_logout" method="post" style="display: none;">
 		         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
@@ -803,20 +814,32 @@
 	        return;
 	    }
 
-	    // Kullanıcıya özel sepeti al
-	    let cartKey = `cart_${userId}`;
-	    let cart = JSON.parse(localStorage.getItem(cartKey)) || [];
-
-	    // Ürünü oluştur ve sepete ekle
-	    const product = {
-	        id: productId,
+	    // Sepete eklemek için ürün bilgilerini hazırlayın
+	    const cartItem = {
+	        userId: userId,
+	        productId: productId,
 	        description: productDescription,
 	        price: productPrice,
 	        imageUrl: productImageUrl
 	    };
 
-	    cart.push(product);
-	    localStorage.setItem(cartKey, JSON.stringify(cart));
+	    // Backend'e POST isteği göndererek veritabanına kaydet
+	    fetch(`/checkout/add-to-cart/${userId}`, {
+	        method: 'POST',
+	        headers: {
+	            'Content-Type': 'application/json',
+	        },
+	        body: JSON.stringify(cartItem)  // JSON olarak gönderilen veri
+	    })
+	    .then(response => response.json())  // Backend'den gelen yanıt
+	    .then(data => {
+	        console.log("Ürün sepete eklendi", data);
+	        // Sepete ekleme işlemi başarılıysa kullanıcıya bildirim yapabilirsiniz
+	        alert("Ürün sepete eklendi!");
+	    })
+	    .catch(error => {
+	        console.error('Error:', error);
+	    });
 
 	    // Alert mesajını göster
 	    var alertBox = document.getElementById('alert');
@@ -827,6 +850,9 @@
 	    }, 1000);
 	}
 
+
+	
+	
 
 
  </script>

@@ -2,6 +2,7 @@ package com.example.demo.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,35 +12,29 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-import com.example.demo.entity.MyAppUser;
 import com.example.demo.service.MyAppUserService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final MyAppUserService appUserService;
+    private final MyAppUserService myAppUserService;
 
-    public SecurityConfig(MyAppUserService appUserService) {
-        this.appUserService = appUserService;
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return appUserService;
+    public SecurityConfig(MyAppUserService myAppUserService) {
+        this.myAppUserService = myAppUserService;
     }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(appUserService);
+        provider.setUserDetailsService(myAppUserService);
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
 
     @Bean
+    @Lazy
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
     }
@@ -53,7 +48,7 @@ public class SecurityConfig {
                         .loginPage("/loginPage")
                         .loginProcessingUrl("/perform_login")
                         .defaultSuccessUrl("/index", true)
-                        .failureUrl("/loginPage?error")
+                        .failureUrl("/perform_logout")
                         .permitAll();
                 })
                 .logout(logoutForm -> {
@@ -68,17 +63,10 @@ public class SecurityConfig {
                         .requestMatchers("/req/signup", "/forget_password", "/css/**", "/js/**").permitAll()
                         .requestMatchers("/search", "/search-results").permitAll()
                         .requestMatchers("/api/**").permitAll()
+                        .requestMatchers("/checkout/remove-all/**").authenticated() 
                         .anyRequest().authenticated();
                 })
-                .sessionManagement(sessionManagement -> {
-                    sessionManagement
-                        .maximumSessions(10)
-                        .maxSessionsPreventsLogin(false);
-                })
-                .rememberMe(rememberMe -> rememberMe
-                    .key("uniqueAndSecret")
-                    .tokenValiditySeconds(86400)
-                    .userDetailsService(userDetailsService()))  
+                .rememberMe(rememberMe -> rememberMe.disable())
                 .build();
     }
 }

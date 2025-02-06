@@ -307,6 +307,12 @@ button:hover {
 	
   }
   
+  #accountDropdown:hover {
+    color: white;
+    background-color: #D3D3D3;
+  }
+
+  
   
   
   

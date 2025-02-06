@@ -4,163 +4,280 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sepetiniz</title>
+    <link rel="icon" type="image/png" href="/images/favicon-32x32.png">
     <style>
-        .card { border: 1px solid #ddd; padding: 10px; margin: 10px; width: 700px; }
-        .card-img-top { width: 200px; height: 200px; }
-        .btn { padding: 10px; background-color: #f00; color: #fff; cursor: pointer; border: none; margin: 10px 0; }
-
-        /* Özel alert stili */
-        .custom-alert {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: green;
-            color: #fff;
-            padding: 20px;
-            border: 2px solid green;
-            border-radius: 5px;
-            width: 30%;
-            height: 20px;
-            text-align: center;
-            font-size: 16px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            z-index: 9999;  /* Üstte görünmesi için yüksek z-index */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
         }
 
-        .btn{ 
-            background-color: orange; color: #fff; 
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 15px;
+            transition: transform 0.2s ease;
+        }
+
+        .cart-item:hover {
+            transform: scale(1.02);
+        }
+
+        .cart-item img {
+            width: 120px;
+            height: 120px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+
+        .cart-item-info {
+            flex-grow: 1;
+        }
+
+        .cart-item-description {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .cart-item-price {
+            font-weight: bold;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn {
+            background-color: #FF9900;
+            color: #fff;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #e56d3e;
         }
 
         .btn-sil {
-            background-color: #fff; /* Normalde beyaz */
-            color: #000; /* Yazı rengi siyah */
-            border: 2px solid #ffa500; /* Turuncu sınır */
-            cursor: pointer;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px; /* Köşeleri yuvarlatmak isterseniz */
+            background-color: #f4f7f6;
+            color: black;
+			border:none;
+            padding: 8px 18px;
+            font-size: 14px;
         }
 
         .btn-sil:hover {
-            background-color: #ffa500; /* Hover sırasında turuncu */
-            color: #fff; /* Yazı rengi beyaz */
+            background-color: #FF9900;
         }
 
-        /* Yeni ödeme butonu stili */
-        .btn-odeme {
-            background-color: #ffa500; /* Yeşil renk */
-            color: #fff;
+        .alert {
+            display: none;
+            background-color: green;
+            color: white;
             padding: 10px;
-            margin: 10px 0;
-            cursor: pointer;
-            border: none;
+            text-align: center;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             border-radius: 5px;
+            z-index: 9999;
         }
 
-        .btn-odeme:hover {
-            background-color: #218838; /* Hover sırasında daha koyu yeşil */
+        .total-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin: 10px 0;
         }
+		
+		.cart-item-details {
+		    display: flex;
+		    flex-direction: column; /* İçeriği dikey hizalar */
+			
+		}
+		
+		.cart-item-price {
+		    margin-top: 20px; /* Açıklama ile fiyat arasına boşluk ekler */
+		}
+		
+		.remove-item-btn {
+			margin-left: auto; 
+		    background-color: #D3D3D3; /* Turuncu renk */
+		    color: black; /* Yazı rengini beyaz yap */
+		    border: none;
+		    padding: 8px 15px;
+		    border-radius: 5px;
+		    cursor: pointer;
+		    transition: background-color 0.3s;
+		}
+
+		.remove-item-btn:hover {
+		    background-color: #FF9900; /* Hover durumunda koyu turuncu */
+		}
+
+
+
 
     </style>
 </head>
 <body>
-    <h1>Sepetiniz</h1>
-    <div id="cart-container"></div>
-    <h3>Toplam Fiyat: <span id="total-price"></span> TL</h3>
-    <button class="btn" onclick="clearCart()">Tümünü Sil</button>
-    <button class="btn-odeme" onclick="window.location.href='/purchasePage'">Ödeme Yap</button>
 
-    <!-- Özel alert kutusu -->
-    <div id="alert" class="custom-alert">Sepetiniz boşaltıldı!</div>
+    <div class="container">
+        <h1>Sepetiniz</h1>
+        
+        <!-- Sepet ürünlerini dinamik olarak buraya ekleyeceğiz -->
+        <div id="cart-container"></div>
+        
+        <div class="total-price">
+            Toplam Fiyat: <span id="total-price">0.00 TL</span>
+        </div>
 
-    <script>
-		document.addEventListener('DOMContentLoaded', (event) => {
-		    const cartContainer = document.getElementById('cart-container');
-		    const totalPriceElement = document.getElementById('total-price');
+        <div class="button-container">
+            <button class="btn" onclick="clearCart()">Tümünü Sil</button>
+            <button class="btn" onclick="window.location.href='/purchasePage'">Ödeme Yap</button>
+        </div>
+    </div>
 
-		    // Kullanıcının ID'sini al
-		    const userId = localStorage.getItem("userId");
+    <!-- Sepet boşaltıldığında gösterilecek uyarı -->
+    <div id="alert" class="alert" style="display:none;">Sepetiniz başarıyla boşaltıldı!</div>
 
-		    if (!userId) {
-		        cartContainer.innerHTML = "<p>Lütfen giriş yapınız!</p>";
-		        totalPriceElement.textContent = "0,00 TL";
-		        return;
-		    }
+	<script>
+	    // Sepet öğelerini backend'den almak için bu fonksiyonu kullanacağız
+	    function fetchCartItems() {
+	        const userId = localStorage.getItem("userId");
+	        if (!userId) {
+	            alert("Lütfen giriş yapınız!"); // Kullanıcı giriş yapmamışsa uyarı ver
+	            return;
+	        }
 
-		    let cartKey = `cart_${userId}`;
-		    let cart = JSON.parse(localStorage.getItem(cartKey)) || [];
-		    let totalPrice = 0;
+	        fetch(`/checkout/items/${userId}`)
+	            .then(response => response.json())
+	            .then(cartItems => {
+	                renderCartItems(cartItems);  // Sepet öğelerini görüntüle
+	            })
+	            .catch(error => {
+	                console.error('Error:', error);
+	            });
+	    }
 
-		    cart.forEach((item, index) => {
-		        const productCard = document.createElement('div');
-		        productCard.className = 'card';
-		        productCard.innerHTML = `
-		            <img src="${item.imageUrl}" class="card-img-top" alt="${item.description}">
-		            <div class="card-description">${item.description}</div>
-		            <p class="price">${item.price} TL</p>
-		            <button class="btn-sil" onclick="removeFromCart(${index})">Sil</button>
-		        `;
-		        cartContainer.appendChild(productCard);
+	    // Sepet öğelerini dinamik olarak render eden fonksiyon
+	    function renderCartItems(cartItems) {
+	        const cartContainer = document.getElementById('cart-container');
+	        const totalPrice = document.getElementById('total-price');
+	        let total = 0;
 
-		        const price = parseFloat(item.price.replace(',', ''));
-		        totalPrice += price + 0.001;
-		    });
+	        // Sepet öğelerini temizle
+	        cartContainer.innerHTML = '';
 
-		    totalPrice = Math.round(totalPrice * 100);
-		    let formattedTotalPrice = (totalPrice / 100).toLocaleString('tr-TR', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
-		    formattedTotalPrice = formattedTotalPrice.replace('.', ',');
+	        cartItems.forEach(item => {
+	            // 1000'e bölme işlemini kaldırdık
+	            let formattedPrice = item.price
+	                .toLocaleString('tr-TR'); // Türk Lirası formatında
 
-		    totalPriceElement.textContent = `${formattedTotalPrice.replace(/,$/, '')}`;
-		});
+	            total += item.price; // Toplam fiyatı hesapla
 
-		function removeFromCart(index) {
-		    const userId = localStorage.getItem("userId");
-		    if (!userId) return;
+	            const cartItemDiv = document.createElement('div');
+	            cartItemDiv.classList.add('cart-item');
+	            cartItemDiv.innerHTML = `
+	                <img src="${item.imageUrl}" alt="${item.description}" class="cart-item-image" />
+	                <div class="cart-item-details">
+	                    <span class="cart-item-name">${item.description}</span>
+	                    <span class="cart-item-price">${formattedPrice} TL</span>
+	                </div>
+	                <button class="remove-item-btn" onclick="removeFromCart(${item.id})">Sil</button>
+	            `;
+	            cartContainer.appendChild(cartItemDiv);
+	        });
 
-		    let cartKey = `cart_${userId}`;
-		    let cart = JSON.parse(localStorage.getItem(cartKey)) || [];
-		    
-		    cart.splice(index, 1);
-		    localStorage.setItem(cartKey, JSON.stringify(cart));
-		    location.reload();
-		}
+	        // Toplam fiyatı güncelle
+	        let formattedTotal = total
+	            .toLocaleString('tr-TR'); // Türk Lirası formatında
 
-		function clearCart() {
-		    const userId = localStorage.getItem("userId");
-		    if (!userId) return;
+	        totalPrice.textContent = formattedTotal + ' TL';
+	    }
 
-		    let cartKey = `cart_${userId}`;
-		    localStorage.removeItem(cartKey);
+	    // Sepetten ürün kaldırma işlemi
+	    function removeFromCart(cartItemId) {
+	        const userId = localStorage.getItem("userId");
+	        if (!userId) {
+	            alert("Lütfen giriş yapınız!"); // Kullanıcı giriş yapmamışsa uyarı ver
+	            return;
+	        }
 
-		    document.getElementById('cart-container').innerHTML = '';
-		    document.getElementById('total-price').textContent = '0,00 TL';
+	        fetch(`/checkout/remove-item/${cartItemId}`, {
+	            method: 'POST',
+	        })
+	        .then(response => {
+	            if (response.ok) {
+	                fetchCartItems();  // Sepet öğelerini yeniden yükle
+	            } else {
+	                alert("Silme işlemi sırasında bir hata oluştu!");
+	            }
+	        })
+	        .catch(error => {
+	            console.error('Error:', error);
+	        });
+	    }
 
-		    const alertBox = document.getElementById('alert');
-		    alertBox.style.display = 'block';
+	    // Tüm sepeti temizleme
+	    function clearCart() {
+	        const userId = localStorage.getItem("userId");
+	        if (!userId) {
+	            alert("Lütfen giriş yapınız!"); // Kullanıcı giriş yapmamışsa uyarı ver
+	            return;
+	        }
 
-		    setTimeout(() => {
-		        alertBox.style.display = 'none';
-		    }, 3000);
-		}
+	        fetch(`/checkout/remove-all/${userId}`, {
+	            method: 'POST',
+	        })
+	        .then(response => {
+	            if (response.ok) {
+	                fetchCartItems();  // Sepeti tekrar yükle
+	                const alertBox = document.getElementById('alert');
+	                alertBox.style.display = 'block';
 
-    </script>
+	                setTimeout(function () {
+	                    alertBox.style.display = 'none';
+	                }, 1000);
+	            } else {
+	                alert("Sepet temizlenirken bir hata oluştu!");
+	            }
+	        })
+	        .catch(error => {
+	            console.error('Error:', error);
+	        });
+	    }
+
+	    // Sayfa yüklendiğinde sepet öğelerini al
+	    window.onload = fetchCartItems;
+	</script>
+
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
