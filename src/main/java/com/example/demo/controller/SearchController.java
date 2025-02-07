@@ -19,10 +19,11 @@ public class SearchController {
     @GetMapping("/search")
     public String search(@RequestParam(name = "query") String query, Model model) {
         List<Product> products = productService.searchProducts(query);
+        model.addAttribute("searchQuery", query);
         model.addAttribute("products", products);
         
 
-        return "search-results"; // Bu, `search-results.html` şablonuna yönlendirecek
+        return "search-results"; 
     }
 }
 
