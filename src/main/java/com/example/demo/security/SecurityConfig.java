@@ -48,7 +48,7 @@ public class SecurityConfig {
                         .loginPage("/loginPage")
                         .loginProcessingUrl("/perform_login")
                         .defaultSuccessUrl("/index", true)
-                        .failureUrl("/perform_logout")
+                        .failureUrl("/loginPage?error=true")  // Hatalı girişte bu URL'ye yönlendirme
                         .permitAll();
                 })
                 .logout(logoutForm -> {

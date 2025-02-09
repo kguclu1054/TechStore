@@ -287,7 +287,7 @@ function fetchProductDetails(productId) {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-	       fetch('/auth/userInfo')
+	       fetch('/userInfo')
 	           .then(response => {
 	               if (!response.ok) {
 	                   throw new Error("Kullanıcı bilgisi alınamadı");
@@ -306,3 +306,5 @@ document.addEventListener('DOMContentLoaded', () => {
 	               document.getElementById('userEmail').textContent = "Giriş yapınız";
 	           });
 	   });
+	   
+	   

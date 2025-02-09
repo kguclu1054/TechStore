@@ -110,18 +110,33 @@
 
 		.navbar-brand,
 		.navbar-nav {
-		    margin-left: 0; /* Sola yaslamak için */
-		    padding-left: 0px; /* Daha da sola yaslamak için padding ekleyin */
+		    margin-left: 0; 
+		    padding-left: 0px; 
 		}
 		
 		#search_container {
-		    margin-right: auto; /* Sola yaslamak için */
-		    padding-right: 350px; /* Daha da sola yaslamak için padding ekleyin */
+		    margin-right: auto; 
+		    padding-right: 350px; 
 		}
 		
 		.search_icon {
-		    font-size: 1rem; /* İkonun boyutunu küçültmek için */
+		    font-size: 1rem;
 		}
+		
+		#submitButton {
+		  background-color: orange; 
+		  color: white; 
+		  padding: 10px 20px; 
+		  border: none; 
+		  border-radius: 5px; 
+		  cursor: pointer; 
+		}
+
+		#submitButton:hover {
+		  background-color: darkorange; 
+		}
+
+
 
 		
 
@@ -200,7 +215,7 @@
             <label for="message">Mesajınız:</label>
             <textarea id="message" name="message" required></textarea>
 
-            <button type="submit">Gönder</button>
+			<button type="submit" id="submitButton">Gönder</button>
         </form>
     </div>
     <!-- Font Awesome Icons -->

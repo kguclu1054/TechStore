@@ -23,7 +23,7 @@
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            background-image: url(https://user-images.githubusercontent.com/13468728/233847739-219cb494-c265-4554-820a-bd3424c59065.jpg);
+            background-image: url(https://st.depositphotos.com/1152339/2229/i/950/depositphotos_22293887-stock-photo-networking-concept-silver-cloud-on.jpg);
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
@@ -159,111 +159,170 @@
             animation: shake 0.5s ease-in-out;
         }
 
-        .error {
-            border: 2px solid red;
-            padding: 10px;
-            border-radius: 5px;
-            background-color: red;
-            color: white;
-            font-weight: bold;
-            text-align: center;
-        }
+        
+        
+		.success-message {
+		    position: fixed;
+		    top: 50px;
+		    left: 50%;
+		    transform: translateX(-50%);
+		    width: 20%;
+		    max-width: 500px;
+		    padding: 15px;
+		    border-radius: 5px;
+		    background-color: #d4edda;
+		    color: #155724;
+		    border: 1px solid #c3e6cb;
+		    font-weight: bold;
+		    display: flex; /* Flex container */
+		    align-items: center; /* Dikeyde ortalar */
+		    justify-content: center; /* Yatayda ortalar */
+		    height: 70px; /* Yükseklik belirledim */
+		    z-index: 1000;
+		    text-align: center; /* Metni yatayda ortalar */
+		}
+
+		.success-message ion-icon {
+		    font-size: 24px;
+		    margin-right: 10px; /* İkon ile metin arasında boşluk bırakır */
+		    display: inline-block; /* İkonu satırda göster */
+			margin-top:8px;
+		}
+
+		.success-message p {
+		    margin: 0; /* Paragrafın etrafındaki varsayılan boşluğu kaldırır */
+		    display: inline; /* Mesajı satır içinde tutar */
+		    position: relative; /* Relative konumlandırma */
+		    top: -5px; /* Mesajı biraz yukarı kaydırır */
+		}
+
+
+
+		
+		#error-message {
+		    position: fixed;
+		    top: 50px;
+		    border-radius:30px;
+		    width: 30%;
+		    padding: 15px;
+		    text-align: center;
+		    background-color: red;
+		    color: white;
+		    font-weight: bold;
+		    display: none;
+		    z-index: 1000;
+		}
+
     </style>
 </head>
 
 <body>
-	
-	
-	
-    <section>
-        <form id="loginForm" action="/perform_login" method="post">
-            <h1>Login</h1>
-            <div class="inputbox">
-                <ion-icon name="person-outline"></ion-icon>
-                <input name="username" id="username" type="text" required>
-                <label for="username">Username</label>
-            </div>
-            <div class="inputbox">
-                <ion-icon name="lock-closed-outline"></ion-icon>
-                <input name="password" type="password" id="password" required>
-                <label for="password">Password</label>
-            </div>
-            <div class="register">
-                <p><a href="/forget_password">Forget Password</a></p>
-            </div>
-            <button type="submit">Log in</button>
-            <div class="register">
-                <p>Don't have an account? <a href="/req/signup">Register!!</a></p>
-            </div>
+	<!-- Başarı mesajı div'i formdan önce yerleştirildi -->
+	<div id="success-message" class="success-message">
+	    <ion-icon name="checkmark-circle"></ion-icon>
+	    <p>Başarıyla çıkış yapıldı.</p>
+	</div>
 
-            <!-- Hata mesajı kısmı -->
-            <div class="error" th:if="${errorMessage != null}" th:text="${errorMessage}"></div>
-        </form>
-    </section>
+	<div id="error-message" class="error" style="display: none;">
+	    <p id="error-text"></p>
+	</div>
 
-    <script>
-       
-			
+
+
+	   <section>
+	        <form id="loginForm" action="/perform_login" method="post">
+	            <h1>Login</h1>
+	            <div class="inputbox">
+	                <ion-icon name="person-outline"></ion-icon>
+	                <input name="username" id="username" type="text" required>
+	                <label for="username">Username</label>
+	            </div>
+	            <div class="inputbox">
+	                <ion-icon name="lock-closed-outline"></ion-icon>
+	                <input name="password" type="password" id="password" required>
+	                <label for="password">Password</label>
+	            </div>
+	            <div class="register">
+	                <p><a href="/forget_password">Forget Password</a></p>
+	            </div>
+	            <button type="submit">Log in</button>
+	            <div class="register">
+	                <p>Don't have an account? <a href="/req/signup">Register!!</a></p>
+	            </div>
+	        </form>
+	    </section>
+	
+	<script>
 		document.addEventListener('DOMContentLoaded', function () {
-		    const loginForm = document.querySelector('#loginForm');
-		    
-		    loginForm.addEventListener('submit', async function (event) {
-		        event.preventDefault(); // Formun varsayılan gönderimini durdur
+		            const urlParams = new URLSearchParams(window.location.search);
+		            const errorMessageDiv = document.getElementById('error-message');
+					const errorText = document.getElementById('error-text');
+					const successMessageDiv = document.getElementById('success-message');
 
-		        const username = document.querySelector('#username').value;
-		        const password = document.querySelector('#password').value;
 
-		        // Şifre ve kullanıcı adı boş olup olmadığını kontrol et
-		        if (!username || !password) {
-		            console.error("Kullanıcı adı veya şifre boş olamaz.");
-		            document.querySelector('.error').textContent = "Kullanıcı adı ve şifre boş olamaz.";
-		            document.querySelector('.error').style.display = 'block';
-		            return; // Hata varsa işlemi durdur
-		        }
+		            if (urlParams.has('error')) {
+						errorText.innerText = "Giriş başarısız! Lütfen bilgilerinizi kontrol edin.";
+		                errorMessageDiv.style.display = 'block';
+		            }
+					
+					if (urlParams.has('logout')) {
+					    successMessageDiv.style.display = 'block';
+					    setTimeout(() => {
+					        successMessageDiv.style.display = 'none';
+					    }, 2000); // 2 saniye sonra kaybolacak
+					} else {
+					    successMessageDiv.style.display = 'none'; // Eğer 'logout' yoksa, başarı mesajı gizlensin
+					}
 
-		        const formData = new FormData(loginForm);
-		        const response = await fetch("/perform_login", {
-		            method: "POST",
-		            body: formData,
-		            credentials: "include" // Session kullanıyorsan bu gerekli olabilir
+					
+
+		            // Login formunun submit işlemi
+		            const loginForm = document.querySelector('#loginForm');
+		            loginForm.addEventListener('submit', async function (event) {
+		                event.preventDefault();
+
+		                const formData = new FormData(loginForm);
+
+		                try {
+		                    const response = await fetch("/perform_login", {
+		                        method: "POST",
+		                        body: formData,
+		                        credentials: "include"
+		                    });
+
+		                    if (response.redirected) {
+		                        // Giriş başarılı, userId'yi al
+		                        const userIdResponse = await fetch("/auth/loginSuccess", {
+		                            method: "POST",
+		                            credentials: "include"
+		                        });
+
+		                        if (userIdResponse.ok) {
+		                            const userId = await userIdResponse.text();
+		                            console.log("Backend'ten gelen userId:", userId);
+		                            
+		                            localStorage.setItem("userId", userId);
+		                            console.log("Giriş başarılı, Kullanıcı ID:", userId);
+
+		                            // Kullanıcıyı yönlendir
+		                            window.location.href = response.url;
+		                        } else {
+		                            console.error("Kullanıcı ID alınamadı.");
+		                            window.location.replace("/loginPage?error=true");
+		                        }
+		                    } else {
+		                        console.error("Giriş başarısız.");
+		                        window.location.replace("/loginPage?error=true");
+		                    }
+		                } catch (error) {
+		                    console.error("Bağlantı hatası:", error);
+		                    window.location.replace("/loginPage?error=true");
+		                }
+		            });
 		        });
 
-		        if (response.ok) {
-		            // Eğer giriş başarılıysa, kullanıcı ID'sini al ve LocalStorage'a kaydet
-		            const userIdResponse = await fetch("/auth/loginSuccess", {
-		                method: "POST",
-		                credentials: "include"
-		            });
 
-		            if (userIdResponse.ok) {
-		                const userId = await userIdResponse.text();
-		                localStorage.setItem("userId", userId); // Kullanıcı ID'sini sakla
-		                console.log("Giriş başarılı, Kullanıcı ID:", userId);
-		                window.location.href = "/"; // Kullanıcıyı ana sayfaya yönlendir
-		            } else {
-		                console.error("Kullanıcı ID alınamadı.");
-		                document.querySelector('.error').textContent = "Kullanıcı ID alınamadı.";
-		                document.querySelector('.error').style.display = 'block'; // Hata mesajını göster
-		            }
-		        } else {
-		            console.error("Giriş başarısız. Lütfen bilgilerinizi kontrol edin.");
-		            document.querySelector('.error').textContent = "Giriş başarısız! Lütfen bilgilerinizi kontrol edin.";
-		            document.querySelector('.error').style.display = 'block'; // Hata mesajını göster
-		        }
-		    });
-		});
-
-
-		document.getElementById("logoutButton")?.addEventListener("click", function () {
-		    localStorage.removeItem("userId"); // Kullanıcı ID'sini temizle
-		    console.log("Çıkış yapıldı.");
-		    alert("Çıkış yapıldı.");
-		    window.location.href = "/loginPage"; // Giriş sayfasına yönlendir
-		});
-
-
-		
-    </script>
+	    </script>
 </body>
 
 </html>

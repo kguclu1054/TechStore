@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arama Sonuçları</title>
-    <link rel="stylesheet" href="path/to/your/bootstrap.css">
+   
 	<link rel="stylesheet" href="/css/style.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -117,22 +117,39 @@
 		}
 		
 		.heart-icon {
-		    position: absolute;
-		    top: 10px;
-		    right: 10px;
-		    font-size: 24px;
-		    color: #fff; /* Kalp beyaz olacak */
-		    background-color: #ccc; /* Başlangıçta gri bir arka plan */
-		    border-radius: 50%; /* Yuvarlak yapıyoruz */
-		    padding: 5px; /* Arka planın etrafında boşluk */
-		    cursor: pointer;
-		    transition: background-color 0.3s ease, color 0.3s ease;
-		}
+					    position: absolute;
+					    top: 10px;
+					    right: 10px;
+					    font-size: 20px; /* İkon boyutu ayarlandı */
+					    color: #ccc; /* Başlangıçta gri */
+					    background-color: white; /* Arka plan beyaz */
+					    border-radius: 50%;
+					    padding: 3px; /* İç boşluk küçültüldü */
+					    cursor: pointer;
+					    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+					    display: flex;
+					    align-items: center;
+					    justify-content: center;
+					    width: 35px; /* Çerçeve küçültüldü */
+					    height: 35px;
+					    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+					}
 
-		.heart-icon.liked {
-		    background-color: red; /* Tıklandığında kırmızı arka plan */
-		    color: white; /* Kalp simgesi beyaz olacak */
-		}
+					.heart-icon::before {
+					    content: "\2764"; /* Kalp ikonu */
+					    font-size: 25px; /* Kalp simgesi büyüklüğü */
+					    color: #ccc; /* Başlangıçta gri */
+					    transition: color 0.3s ease;
+					}
+
+					.heart-icon.liked {
+					    background-color: red; /* Tıklandığında arka plan kırmızı */
+					    transform: scale(1.1); /* Hafif büyüme efekti */
+					}
+
+					.heart-icon.liked::before {
+					    color: white; /* Tıklandığında kalp beyaz olacak */
+					}
 
 		
 		h2 {
@@ -191,7 +208,7 @@
 	            <!-- Kalp ikonu, sağ üst köşeye yerleştirildi -->
 	            <div class="card-img-wrapper">
 	                <img th:src="${product.imageUrl}" class="card-img-top" th:alt="${product.name}">
-	                <!-- Kalp ikonu -->
+	                
 	                <i class="far fa-heart heart-icon" onclick="toggleHeart(this)"></i>
 	            </div>
 	            <div class="card-body">

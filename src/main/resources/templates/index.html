@@ -40,10 +40,41 @@
 			    display: none; /* Başlangıçta gizli */
 			}
 			
+			.heart-icon {
+			    position: absolute;
+			    top: 10px;
+			    right: 10px;
+			    font-size: 16px; /* İkon boyutu ayarlandı */
+			    color: #ccc; /* Başlangıçta gri */
+			    background-color: white; /* Arka plan beyaz */
+			    border-radius: 50%;
+			    padding: 5px; /* İç boşluk küçültüldü */
+			    cursor: pointer;
+			    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+			    display: flex;
+			    align-items: center;
+			    justify-content: center;
+			    width: 35px; /* Çerçeve küçültüldü */
+			    height: 35px;
+			    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+			}
+
+			.heart-icon::before {
+			    content: "\2665"; /* Kalp ikonu */
+			    font-size: 22px; /* Kalp simgesi büyüklüğü */
+			    color: #ccc; /* Başlangıçta gri */
+			    transition: color 0.3s ease;
+			}
+
+			.heart-icon.liked {
+			    background-color: red; /* Tıklandığında arka plan kırmızı */
+			    transform: scale(1.1); /* Hafif büyüme efekti */
+			}
+
+			.heart-icon.liked::before {
+			    color: white; /* Tıklandığında kalp beyaz olacak */
+			}
 			
-
-
-
 		 </style>
 	
 		 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="font-size: 1.2rem; padding: 15px 0;">
@@ -63,7 +94,7 @@
 		           </a>
 		           <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="background-color: white; border: none;">
 					<li><a class="dropdown-item" onclick="filterProducts('smartphone')">Akıllı Telefonlar</a></li>
-					<li><a class="dropdown-item"  onclick="filterProducts('laptop')">Laptop</a></li>
+					<li><a class="dropdown-item"  onclick="filterProducts('laptop')">Laptoplar</a></li>
 		           </ul>
 		         </li>
 		         <li class="nav-item">
@@ -93,10 +124,7 @@
 			   </div>
 
 			   
-		       <a class="btn btn-outline-danger ms-auto" href="/loginPage?logout" onclick="document.getElementById('logoutForm').submit();">Çıkış Yap</a>
-		       <form id="logoutForm" action="/perform_logout" method="post" style="display: none;">
-		         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-		       </form>
+			   <a class="btn btn-outline-danger ms-auto" href="/perform_logout">Çıkış Yap</a>
 		     </div>
 		   </div>
 		 </nav>
@@ -149,6 +177,7 @@
 	                     src="https://productimages.hepsiburada.net/s/777/424-600/110000767460737.jpg/format:webp"
 	                     class="img-fluid"
 	                   />
+					   <i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
 	                   <div class="card-description">Apple iPhone 16 128GB Siyah</div>
 					   <p class="price">59.999</p>
 	                   <div class="tooltip-box">Sepete ekle</div>
@@ -164,6 +193,7 @@
 	                     src="https://productimages.hepsiburada.net/s/777/424-600/110000834340862.jpg/format:webp"
 	                     class="img-fluid"
 	                   />
+					    <i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
 	                   <div class="card-description">
 	                     Casper Excalibur M.E238FHD-G 23.8" 200HZ 1MS 300NIT (HDMI+Display Port) Curved Freesync + G-Sync FHD Monitör
 	                   </div>
@@ -181,6 +211,7 @@
 	                     src="https://productimages.hepsiburada.net/s/777/424-600/110000806810480.jpg/format:webp"
 	                     class="img-fluid"
 	                   />
+					   <i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
 	                   <div class="card-description">
 	                     Monster Tulpar T7 V20.6.2 Intel Core i7 13700H 32 GB RAM 1 TB SSD 8 GB RTX 4060 FreeDOS 17,3" FHD 144 Hz Oyun Bilgisayarı
 	                   </div>
@@ -198,6 +229,7 @@
 	                     src="https://productimages.hepsiburada.net/s/462/424-600/110000499323454.jpg/format:webp"
 	                     class="img-fluid"
 	                   />
+					   <i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
 	                   <div class="card-description">
 	                     Apple Watch Seri 9 Gps 45MM Gece Yarısı Alüminyum Kasa Spor Kordon - M/l MR9A3TU/A
 	                   </div>
@@ -215,6 +247,7 @@
 	                     src="https://productimages.hepsiburada.net/s/777/424-600/110000791112640.jpg/format:webp"
 	                     class="img-fluid"
 	                   />
+					   <i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
 	                   <div class="card-description">
 	                    Samsung 50Q60D 50" 126 Ekran Uydu Alıcılı 4K Ultra HD Smart QLED TV
 	                   </div>
@@ -232,6 +265,7 @@
 	                     src="https://productimages.hepsiburada.net/s/777/424-600/110000678594910.jpg/format:webp"
 	                     class="img-fluid"
 	                   />
+					   <i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
 	                   <div class="card-description">Philips NA350/00 3000 Serisi Çift Hazneli Airfryer</div>
 					   <p class="price">6.129</p>
 	                   <div class="tooltip-box">Sepete ekle</div>
@@ -247,6 +281,7 @@
 	                     src="https://productimages.hepsiburada.net/s/32/424-600/10359127932978.jpg/format:webp"
 	                     class="img-fluid"
 	                   />
+					   <i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
 	                   <div class="card-description">Samsung VC07R302MVP/TR Toz Torbasız Elektrikli Süpürge, Mor</div>
 					   <p class="price">3.399</p>
 	                   <div class="tooltip-box">Sepete ekle</div>
@@ -262,6 +297,7 @@
 	                     src="https://productimages.hepsiburada.net/s/149/424-600/110000104125726.jpg/format:webp"
 	                     class="img-fluid"
 	                   />
+					   <i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
 	                   <div class="card-description">SteelSeries Arctis 7+ Plus Siyah Multi-Platform Wireless Kablosuz 7.1 Usb-C Gaming Oyuncu Kulaklık Pc/ps4/ps5/switch/mac/mobil</div>
 					   <p class="price">6.149</p>
 	                   <div class="tooltip-box">Sepete ekle</div>
@@ -277,6 +313,7 @@
 	                     src="https://productimages.hepsiburada.net/s/437/424-600/110000469386798.jpg/format:webp"
 	                     class="img-fluid"
 	                   />
+					   <i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
 	                   <div class="card-description">HONOR Pad X9 4GB 128GB WiFi 11.5'' Uzay Gri Tablet</div>
 					   <p class="price">5.699</p>
 	                   <div class="tooltip-box">Sepete ekle</div>
@@ -292,6 +329,7 @@
 	                     src="https://productimages.hepsiburada.net/s/49/424-600/10983949860914.jpg/format:webp"
 	                     class="img-fluid"
 	                   />
+					   <i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
 	                   <div class="card-description">Apple MacBook Air M1 Çip 8GB 256GB SSD macOS 13" QHD Taşınabilir Bilgisayar Uzay Grisi MGN63TU/A</div>
 	                   <div class="tooltip-box">Sepete ekle</div>
 					   <p class="price">31.599</p>
@@ -307,6 +345,7 @@
 	                     src="https://productimages.hepsiburada.net/s/777/424-600/110000787442617.jpg/format:webp"
 	                     class="img-fluid"
 	                   />
+					   <i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
 	                   <div class="card-description">
 	                     Samsung Galaxy A06 128 GB 4 GB Ram Siyah
 	                   </div>
@@ -352,6 +391,7 @@
                   src="https://productimages.hepsiburada.net/s/777/424-600/110000767394997.jpg/format:webp"
                   class="img-fluid"
                 />
+				<i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
                 <div class="card-description">Apple iPhone 16 128GB Deniz Mavisi</div>
 				<p class="price">59.999</p>
                 <div class="tooltip-box">Sepete ekle</div>
@@ -367,6 +407,7 @@
                   src="https://productimages.hepsiburada.net/s/543/424-600/110000603451962.jpg/format:webp"
                   class="img-fluid"
                 />
+				<i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
                 <div class="card-description">
                   Xiaomi Redmi Note 13 Pro 256GB 8gb Ram Mor
                 </div>
@@ -384,6 +425,7 @@
                   src="https://productimages.hepsiburada.net/s/337/424-600/110000156696698.jpg/format:webp"
                   class="img-fluid"
                 />
+				<i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
                 <div class="card-description">
                   Apple iPhone 13 128 GB Yeşil Cep Telefonu
                 </div>
@@ -401,6 +443,7 @@
                   src="https://productimages.hepsiburada.net/s/777/424-600/110000639862880.jpg/format:webp"
                   class="img-fluid"
                 />
+				<i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
                 <div class="card-description">
                   POCO C65 256 GB 8 GB Ram Siyah
                 </div>
@@ -418,6 +461,7 @@
                   src="https://productimages.hepsiburada.net/s/777/424-600/110000767669126.jpg/format:webp"
                   class="img-fluid"
                 />
+				<i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
                 <div class="card-description">
                   Apple iPhone 16 Pro 128GB Çöl Titanyum
                 </div>
@@ -435,6 +479,7 @@
                   src="https://productimages.hepsiburada.net/s/462/424-600/110000498569710.jpg/format:webp"
                   class="img-fluid"
                 />
+				<i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
                 <div class="card-description">
                   Apple iPhone 15 128 GB Siyah
                 </div>
@@ -452,6 +497,7 @@
                   src="https://productimages.hepsiburada.net/s/777/424-600/110000859033355.jpg/format:webp"
                   class="img-fluid"
                 />
+				<i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
                 <div class="card-description">
                   Xiaomi Redmi 14C 8GB 256GB
                 </div>
@@ -469,6 +515,7 @@
                   src="https://productimages.hepsiburada.net/s/777/424-600/110000787442617.jpg/format:webp"
                   class="img-fluid"
                 />
+				<i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
                 <div class="card-description">
                   Samsung Galaxy A06 128 GB 4 GB Ram Siyah
                 </div>
@@ -515,6 +562,7 @@
                   src="https://productimages.hepsiburada.net/s/777/424-600/110000751971000.jpg/format:webp"
                   class="img-fluid"
                 />
+				<i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
                 <div class="card-description">
                   Lenovo LOQ Intel Core i5 12450HX 24GB 512GB SSD RTX4050
                   Freedos 15.6" FHD Taşınabilir Bilgisayar 83GS009ATR
@@ -533,6 +581,7 @@
                   src="https://productimages.hepsiburada.net/s/777/424-600/110000666409703.jpg/format:webp"
                   class="img-fluid"
                 />
+				<i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
                 <div class="card-description">
                   MSI THIN 15 B12UC-1479XTR Intel Core i7 12650H 16GB 512GB SSD
                   RTX3050 Freedos 15.6" FHD 144Hz Taşınabilir Bilgisayar
@@ -551,6 +600,7 @@
                   src="https://productimages.hepsiburada.net/s/564/424-600/110000627282460.jpg/format:webp"
                   class="img-fluid"
                 />
+				<i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
                 <div class="card-description">
                   Huawei Matebook D14 2024 Intel Core i5 12450H 8GB 512GB SSD
                   Windows 11 Home 14" IPS Taşınabilir Bilgisayar
@@ -569,6 +619,7 @@
                   src="https://productimages.hepsiburada.net/s/777/424-600/110000807463814.jpg/format:webp"
                   class="img-fluid"
                 />
+				<i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
                 <div class="card-description">
                   Acer Aspire Lite AL16-51P-580H Intel Core i5 1235U 8GB 512GB
                   SSD Freedos 16" Taşınabilir Bilgisayar NX.KWZEY.001
@@ -587,6 +638,7 @@
                   src="https://productimages.hepsiburada.net/s/337/424-600/110000005442676.jpg/format:webp"
                   class="img-fluid"
                 />
+				<i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
                 <div class="card-description">
                   Apple MacBook Air M1 Çip 16GB 256GB SSD macOS 13" Taşınabilir
                   Bilgisayar Uzay Grisi Z1240009K
@@ -605,6 +657,7 @@
                   src="https://productimages.hepsiburada.net/s/379/424-600/110000397669045.jpg/format:webp"
                   class="img-fluid"
                 />
+				<i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
                 <div class="card-description">
                   Casper Excalibur G870.1270-DFB0X-B Intel Core i7 12700H 32GB
                   1TB SSD RTX4060 Freedos 15.6" Taşınabilir Bilgisayar
@@ -623,6 +676,7 @@
                   src="https://productimages.hepsiburada.net/s/526/424-600/110000583040777.jpg/format:webp"
                   class="img-fluid"
                 />
+				<i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
                 <div class="card-description">
                   Asus Tuf Gaming F15 FX507ZC4-HN205 I5-12500H 8gb Ram 512GB SSD
                   4gb RTX3050 15.6 Inç Fhd 144Hz Taşınabilir Bilgisayar
@@ -641,6 +695,7 @@
                   src="https://productimages.hepsiburada.net/s/777/424-600/110000722610885.jpg/format:webp"
                   class="img-fluid"
                 />
+				<i class="far fa-heart heart-icon" onclick="toggleHeart(this, event)"></i>
                 <div class="card-description">
                   Casper Nirvana X600.1270-DF00X-G-F Intel Core i7 12700H 32GB 1TB SSD Freedos 15.6" Taşınabilir Bilgisayar
                 </div>
@@ -851,9 +906,12 @@
 	}
 
 
+	function toggleHeart(icon, event) {
+	  event.stopPropagation(); // Kartın tıklama olayını engelle
+	  icon.classList.toggle('liked');
+	}
 	
 	
-
 
  </script>
 

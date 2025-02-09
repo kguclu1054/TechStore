@@ -311,7 +311,17 @@ button:hover {
     color: white;
     background-color: #D3D3D3;
   }
+  
+  
+  /* Dropdown item tıklandığında arka plan rengini turuncu yap */
+  			.dropdown-item:active, 
+  			.dropdown-item.active {
+  			  background-color: orange !important;
+  			}
 
+  
+
+    
   
   
   

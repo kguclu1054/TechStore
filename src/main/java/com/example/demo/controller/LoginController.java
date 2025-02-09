@@ -25,7 +25,7 @@ public class LoginController {
     @Autowired
     private MyAppUserRepository myAppUserRepository;
 
-    // Login sayfası, hata mesajı gösterimi
+    // Giriş sayfası ve hata mesajı gösterimi
     @GetMapping("/loginPage")
     public String loginPage(@RequestParam(value = "error", required = false) String error, Model model) {
         if (error != null) {
@@ -34,18 +34,19 @@ public class LoginController {
         return "loginPage"; // loginPage.html sayfasına yönlendiriyor
     }
 
-    // Signup sayfasına yönlendiriyor
+
+    // Kayıt olma sayfası
     @GetMapping("/req/signup")
     public String signup() {
         return "signup"; // signup.html sayfasına yönlendiriyor
     }
 
+    // Başarılı giriş sonrası kullanıcı ID'yi döndürme
     @PostMapping("/auth/loginSuccess")
     @ResponseBody
-    public ResponseEntity<?> getUserIdAfterLogin() {
+    public ResponseEntity<Object> getUserIdAfterLogin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        // Giriş kontrolü
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(401).body("Kullanıcı oturum açmamış.");
         }
@@ -53,14 +54,20 @@ public class LoginController {
         String username = authentication.getName();
         Optional<MyAppUser> user = myAppUserRepository.findByUsername(username);
 
-        if (user.isPresent()) {
-            return ResponseEntity.ok(user.get().getId());
-        } else {
-            return ResponseEntity.status(404).body("Kullanıcı bulunamadı.");
-        }
+        return user.map(value -> ResponseEntity.ok((Object) value.getId()))
+                   .orElseGet(() -> ResponseEntity.status(404).body("Kullanıcı bulunamadı."));
     }
 
-    @GetMapping("/auth/userInfo")
+
+    // Çıkış işlemi
+    @GetMapping("/perform_logout")
+    public String logout(HttpServletRequest request) {
+        SecurityContextHolder.clearContext(); // Kullanıcı oturumunu temizle
+        request.getSession().invalidate(); // Oturumu sıfırla
+        return "redirect:/loginPage?logout=true"; // Çıkış yaptıktan sonra giriş sayfasına yönlendir
+    }
+    
+    @GetMapping("/userInfo")
     @ResponseBody
     public ResponseEntity<?> getUserInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -78,24 +85,8 @@ public class LoginController {
             return ResponseEntity.status(404).body("Kullanıcı bulunamadı.");
         }
     }
-
-    // Logout işlemi
-    @GetMapping("/perform_logout")
-    public String logout(HttpServletRequest request) {
-        // Oturumu sonlandır
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
-            // Oturumu temizle
-            SecurityContextHolder.clearContext();
-        }
-        
-        // Oturumu geçici olarak sil
-        request.getSession().invalidate();
-        
-        // Logout sonrası yönlendirme
-        return "redirect:/loginPage"; // Çıkış yaptıktan sonra login sayfasına yönlendir
-    }
 }
+
 
 
 

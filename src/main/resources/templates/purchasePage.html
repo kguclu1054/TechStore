@@ -263,48 +263,57 @@
 
 	<script>
 		document.addEventListener('DOMContentLoaded', () => {
-		  const cartContainer = document.getElementById('cart-container');
-		  const totalPriceElement = document.createElement('h3');
-		  let totalPrice = 0;
+		    const cartContainer = document.getElementById('cart-container');
+		    const totalPriceElement = document.createElement('h3');
+		    let totalPrice = 0;
 
-		  // LocalStorage'dan giriş yapmış kullanıcıyı al
-		  const userId = localStorage.getItem('userId');
+		    // LocalStorage'dan giriş yapmış kullanıcıyı al
+		    const userId = localStorage.getItem('userId');
 
-		  if (!userId) {
-		    cartContainer.innerHTML = '<p>Lütfen giriş yapınız!</p>';
-		    return;
-		  }
+		    if (!userId) {
+		        cartContainer.innerHTML = '<p>Lütfen giriş yapınız!</p>';
+		        return;
+		    }
 
-		  // Kullanıcıya özel sepet verisini al
-		  let cart = JSON.parse(localStorage.getItem(`cart_${userId}`)) || [];
+		    // Kullanıcıya ait sepet verilerini almak için fetch kullanıyoruz
+		    fetch(`/purchasePage/items/${userId}`)
+		        .then(response => response.json())
+		        .then(cart => {
+		            if (cart.length === 0) {
+		                cartContainer.innerHTML = '<p>Sepetiniz boş.</p>';
+		                return;
+		            }
 
-		  cart.forEach((item) => {
-		    const productCard = document.createElement('div');
-		    productCard.className = 'card';
-		    productCard.innerHTML = `
-		      <img src="${item.imageUrl}" class="card-img-top" alt="${item.name}">
-		      <div class="card-details">
-		        <div class="card-description">${item.description}</div>
-		        <p class="price">${item.price} TL</p>
-		      </div>
-		      <div class="free-shipping">Kargo Bedava</div>
-		    `;
-		    cartContainer.appendChild(productCard);
+		            cart.forEach((item) => {
+		                const productCard = document.createElement('div');
+		                productCard.className = 'card';
+		                productCard.innerHTML = `
+		                    <img src="${item.imageUrl}" class="card-img-top" alt="${item.name}">
+		                    <div class="card-details">
+		                        <div class="card-description">${item.description}</div>
+		                        <p class="price">${item.price} TL</p>
+		                    </div>
+		                    <div class="free-shipping">Kargo Bedava</div>
+		                `;
+		                cartContainer.appendChild(productCard);
 
-		    // Fiyatı düzgün şekilde işle
-		    const price = parseFloat(item.price.replace(',', ''));
-		    totalPrice += price;
-		  });
+		                // Fiyatı düzgün şekilde işle
+		                totalPrice += item.price; // Burada artık replace işlemi gerekmez
+		            });
 
-		  // Toplam fiyatı formatla
-		  let formattedTotalPrice = totalPrice.toLocaleString('tr-TR', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
-		  formattedTotalPrice = formattedTotalPrice.replace(',', '.');
+		            // Toplam fiyatı formatla
+		            let formattedTotalPrice = totalPrice.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
-		  // Toplam fiyatı kartların altına ekleyelim
-		  totalPriceElement.innerHTML = `<strong>Toplam Fiyat: ${formattedTotalPrice} TL</strong>`;
-		  cartContainer.appendChild(totalPriceElement);
+		            // Toplam fiyatı kartların altına ekleyelim
+		            totalPriceElement.innerHTML = `<strong>Toplam Fiyat: ${formattedTotalPrice} TL</strong>`;
+		            cartContainer.appendChild(totalPriceElement);
+		        })
+		        .catch(error => {
+		            console.error('Error:', error);
+		            cartContainer.innerHTML = '<p>Veri alırken bir hata oluştu.</p>';
+		        });
 		});
-		
+
 		
 		
 		const districts = {
