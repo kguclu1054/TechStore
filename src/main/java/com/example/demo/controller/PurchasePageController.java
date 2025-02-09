@@ -36,6 +36,7 @@ public class PurchasePageController {
     }
 
     @GetMapping("/items/{userId}")
+    @ResponseBody
     public List<CartItem> getPurchaseItems(@PathVariable Long userId) {
         return cartItemRepository.findByUserId(userId);
     }
