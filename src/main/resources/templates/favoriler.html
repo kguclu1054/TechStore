@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favorilerim</title>
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+		body {
+		    background-color: #f8f9fa;
+		    font-family: Arial, sans-serif;
+		}
+
+		h1 {
+		    text-align: center;
+		    margin-top: 30px; /* Üstten boşluk ekleme */
+		    margin-bottom: 30px;
+		    color: #343a40;
+		    font-weight: bold;
+		    font-size: 2.5rem; /* Yazı boyutunu artırma */
+		    letter-spacing: 1px; /* Harf aralığını artırma */
+		    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Hafif gölge ekleme */
+		}
+
+		.favorites-container {
+		    display: flex;
+		    flex-wrap: wrap;
+		    justify-content: center;
+		    gap: 20px;
+		}
+
+		.favorite-item {
+		    flex: 1 1 calc(30% - 1rem);
+		    max-width: 250px; /* Kart boyutunu biraz küçültme */
+		    background-color: white;
+		    border: none;
+		    border-radius: 10px;
+		    overflow: hidden;
+		    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		    transition: transform 0.3s ease, box-shadow 0.3s ease;
+		}
+
+		.favorite-item:hover {
+		    transform: translateY(-5px);
+		    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+		}
+
+		.card-img-wrapper {
+		    display: flex;
+		    justify-content: center; /* Yatayda ortalar */
+		    align-items: center; /* Dikeyde ortalar */
+		    height: 160px; /* Resmin yüksekliğine uygun ortalama */
+		    overflow: hidden;
+		    
+		}
+
+		.card-img-top {
+		    max-width: 130px; /* Resmin genişliği 150px olacak */
+		    width: 100%; /* Genişlik otomatik olarak ayarlanacak */
+		    height: auto; /* Yükseklik de otomatik olacak */
+		    object-fit: cover; /* Resmi kesmeden kapsayıcıya uydur */
+		    border-top-left-radius: 10px;
+		    border-top-right-radius: 10px;
+		}
+
+
+
+
+		.favorite-item .card-body {
+		    padding: 15px;
+		    text-align: center;
+		}
+
+		.favorite-item .card-title {
+		    font-size: 18px;
+		    font-weight: bold;
+		    color: #343a40;
+		    display: -webkit-box;
+		    -webkit-line-clamp: 2;
+		    -webkit-box-orient: vertical;
+		    overflow: hidden;
+		    text-overflow: ellipsis;
+		    height: 45px;
+		}
+
+		.favorite-item .card-text {
+		    font-size: 14px;
+		    color: #6c757d;
+		}
+
+		.favorite-item .btn {
+		    background-color: #ff8c00;
+		    border: none;
+		    padding: 10px 15px;
+		    border-radius: 5px;
+		    color: white;
+		    text-decoration: none !important;
+		    font-weight: bold;
+		    display: inline-block;
+		    transition: background-color 0.3s ease, transform 0.2s ease;
+		}
+
+		.favorite-item .btn:hover {
+		    background-color: #e07b00;
+		    transform: scale(1.05);
+		}
+
+		.heart-icon {
+		    position: absolute;
+		    top: 10px;
+		    right: 10px;
+		    font-size: 20px;
+		    color: #ccc;
+		    background-color: white;
+		    border-radius: 50%;
+		    padding: 3px;
+		    cursor: pointer;
+		    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+		    display: flex;
+		    align-items: center;
+		    justify-content: center;
+		    width: 35px;
+		    height: 35px;
+		    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+		}
+
+		.heart-icon::before {
+		    content: "\2764"; /* Kalp ikonu */
+		    font-size: 25px;
+		    color: #ccc;
+		    transition: color 0.3s ease;
+		}
+
+		.heart-icon.liked {
+		    background-color: red;
+		    transform: scale(1.1);
+		}
+
+		.heart-icon.liked::before {
+		    color: white;
+		}
+
+		@media (max-width: 1000px) {
+		    .favorites-container {
+		        flex-direction: column;
+		        align-items: center;
+		    }
+
+		    .favorite-item {
+		        flex: 1 1 100%;
+		        max-width: 90%;
+		    }
+
+		    .favorite-item .card-img-top {
+		        height: 150px;
+		    }
+
+		    .favorite-item .card-body {
+		        padding: 10px;
+		    }
+
+		    .favorite-item .card-title {
+		        font-size: 16px;
+		        display: -webkit-box;
+		        -webkit-line-clamp: 2;
+		        -webkit-box-orient: vertical;
+		        overflow: hidden;
+		        text-overflow: ellipsis;
+		        height: 33px;
+		    }
+
+		    .favorite-item .btn {
+		        width: 100%;
+		        padding: 8px 0;
+		    }
+		}
+		
+		.card-size {
+		    margin: 10px; /* Kartların arasına boşluk eklemek için margin kullanın */
+		}
+
+
+    </style>
+</head>
+<body>
+	<h1>Favori Ürünler</h1>
+	<div class="container mt-4">
+	    <div class="row">
+	        <!-- Favori ürünlerin listelendiği yer -->
+	        <th:block th:each="item : ${favoriteItems}">
+	            <div class="card-size"> 
+	                <div class="favorite-item card">
+	                    <div class="card-img-wrapper">
+	                        <img th:src="@{${item.imageUrl}}" alt="Ürün Resmi" class="card-img-top">
+	                    </div>
+	                    <div class="card-body">
+	                        <h5 class="card-title" th:text="${item.productName}"></h5>
+	                        <p class="card-text"><strong>Fiyat:</strong> <span th:text="${item.productPrice}"></span>₺</p>
+	                    </div>
+	                </div>
+	            </div>
+	        </th:block>
+	    </div>
+	</div>
+
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let userId = localStorage.getItem("userId");
+
+            if (!userId) {
+                alert("Kullanıcı girişi yapılmamış!");
+                return;
+            }
+
+            fetch(`http://localhost:8080/favoriler/${userId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('API isteği başarısız oldu');
+                    }
+                    return response.json();
+                })
+                .then(favorites => {
+                    if (favorites.length === 0) {
+                        alert("Favori ürün bulunamadı.");
+                    }
+
+                    let container = document.getElementById("favoritesContainer");
+
+                    favorites.forEach(item => {
+                        let div = document.createElement("div");
+                        div.className = "favorite-item card";
+                        div.innerHTML = `
+                            <img src="${item.productImage || 'https://via.placeholder.com/150'}" alt="Ürün Resmi" class="product-image">
+                            <div class="card-content">
+                                <h3>${item.productName}</h3>
+                                <p><strong>Fiyat:</strong> ${item.productPrice}₺</p>
+                                <p>${item.productDescription}</p>
+                                <button class="remove-favorite" data-id="${item.productId}">Favorilerden Kaldır</button>
+                            </div>
+                        `;
+                        container.appendChild(div);
+                    });
+
+                    // Favorilerden çıkarma işlemi
+                    let removeButtons = document.querySelectorAll(".remove-favorite");
+                    removeButtons.forEach(button => {
+                        button.addEventListener("click", function() {
+                            let productId = button.getAttribute("data-id");
+
+                            fetch(`http://localhost:8080/favoriler/remove/${userId}/${productId}`, {
+                                method: "DELETE",
+                            })
+                            .then(response => response.text())
+                            .then(message => {
+                                alert(message);
+                                button.closest(".favorite-item").remove(); // Ürün kartını kaldır
+                            })
+                            .catch(error => console.error("Hata:", error));
+                        });
+                    });
+
+                })
+                .catch(error => console.error("Hata:", error));
+        });
+    </script>
+	
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
+

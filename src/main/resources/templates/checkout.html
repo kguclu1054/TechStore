@@ -24,16 +24,17 @@
             margin: 0 auto;
         }
 
-        .cart-item {
-            display: flex;
-            align-items: center;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-            padding: 15px;
-            transition: transform 0.2s ease;
-        }
+		.cart-item {
+		    display: flex;
+		    align-items: center;
+		    background-color: #fff;
+		    border-radius: 8px;
+		    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		    margin-bottom: 20px;
+		    padding: 15px;
+		    position: relative; /* Kartın içindeki öğeleri konumlandırabilmek için relative kullanıyoruz */
+		    transition: transform 0.2s ease;
+		}
 
         .cart-item:hover {
             transform: scale(1.02);
@@ -54,12 +55,14 @@
         .cart-item-description {
             font-size: 16px;
             color: #555;
+			margin-bottom: 15px;
         }
 
         .cart-item-price {
             font-weight: bold;
             color: #333;
-            margin: 10px 0;
+            margin: 20px 0;
+			
         }
 
         .button-container {
@@ -140,8 +143,18 @@
 		.remove-item-btn:hover {
 		    background-color: #FF9900; /* Hover durumunda koyu turuncu */
 		}
+		
+		.unit-price {
+		    font-size: 0.7em;
+		    color: gray;
+		    position: absolute; /* Sabit konumlandırma */
+		    bottom: 40px; /* Kartın alt kısmına yakın */
+		    left: 157px; /* Sol tarafa hizalama */
+		}
 
 
+		
+		
 
 
     </style>
@@ -168,114 +181,142 @@
     <div id="alert" class="alert" style="display:none;">Sepetiniz başarıyla boşaltıldı!</div>
 
 	<script>
-	    // Sepet öğelerini backend'den almak için bu fonksiyonu kullanacağız
-	    function fetchCartItems() {
-	        const userId = localStorage.getItem("userId");
-	        if (!userId) {
-	            alert("Lütfen giriş yapınız!"); // Kullanıcı giriş yapmamışsa uyarı ver
-	            return;
-	        }
+		// Sepet öğelerini backend'den almak için bu fonksiyonu kullanacağız
+		function fetchCartItems() {
+		    const userId = localStorage.getItem("userId");
+		    if (!userId) {
+		        alert("Lütfen giriş yapınız!"); // Kullanıcı giriş yapmamışsa uyarı ver
+		        return;
+		    }
 
-	        fetch(`/checkout/items/${userId}`)
-	            .then(response => response.json())
-	            .then(cartItems => {
-	                renderCartItems(cartItems);  // Sepet öğelerini görüntüle
-	            })
-	            .catch(error => {
-	                console.error('Error:', error);
-	            });
-	    }
+		    fetch(`/checkout/items/${userId}`)
+		        .then(response => response.json())
+		        .then(cartItems => {
+		            renderCartItems(cartItems);  // Sepet öğelerini görüntüle
+		        })
+		        .catch(error => {
+		            console.error('Error:', error);
+		        });
+		}
 
-	    // Sepet öğelerini dinamik olarak render eden fonksiyon
-	    function renderCartItems(cartItems) {
-	        const cartContainer = document.getElementById('cart-container');
-	        const totalPrice = document.getElementById('total-price');
-	        let total = 0;
+		// Sepet öğelerini dinamik olarak render eden fonksiyon
+		function renderCartItems(cartItems) {
+		    const cartContainer = document.getElementById('cart-container');
+		    const totalPrice = document.getElementById('total-price');
+		    let total = 0;
 
-	        // Sepet öğelerini temizle
-	        cartContainer.innerHTML = '';
+		    // Sepet öğelerini temizle
+		    cartContainer.innerHTML = '';
 
-	        cartItems.forEach(item => {
-	            // 1000'e bölme işlemini kaldırdık
-	            let formattedPrice = item.price
-	                .toLocaleString('tr-TR'); // Türk Lirası formatında
+		    // Ürünleri gruplamak için Map kullanıyoruz (product_id ve description'a göre)
+		    const groupedCart = new Map();
 
-	            total += item.price; // Toplam fiyatı hesapla
+		    cartItems.forEach(item => {
+		        // Ürünleri product_id ve description'a göre grupluyoruz
+		        const key = `${item.product_id}-${item.description}`;
+		        if (groupedCart.has(key)) {
+		            // Eğer aynı product_id ve description varsa, quantity'yi artırıyoruz
+		            groupedCart.get(key).quantity += 1;
+		        } else {
+		            // İlk kez karşılaşılan ürünü ekliyoruz
+		            groupedCart.set(key, { ...item, quantity: 1 });
+		        }
+		    });
 
-	            const cartItemDiv = document.createElement('div');
-	            cartItemDiv.classList.add('cart-item');
-	            cartItemDiv.innerHTML = `
-	                <img src="${item.imageUrl}" alt="${item.description}" class="cart-item-image" />
-	                <div class="cart-item-details">
-	                    <span class="cart-item-name">${item.description}</span>
-	                    <span class="cart-item-price">${formattedPrice} TL</span>
-	                </div>
-	                <button class="remove-item-btn" onclick="removeFromCart(${item.id})">Sil</button>
-	            `;
-	            cartContainer.appendChild(cartItemDiv);
-	        });
+		    // Gruplama yapılmış ürünleri render et
+		    groupedCart.forEach(item => {
+		        // Ürünün toplam fiyatını hesapla
+		        const productTotalPrice = item.price * item.quantity;
+		        let formattedPrice = productTotalPrice
+		            .toLocaleString('tr-TR'); // Türk Lirası formatında
 
-	        // Toplam fiyatı güncelle
-	        let formattedTotal = total
-	            .toLocaleString('tr-TR'); // Türk Lirası formatında
+		        total += productTotalPrice; // Toplam fiyatı hesapla
 
-	        totalPrice.textContent = formattedTotal + ' TL';
-	    }
+		        const cartItemDiv = document.createElement('div');
+		        cartItemDiv.classList.add('cart-item');
+		        cartItemDiv.innerHTML = `
+		            <img src="${item.imageUrl}" alt="${item.description}" class="cart-item-image" />
+		            <div class="cart-item-details">
+		                <span class="cart-item-name">${item.description}</span>
+		                <span class="cart-item-price">${formattedPrice} TL</span>
+		                <span class="cart-item-quantity">Adet: ${item.quantity}</span>
+		        `;
 
-	    // Sepetten ürün kaldırma işlemi
-	    function removeFromCart(cartItemId) {
-	        const userId = localStorage.getItem("userId");
-	        if (!userId) {
-	            alert("Lütfen giriş yapınız!"); // Kullanıcı giriş yapmamışsa uyarı ver
-	            return;
-	        }
+		        // Eğer ürünün miktarı 2 veya daha fazla ise, birim fiyatı ekle
+		        if (item.quantity >= 2) {
+		            cartItemDiv.innerHTML += `<p class="unit-price">Birim Fiyatı: <strong>${item.price.toLocaleString('tr-TR')} TL</strong></p>`;
+		        }
 
-	        fetch(`/checkout/remove-item/${cartItemId}`, {
-	            method: 'POST',
-	        })
-	        .then(response => {
-	            if (response.ok) {
-	                fetchCartItems();  // Sepet öğelerini yeniden yükle
-	            } else {
-	                alert("Silme işlemi sırasında bir hata oluştu!");
-	            }
-	        })
-	        .catch(error => {
-	            console.error('Error:', error);
-	        });
-	    }
+		        cartItemDiv.innerHTML += `
+		            </div>
+		            <button class="remove-item-btn" onclick="removeFromCart(${item.id})">Sil</button>
+		        `;
+		        cartContainer.appendChild(cartItemDiv);
+		    });
 
-	    // Tüm sepeti temizleme
-	    function clearCart() {
-	        const userId = localStorage.getItem("userId");
-	        if (!userId) {
-	            alert("Lütfen giriş yapınız!"); // Kullanıcı giriş yapmamışsa uyarı ver
-	            return;
-	        }
+		    // Toplam fiyatı güncelle
+		    let formattedTotal = total
+		        .toLocaleString('tr-TR'); // Türk Lirası formatında
 
-	        fetch(`/checkout/remove-all/${userId}`, {
-	            method: 'POST',
-	        })
-	        .then(response => {
-	            if (response.ok) {
-	                fetchCartItems();  // Sepeti tekrar yükle
-	                const alertBox = document.getElementById('alert');
-	                alertBox.style.display = 'block';
+		    totalPrice.textContent = formattedTotal + ' TL';
+		}
 
-	                setTimeout(function () {
-	                    alertBox.style.display = 'none';
-	                }, 1000);
-	            } else {
-	                alert("Sepet temizlenirken bir hata oluştu!");
-	            }
-	        })
-	        .catch(error => {
-	            console.error('Error:', error);
-	        });
-	    }
+		// Sepetten ürün kaldırma işlemi
+		function removeFromCart(cartItemId) {
+		    const userId = localStorage.getItem("userId");
+		    if (!userId) {
+		        alert("Lütfen giriş yapınız!"); // Kullanıcı giriş yapmamışsa uyarı ver
+		        return;
+		    }
 
-	    // Sayfa yüklendiğinde sepet öğelerini al
-	    window.onload = fetchCartItems;
+		    fetch(`/checkout/remove-item/${cartItemId}`, {
+		        method: 'POST',
+		    })
+		    .then(response => {
+		        if (response.ok) {
+		            fetchCartItems();  // Sepet öğelerini yeniden yükle
+		        } else {
+		            alert("Silme işlemi sırasında bir hata oluştu!");
+		        }
+		    })
+		    .catch(error => {
+		        console.error('Error:', error);
+		    });
+		}
+
+		// Tüm sepeti temizleme
+		function clearCart() {
+		    const userId = localStorage.getItem("userId");
+		    if (!userId) {
+		        alert("Lütfen giriş yapınız!"); // Kullanıcı giriş yapmamışsa uyarı ver
+		        return;
+		    }
+
+		    fetch(`/checkout/remove-all/${userId}`, {
+		        method: 'POST',
+		    })
+		    .then(response => {
+		        if (response.ok) {
+		            fetchCartItems();  // Sepeti tekrar yükle
+		            const alertBox = document.getElementById('alert');
+		            alertBox.style.display = 'block';
+
+		            setTimeout(function () {
+		                alertBox.style.display = 'none';
+		            }, 1000);
+		        } else {
+		            alert("Sepet temizlenirken bir hata oluştu!");
+		        }
+		    })
+		    .catch(error => {
+		        console.error('Error:', error);
+		    });
+		}
+
+		// Sayfa yüklendiğinde sepet öğelerini al
+		window.onload = fetchCartItems;
+
+
 	</script>
 
 

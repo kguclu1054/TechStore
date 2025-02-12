@@ -68,66 +68,125 @@
 
 			.heart-icon.liked {
 			    background-color: red; /* Tıklandığında arka plan kırmızı */
-			    transform: scale(1.1); /* Hafif büyüme efekti */
+				color:red;
+			    
 			}
 
 			.heart-icon.liked::before {
 			    color: white; /* Tıklandığında kalp beyaz olacak */
 			}
 			
+			
+			.account-actions {
+			    display: flex;
+			    gap: 20px;
+			    align-items: center;
+			    margin-left: auto; /* Sağ tarafa hizalar */
+			}
+
+			.account-actions .nav-item {
+			    display: inline-block; /* Her öğe yan yana olacak */
+			}
+
+			/* Hesabım butonunu sola kaydır */
+			.account-actions .dropdown {
+			    margin-left: -73px; /* Bu değeri ihtiyaca göre ayarlayabilirsiniz */
+			    color: rgba(0, 0, 0, 0.7);
+			}
+
+			/* Favorilerim butonunu biraz sola kaydır */
+			.account-actions .favorite-btn {
+			    margin-left: -192px; /* Bu değeri ihtiyaca göre ayarlayabilirsiniz */
+			    background-color: transparent; /* Arka plan rengini kaldırır */
+			    color: rgba(0, 0, 0, 0.7);
+			    border: none; /* Kenarlıkları kaldırır */
+			    margin-top: 14px;
+				font-size:1.1rem;
+			}
+
+			.account-actions .dropdown:hover {
+			    color: black; /* Hover ile renk değişimi */
+			}
+
+			/* Favorilerim butonuna hover efekti ekleyin */
+			.account-actions .favorite-btn:hover {
+			    color: black; /* Hover ile renk değişimi */
+			}
+
+
+
+
+
+			
+			
+			
+			
+
+			
+			
+			
 		 </style>
-	
 		 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="font-size: 1.2rem; padding: 15px 0;">
-		   <div class="container-fluid">
-		     <a class="navbar-brand" href="#">TechStore</a>
-		     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-		       <span class="navbar-toggler-icon"></span>
-		     </button>
-			 <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-		       <ul class="navbar-nav me-auto">
-		         <li class="nav-item active">
-		           <a class="nav-link" href="/index">Ana Sayfa</a>
-		         </li>
-		         <li class="nav-item dropdown">
-		           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-		             Kategoriler
-		           </a>
-		           <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="background-color: white; border: none;">
-					<li><a class="dropdown-item" onclick="filterProducts('smartphone')">Akıllı Telefonlar</a></li>
-					<li><a class="dropdown-item"  onclick="filterProducts('laptop')">Laptoplar</a></li>
-		           </ul>
-		         </li>
-		         <li class="nav-item">
-		           <a class="nav-link"href="/contact">İletişim</a>
-		         </li>
-		         <li class="nav-item">
-					<a class="nav-link" href="/checkout">Sepetim</a>
-		       </ul>
-			   <form class="d-flex me-auto" id="search_container" onsubmit="searchProducts(event)" style="margin-left: -220px;">
-			     <div class="input-group">
-			       <input class="form-control form-control-lg" type="search" placeholder="Ürün, kategori ve marka ara" aria-label="Search" id="search" oninput="autocompleteSearch(this.value)">
-			       <button class="btn btn-outline-secondary" type="submit" style="margin-top:8px; height:45px;">
-			         <i class="bi bi-search search_icon"></i>
-			       </button>
-			       <div id="autocomplete-results" class="autocomplete-results"></div>
-			     </div>
-			   </form>
+		     <div class="container-fluid">
+		         <a class="navbar-brand" href="#">TechStore</a>
+		         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+		             <span class="navbar-toggler-icon"></span>
+		         </button>
+		         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+		             <ul class="navbar-nav me-auto">
+		                 <li class="nav-item active">
+		                     <a class="nav-link" href="/index">Ana Sayfa</a>
+		                 </li>
+		                 <li class="nav-item dropdown">
+		                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+		                         Kategoriler
+		                     </a>
+		                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown" style="background-color: white; border: none;">
+		                         <li><a class="dropdown-item" onclick="filterProducts('smartphone')">Akıllı Telefonlar</a></li>
+		                         <li><a class="dropdown-item" onclick="filterProducts('laptop')">Laptoplar</a></li>
+		                     </ul>
+		                 </li>
+		                 <li class="nav-item">
+		                     <a class="nav-link" href="/contact">İletişim</a>
+		                 </li>
+		                 <li class="nav-item">
+		                     <a class="nav-link" href="/checkout">Sepetim</a>
+		                 </li>
+		             </ul>
+		             <form class="d-flex me-auto" id="search_container" onsubmit="searchProducts(event)" style="margin-left: -100px;">
+		                 <div class="input-group">
+		                     <input class="form-control form-control-lg" type="search" placeholder="Ürün, kategori ve marka ara" aria-label="Search" id="search" oninput="autocompleteSearch(this.value)">
+		                     <button class="btn btn-outline-secondary" type="submit" style="margin-top:8px; height:45px;">
+		                         <i class="bi bi-search search_icon"></i>
+		                     </button>
+		                     <div id="autocomplete-results" class="autocomplete-results"></div>
+		                 </div>
+		             </form>
 
-			   
-			   <div class="dropdown" style="margin-right: -420px;">
-			     <button class="btn dropdown-toggle" type="button" id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-			       Hesabım
-			     </button>
-			     <ul class="dropdown-menu" aria-labelledby="accountDropdown">
-			       <li><span class="dropdown-item-text" id="userEmail">Yükleniyor...</span></li>
-			     </ul>
-			   </div>
-
-			   
-			   <a class="btn btn-outline-danger ms-auto" href="/perform_logout">Çıkış Yap</a>
+		             <div class="account-actions d-flex">
+		                 <div class="nav-item">
+		                     <div class="dropdown">
+		                         <button class="btn dropdown-toggle" type="button" id="accountDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+		                             Hesabım
+		                         </button>
+		                         <ul class="dropdown-menu" aria-labelledby="accountDropdown">
+		                             <li><span class="dropdown-item-text" id="userEmail">Yükleniyor...</span></li>
+		                         </ul>
+		                     </div>
+		                 </div>
+		                 <div class="nav-item">
+		                     <button class="favorite-btn" onclick="window.location.href='/favoriler/' + localStorage.getItem('userId')">Favorilerim</button>
+		                 </div>
+		                 <div class="nav-item">
+		                     <a class="btn btn-outline-danger ms-auto" href="/perform_logout">Çıkış Yap</a>
+		                 </div>
+		             </div>
+		         </div>
 		     </div>
-		   </div>
 		 </nav>
+
+
+
 
 
 
@@ -906,10 +965,106 @@
 	}
 
 
+	
+
+	document.addEventListener('DOMContentLoaded', function () {
+	    let userId = localStorage.getItem("userId");
+	    if (!userId) return; // Kullanıcı giriş yapmamışsa işlemi durdur
+
+	    // Kullanıcıya özel favori ürünleri al
+	    let favoriteItems = JSON.parse(localStorage.getItem(`favoriteItems_${userId}`)) || [];
+
+	    // Sayfadaki her ürün kartını kontrol et
+	    document.querySelectorAll('.heart-icon').forEach(icon => {
+	        let card = icon.closest(".card");
+	        let productId = card.getAttribute("data-id");
+
+	        // Eğer bu ürün favoriler arasında varsa, 'liked' sınıfını ekle
+	        if (favoriteItems.some(item => item.productId == productId)) {
+	            icon.classList.add('liked');
+	        }
+	    });
+	});
+
 	function toggleHeart(icon, event) {
-	  event.stopPropagation(); // Kartın tıklama olayını engelle
-	  icon.classList.toggle('liked');
+	    event.stopPropagation(); // Card'a tıklamayı engelle
+
+	    let card = icon.closest(".card");
+	    let productId = card.getAttribute("data-id");
+	    let productName = card.querySelector(".card-description").innerText;
+	    let productPrice = card.querySelector(".price").innerText;
+	    let userId = localStorage.getItem("userId");
+	    let imageElement = card.querySelector(".card-img img");
+	    let imageUrl = imageElement ? imageElement.src : "";
+
+	    if (!userId) {
+	        alert("Lütfen giriş yapın!");
+	        return;
+	    }
+
+	    let favoriteItem = {
+	        productId: productId,
+	        productName: productName,
+	        productPrice: productPrice,
+	        userId: userId,
+	        imageUrl: imageUrl
+	    };
+
+	    // Kullanıcıya özel favori listesi
+	    let favoriteItems = JSON.parse(localStorage.getItem(`favoriteItems_${userId}`)) || [];
+
+	    if (icon.classList.contains('liked')) {
+	        // Favoriden çıkarma işlemi
+	        favoriteItems = favoriteItems.filter(item => item.productId !== productId);
+	        icon.classList.remove('liked');
+
+	        fetch('/favoriler/remove', {
+	            method: 'DELETE',
+	            headers: {
+	                'Content-Type': 'application/json'
+	            },
+	            body: JSON.stringify({ userId: userId, productId: productId })
+	        }).catch(error => console.error("Silme hatası:", error));
+	    } else {
+	        // Favoriye ekleme işlemi
+	        favoriteItems.push(favoriteItem);
+	        icon.classList.add('liked');
+
+	        fetch('/favoriler/add', {
+	            method: 'POST',
+	            headers: {
+	                'Content-Type': 'application/json; charset=UTF-8'
+	            },
+	            body: JSON.stringify(favoriteItem)
+	        }).catch(error => console.error("Ekleme hatası:", error));
+	    }
+
+	    // Güncellenmiş favorileri localStorage'a kaydet
+	    localStorage.setItem(`favoriteItems_${userId}`, JSON.stringify(favoriteItems));
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 	
 

@@ -43,15 +43,3 @@ public class ProductService {
 		return productRepository.findByCategoryIgnoreCase(category);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-

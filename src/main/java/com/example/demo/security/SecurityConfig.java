@@ -63,6 +63,7 @@ public class SecurityConfig {
                         .requestMatchers("/req/signup", "/forget_password", "/css/**", "/js/**").permitAll()
                         .requestMatchers("/search", "/search-results").permitAll()
                         .requestMatchers("/api/**").permitAll()
+                        .requestMatchers("/index").permitAll() 
                         .requestMatchers("/checkout/remove-all/**").authenticated() 
                         .anyRequest().authenticated();
                 })

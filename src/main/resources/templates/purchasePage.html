@@ -51,6 +51,8 @@
 
         .card-details {
             flex: 1;
+			position: relative;
+			padding-top:15px;
         }
 
         .free-shipping {
@@ -110,7 +112,13 @@
 			height:85px;
 		}
 		
-
+		.unit-price {
+		    font-size: 0.8em;
+		    color: gray;
+		    margin-top: 70px; /* Birim fiyatını biraz yukarı kaydırıyoruz */
+			margin-right:-70px;
+		    text-align: left;
+		}
 
     </style>
 </head>
@@ -284,25 +292,55 @@
 		                return;
 		            }
 
+		            // Ürünleri gruplamak için Map kullanıyoruz (product_id ve description'a göre)
+		            const groupedCart = new Map();
+
 		            cart.forEach((item) => {
+		                // Ürünleri product_id ve description'a göre grupluyoruz
+		                const key = `${item.product_id}-${item.description}`;
+		                if (groupedCart.has(key)) {
+		                    // Eğer aynı product_id ve description varsa, quantity'yi artırıyoruz
+		                    groupedCart.get(key).quantity += 1;
+		                } else {
+		                    // İlk kez karşılaşılan ürünü ekliyoruz
+		                    groupedCart.set(key, { ...item, quantity: 1 });
+		                }
+		            });
+
+		            // Ürünleri ekrana yazdır
+		            groupedCart.forEach((item) => {
 		                const productCard = document.createElement('div');
 		                productCard.className = 'card';
+
+		                // Ürünün toplam fiyatını hesapla
+		                const productTotalPrice = item.price * item.quantity;
+
+		                // Ürün kartının içeriğini oluştur
 		                productCard.innerHTML = `
-		                    <img src="${item.imageUrl}" class="card-img-top" alt="${item.name}">
+		                    <img src="${item.imageUrl}" class="card-img-top" alt="${item.description}">
 		                    <div class="card-details">
 		                        <div class="card-description">${item.description}</div>
-		                        <p class="price">${item.price} TL</p>
+		                        <p class="price">${productTotalPrice.toLocaleString('tr-TR')} TL</p>
+		                        <p class="quantity">Adet: <strong>${item.quantity}</strong></p>
+		                `;
+
+		                // Eğer ürünün miktarı 2 veya daha fazla ise, birim fiyatı ekle
+		                if (item.quantity >= 2) {
+		                    productCard.innerHTML += `<p class="unit-price">Birim Fiyatı: <strong>${item.price.toLocaleString('tr-TR')} TL</strong></p>`;
+		                }
+
+		                productCard.innerHTML += `
 		                    </div>
 		                    <div class="free-shipping">Kargo Bedava</div>
 		                `;
 		                cartContainer.appendChild(productCard);
 
-		                // Fiyatı düzgün şekilde işle
-		                totalPrice += item.price; // Burada artık replace işlemi gerekmez
+		                // Toplam fiyatı hesapla
+		                totalPrice += productTotalPrice;
 		            });
 
 		            // Toplam fiyatı formatla
-		            let formattedTotalPrice = totalPrice.toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+		            let formattedTotalPrice = totalPrice.toLocaleString('tr-TR');
 
 		            // Toplam fiyatı kartların altına ekleyelim
 		            totalPriceElement.innerHTML = `<strong>Toplam Fiyat: ${formattedTotalPrice} TL</strong>`;
@@ -313,6 +351,7 @@
 		            cartContainer.innerHTML = '<p>Veri alırken bir hata oluştu.</p>';
 		        });
 		});
+
 		
 		
 		const districts = {
