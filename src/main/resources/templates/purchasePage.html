@@ -270,6 +270,115 @@
     </div>
 
 	<script>
+		
+		function odemeYap() {
+		    const userId = localStorage.getItem("userId");  // localStorage'dan userId'yi al
+
+		    // Cart içindeki ürünleri alalım
+		    const cartItems = document.querySelectorAll("#cart-container .card");
+		    const urunler = Array.from(cartItems).map(item => {
+		        return {
+		            urunAdi: item.querySelector(".card-description").textContent.trim(),
+		            fiyat: parseFloat(item.querySelector(".price").textContent.replace(/[^\d.-]/g, '')),
+		            userId: userId  // userId'yi ekleyelim
+		        };
+		    });
+
+		    console.log("Ürünler:", urunler);  // Ürünleri kontrol et
+
+		    const formData = {
+		        kullaniciSiparisleri: {
+		            userId: userId,
+		            adSoyad: document.getElementById("full-name").value,
+		            adres: document.getElementById("address").value,
+		            sehir: document.getElementById("city").value,
+		            ilce: document.getElementById("district").value,
+		            postaKodu: document.getElementById("zip").value,
+		            kartNumarasi: document.getElementById("card-number").value,
+		            sonKullanmaTarihi: document.getElementById("expiry-date").value,
+		            cvv: document.getElementById("cvv").value
+		        },
+		        urunler: urunler
+		    };
+
+		    console.log("Form Data:", JSON.stringify(formData));  // JSON verisini kontrol et
+
+		    fetch("/odeme/kaydet", {
+		        method: "POST",
+		        headers: {
+		            "Content-Type": "application/json"
+		        },
+		        body: JSON.stringify(formData)
+		    })
+		    .then(response => {
+		        if (response.ok) {
+		            window.location.href = "/odeme/basarili";  // Başarılı ödeme sayfasına yönlendirme
+		        } else {
+		            console.error("Ödeme başarısız.");
+		        }
+		    })
+		    .catch((error) => {
+		        console.error("Hata:", error);
+		    });
+		}
+
+		document.getElementById("payment-form").addEventListener("submit", function(event){
+		    event.preventDefault();
+		    odemeYap();
+		});
+
+		
+		
+		document.addEventListener("DOMContentLoaded", function() {
+		    // Posta kodu doğrulama
+		    document.getElementById("zip").addEventListener("input", function(e) {
+		        this.value = this.value.replace(/[^0-9]/g, '');  // Sadece rakamlar girilsin
+		    });
+
+		    // Kart numarası doğrulama
+			document.getElementById("card-number").addEventListener("input", function(e) {
+			        let value = this.value.replace(/\D/g, ''); // Sadece rakamlar
+			        if (value.length > 16) {
+			            value = value.slice(0, 16); // Maksimum 16 rakam
+			        }
+			        this.value = value.replace(/(\d{4})(?=\d)/g, '$1 '); // 4 rakamda bir boşluk ekle
+			    
+		    });
+
+		    // CVV doğrulama
+		    document.getElementById("cvv").addEventListener("input", function(e) {
+		        this.value = this.value.replace(/[^0-9]/g, '');  // Sadece rakamlar girilsin
+		        if (this.value.length > 3) {
+		            this.value = this.value.slice(0, 3);  // Maksimum 3 karakter
+		        }
+		    });
+
+		    // Son kullanma tarihi doğrulama
+		    document.getElementById("expiry-date").addEventListener("input", function(e) {
+		        if (this.value.length === 2 && !this.value.includes('/')) {
+		            this.value += '/';  // Araya / ekle
+		        }
+		        this.value = this.value.replace(/[^0-9/]/g, '');  // Sadece rakamlar ve / girilsin
+		        if (this.value.length > 5) {
+		            this.value = this.value.slice(0, 5);  // Maksimum 5 karakter (MM/YY)
+		        }
+		    });
+		});
+
+		document.getElementById("payment-form").addEventListener("submit", function(event){
+		    event.preventDefault();
+		    odemeYap();
+		});
+
+
+
+
+
+
+		
+		
+		
+		
 		document.addEventListener('DOMContentLoaded', () => {
 		    const cartContainer = document.getElementById('cart-container');
 		    const totalPriceElement = document.createElement('h3');

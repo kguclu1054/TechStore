@@ -320,7 +320,21 @@
 		                }
 		            });
 		        });
-
+				
+				// Sayfa yüklendiğinde çalışacak kod
+				window.onload = function() {
+				    // URL parametresi "logout" olup olmadığını kontrol et
+				    const urlParams = new URLSearchParams(window.location.search);
+				    
+				    // Eğer URL'de "logout" parametresi varsa
+				    if (urlParams.has('logout')) {
+				        // localStorage'dan userId'yi sil
+				        localStorage.removeItem('userId');
+				        
+				        // Çıkış işlemi sonrası kullanıcıyı yönlendirebilirsiniz
+				        window.location.href = '/loginPage'; // Veya ana sayfaya yönlendirme yapabilirsiniz
+				    }
+				};
 
 	    </script>
 </body>
