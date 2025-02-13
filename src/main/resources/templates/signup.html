@@ -157,6 +157,26 @@
         .shake {
             animation: shake 0.5s ease-in-out;
         }
+		
+		#message {
+		    text-align: center;
+		    margin-top: 10px;
+		    padding: 10px;
+		    border-radius: 5px;
+		    font-weight: bold;
+		}
+
+		#message.error {
+		    background-color: red;
+		    color: white;
+		}
+
+		#message.success {
+		    background-color: green;
+		    color: white;
+		}
+
+
     </style>
 </head>
 
@@ -200,50 +220,72 @@
             <div class="register">
                 <p>Already have an account? <a href="/loginPage">Log In</a></p>
             </div>
+            <div id="message" class=""></div>
         </form>
     </section>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const signupForm = document.querySelector('#signupForm');
+		document.addEventListener('DOMContentLoaded', function () {
+		    const signupForm = document.querySelector('#signupForm');
 
-            signupForm.addEventListener('submit', function (event) {
-                event.preventDefault(); // Formun normal submit olmasını engelliyoruz
+		    signupForm.addEventListener('submit', function (event) {
+		        event.preventDefault(); // Formun normal submit olmasını engelliyoruz
 
-                const username = document.getElementById('username').value;
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                const confirmPassword = document.getElementById('confirmPassword').value;
+		        const usernameField = document.getElementById('username');
+		        const username = usernameField.value.trim();
+		        const email = document.getElementById('email').value;
+		        const password = document.getElementById('password').value;
+		        const confirmPassword = document.getElementById('confirmPassword').value;
 
-                // Password validation
-                if (password !== confirmPassword) {
-                    alert('Passwords do not match.');
-                    return;
-                }
+		        // Kullanıcı adında boşluk kontrolü
+		        if (username.includes(' ')) {
+		            alert('Username should not contain spaces.');
+		            return;
+		        }
 
-                // Form verilerini JSON formatında backend'e gönderiyoruz
-                fetch('/req/signup', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        username: username,
-                        email: email,
-                        password: password
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert('User created successfully!');
-                    // Giriş sayfasına yönlendirme yapılabilir
-                    window.location.href = '/login';
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-            });
-        });
+		        // Password validation
+		        if (password !== confirmPassword) {
+		            alert('Passwords do not match.');
+		            return;
+		        }
+
+		        // Form verilerini JSON formatında backend'e gönderiyoruz
+		        fetch('/req/signup', {
+		            method: 'POST',
+		            headers: {
+		                'Content-Type': 'application/json'
+		            },
+		            body: JSON.stringify({
+		                username: username,
+		                email: email,
+		                password: password
+		            })
+		        })
+		        .then(response => {
+		            const messageDiv = document.getElementById('message');
+		            messageDiv.classList.remove('success', 'error'); // Önceki sınıfları kaldırıyoruz
+		            if (response.status === 201) {
+		                messageDiv.classList.add('success');
+		                messageDiv.textContent = 'Kullanıcı oluşturuldu';
+		                // Giriş sayfasına yönlendirme yapılabilir
+		                setTimeout(() => {
+		                    window.location.href = '/loginPage';
+		                }, 5000); // 2 saniye bekleme
+		            } else if (response.status === 409) {
+		                messageDiv.classList.add('error');
+		                messageDiv.textContent = 'Kullanıcı adı zaten alınmış.';
+		            } else {
+		                return response.text().then(text => {
+		                    messageDiv.classList.add('error');
+		                    messageDiv.textContent = text;
+		                });
+		            }
+		        })
+		        .catch(error => {
+		            console.error('Error:', error);
+		        });
+		    });
+		});
     </script>
 </body>
 

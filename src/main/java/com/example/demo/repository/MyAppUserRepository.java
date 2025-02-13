@@ -9,7 +9,7 @@ import com.example.demo.entity.MyAppUser;
 
 @Repository
 public interface MyAppUserRepository extends JpaRepository<MyAppUser, Long>{
-
+	
 	Optional<MyAppUser> findByUsername(String username);
 	
 }
